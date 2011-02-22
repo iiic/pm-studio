@@ -1,0 +1,6 @@
+{block content}
+
+<ul n:inner-foreach="$items as $item">
+<li n:ifset="$item->link"><a href="{plink 'default:'}#{$item->hash}">{$item->title}</a></li>    
+{*<li n:ifset="$item->link"><a href="{if $presenter->getName() != 'Default'}<?php echo $presenter->link(Nette\Templates\TemplateHelpers::escapeHtml($item->link).':'); ?>{/if}#{$item->hash}">{$item->title}</a></li>*}
+</ul>

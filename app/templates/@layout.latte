@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="cs">
+	<head>
+		<meta charset="utf-8">
+		<meta name="author" content="ic - ic.czech@gmail.com">
+		<link rel="made" href="ic.czech@gmail.com">
+		<meta n:ifset="$robots" name="robots" content="{$robots}">
+		<meta n:ifset="$settings->description" name="description" content="{$settings->description}">
+		<link rel="profile" href="http://purl.org/uF/2008/03/">{* profile="http://purl.org/uF/2008/03/" značí specifikaci hodně druhů mikroformátů (včetně hCard), které nejsou ve stádiu návrhu, což je třeba hAtom: http://purl.org/uF/hAtom/0.1/ *}
+		<link rel="profile" href="http://purl.org/uF/hAtom/0.1/">{* chtěli po mě vložit tohle do hlavičky <head profile="něco"> ale na mě si nepříjdou *}
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">{* ikonka mojeho webu *}
+		<link rel="home" href="{$basePath}" title="úvodní stránka">{* odkaz na homepage *}
+		<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+		<link n:if="$presenter->getParam(Nette\Application\Presenter::FLASH_KEY)" rel="canonical" href="{link this, Nette\Application\Presenter::FLASH_KEY => NULL}">{* v případě existence flash identifikátoru v uri (?_fid=...) přidá odkaz na kanonickou adresu *}
+		{control css 'screen.less'}
+		<title>{block #title|striptags|trim}{/block} | {$settings->title}</title>
+		{* @todo: vložit google analytics sem *}
+	</head>
+	<body>
+		{* přidat varování... všechny daňové údaje musí být na webu *}
+		<header>
+			<h1><em>pm</em> studio</h1>
+			<strong>výroba reklamy</strong>
+		</header>
+
+		<hr>
+
+		<nav id="menu"><strong class="hide">menu:</strong>{control menu}</nav>
+
+		<hr>
+
+		<aside>
+			<p>
+			{snippet flashes span}
+				<span n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</span><br>
+			{/snippet}
+			<span n:if="$settings->important">
+				<strong>{$settings->important_title}</strong>
+				<br>
+				{$settings->important}
+				<br><br>
+			</span>
+			Lorem ipsum dolor sit amet consectetuer dolor platea Vestibulum est sed. Dui Ut euismod eget lacinia risus Morbi Aenean velit et Phasellus. Sem orci quis penatibus quis nibh wisi ut euismod tellus non. Sed sem pharetra Curabitur lacinia adipiscing eleifend consequat id eu condimentum. Laoreet ac Vestibulum cursus tincidunt Vestibulum ipsum et consectetuer Lorem.
+			</p>
+		</aside>
+
+		<hr class="show">
+
+		<section>
+			{include #content}
+		</section>
+
+		<hr>
+
+		<footer>
+			<p>patička</p>
+		</footer>
+
+		{control packedJs 'jquery.js', 'jquery.ajaxform.js', 'jquery.nette.js', 'netteForms.js', 'my.scripts.js'}
+
+	</body>
+</html>

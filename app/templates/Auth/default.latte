@@ -1,0 +1,24 @@
+{var $robots => noindex}
+
+{block #content}
+
+<h2 n:block="title">Autentizace</h2>
+
+{control authForm}
+<a n:href="auth:openid">Přihlásit se pomocí OpenID</a>
+
+<script>
+function hashPasswd(form) {
+	if(form.id == 'frm-authForm') {
+		form.password2.value = Sha256.hash({$shortSalt1}+form._token_.value+'ixD'+form.password.value+{$shortSalt2});
+		passLength = parseInt(form.password.value.length);
+		form.password.readonly = 'readonly';
+		form.password.value = '';
+		for(i=0; i<passLength; i++) {
+			form.password.value += '*';
+		}
+	}
+	return true;
+}
+</script>
+{control packedJs 'sha256.js'}

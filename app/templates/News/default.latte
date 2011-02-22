@@ -1,0 +1,20 @@
+{block content}
+
+<h2 n:block="title">Novinky</h2>
+
+<div id="posts">
+	{ifset $items}
+		<div n:foreach="$items as $item">
+			<h3>{$item->title}</h3>
+			<small>Přidáno {$item->date|date}</small>
+			<p>{!$item->content|texy|truncate:300}</p>
+			<a href="{plink news:detail $item->id}">připsat komentář…</a>{* protože se tato šablona používá i v komponentě není možné použít jednoduché n:href="detail $item->id" protože toto vytvoří normální link, a pro komponentu je třeba plink*}
+			{if $user->isInRole('administrator')}{* v budoucnu údajně bude pro ověření stačit n:if-allowed *}
+				| <a href="{plink news:edit $item->id}">upravit</a>
+				| <a href="{plink news:delete $item->id}">smazat</a>
+			{/if}
+		</div>
+	{else}
+		Zatím nebyly napsány žádné novinky
+	{/ifset}
+</div>

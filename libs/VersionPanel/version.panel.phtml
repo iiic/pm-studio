@@ -1,0 +1,105 @@
+<?php
+
+/**
+ * Nella - Nette Framework - Debug Bar: panel "versions" template.
+ *
+ * @category   Nella
+ * @package    Nella
+ */
+
+namespace Nella;
+?>
+<style>#nette-debug-panel-version-panel h2{font:11pt/1.5 sans-serif;margin:0;padding:2px 8px;background:#3484d2;color:white}#nette-debug-panel-version-panel table{width:100%}#nette-debug #nette-debug-panel-version-panel a{color:#333;background:transparent}</style>
+
+
+<h1>Libraries Versions</h1>
+
+<div class="nette-inner">
+	<table>
+	<tr>
+		<th>PHP</th>
+		<td><?php echo PHP_VERSION ?></td>
+		<td><?php echo PHP_OS." ".PHP_SAPI." ".php_uname('m'); if (extension_loaded('xdebug')): ?> (Xdebug <?php echo phpversion('xdebug') ?>)<?php endif ?></td>
+	</tr>
+	<tr>
+		<th><?php echo \Nette\Framework::NAME ?></th>
+		<td><?php echo \Nette\Framework::VERSION ?></td>
+		<td><?php echo \Nette\Framework::REVISION ?></td>
+	</tr>
+	<?php if (class_exists('dibi')): ?>
+	<tr>
+		<th>dibi</th>
+		<td><?php echo \dibi::VERSION ?></td>
+		<td><?php echo \dibi::REVISION ?></td>
+	</tr>
+	<?php endif ?>
+	<?php if (class_exists('ActiveMapper\ORM')): ?>
+	<tr>
+		<th>ActiveMapper</th>
+		<td><?php echo \ActiveMapper\ORM::VERSION ?></td>
+		<td><?php echo \ActiveMapper\ORM::REVISION ?></td>
+	</tr>
+	<?php endif ?>
+	<?php if (class_exists('Doctrine\Common\Version')): ?>
+	<tr>
+		<th>Doctrine Common</th>
+		<td><?php echo \Doctrine\Common\Version::VERSION ?></td>
+		<td>&nbsp;</td>
+	</tr>
+	<?php endif ?>
+	<?php if (class_exists('Doctrine\DBAL\Version')): ?>
+	<tr>
+		<th>Doctrine DBAL</th>
+		<td><?php echo \Doctrine\DBAL\Version::VERSION ?></td>
+		<td>&nbsp;</td>
+	</tr>
+	<?php endif ?>
+	<?php if (class_exists('Doctrine\ORM\Version')): ?>
+	<tr>
+		<th>Doctrine ORM</th>
+		<td><?php echo \Doctrine\ORM\Version::VERSION ?></td>
+		<td>&nbsp;</td>
+	</tr>
+	<?php endif ?>
+	<?php if (class_exists('Doctrine_Core')): ?>
+	<tr>
+		<th>Doctrine</th>
+		<td><?php echo \Doctrine_Core::VERSION ?></td>
+		<td>&nbsp;</td>
+	</tr>
+	<?php endif ?>
+	<?php if (class_exists('Nella\CMS')): ?>
+	<tr>
+		<th>Nella</th>
+		<td><?php echo \Nella\CMS::VERSION ?></td>
+		<td><?php echo \Nella\CMS::REVISION ?></td>
+	</tr>
+	<?php endif ?>
+	<?php if (class_exists('Texy')): ?>
+	<tr>
+		<th>Texy!</th>
+		<td><?php echo \Texy::VERSION ?></td>
+		<td><?php echo \Texy::REVISION ?></td>
+	</tr>
+	<?php endif ?>
+	</table>
+	<?php if (isset($this->updates) && count($this->updates) > 0): ?>
+	<h2>Updates avaiable</h2>
+	<table>
+	<?php foreach($this->updates as $name => $update): ?>
+	<tr>
+		<th><?php echo $name ?></th>
+		<td><?php echo $update['version'] ?></td>
+		<td><?php echo $update['revision'] ?></td>
+		<td>
+			<?php if (isset($update['url'])): ?>
+			<a href="<?php echo $update['url'] ?>" target="_blank">Download</a>
+			<?php else: ?>
+			&nbsp;
+			<?php endif ?>
+		</td>
+	</tr>
+	<?php endforeach ?>
+	</table>
+	<?php endif ?>
+</div>

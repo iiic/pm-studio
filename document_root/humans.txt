@@ -1,0 +1,12 @@
+/* TEAM */
+	Chef:ic
+	Contact: ic.czech@gmail.com
+	Twitter: @iiic
+	From:City 17, Czech Republic
+
+/* SITE */
+	Last update:2011/01/23
+	Language:Czech
+	Doctype:HTML5 with CSS3
+	Tools:PHP, nette
+	IDE:NetBeans IDE 6.9.1

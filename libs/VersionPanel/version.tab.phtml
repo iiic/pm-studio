@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * Nella - Nette Framework - Debug Bar: tab "versions" template.
+ *
+ * @category   Nella
+ * @package    Nella
+ */
+
+namespace Nella;
+?>
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAjpJREFUeNpi/P//PwMlgAWb4M/f/xhWX3qltPrKW5P/7CxCinxsT0JU+I6byfC+ZediQ1HLiO6CX//+M0WsulW1/tKbIgZmBkGGf0B5ZiYGhu+/7/urC+Qvi9PZzMXGjN2Aj19/MSStu5Wz7sqbyQwMQPHffz8BldwFqtJk4mDj+Pfr36cF4Rrm8SYSN2B6mJBtP//sE+e6Yw9ymH58BVr96/HCKC2ng9lGJjH6oqn/Pnz8z/D9C9/CU4+9cYYB079/zAyfPvz+B3S2gZH0xDgTqbMg8aP3Pz1i+HYd6BhGhv/fvqJYisIxlOX/sjDDItJBTSCu3Flp6ndgYC48fEe/ffnheez/fzEyfPj4KdFMZjNKoIHCABdOm3HAisGz/wV72LT/DN793wI7tgZ8+/EbRQ0Trvi9fP815/Id5yZzsfwT//Xx07swC4XAFUXuGzjZUWMepwGv331W+vzyrcHfL58ZTGX5G5aU++5kY2XGUIfTAAlB7tfSfKzH/nz8dL0y2mYjKxbNeA1QlhF+pSbKvYDhy+d1f3/8fIMzLeMKwMLGZSZsinH/OVXi//sl9zfgUgcPkbdv3zKsWL6cfdWqVewszMyMQjL6rLxc7L8YmdjYLpzc/9PJcSMfKOXKysr+zczM/G5hafkXxQVnz5xhMDExEQK5Hog1gVidgZHfl4FdJg7I1oZiDSCWz0hP54Tpw8hM165eZXj77h0DI8jwf39AOYKBiQkUgIxgtrCQEIOWtjZcPUCAAQD2kictFO3NpAAAAABJRU5ErkJggg==">versions
+<?php if (count($this->updates) > 0): ?>
+<span style="background: #47d; border: 1px solid #126; border-bottom-left-radius: 3px 3px; border-bottom-right-radius: 3px 3px; border-top-left-radius: 3px 3px; border-top-right-radius: 3px 3px; bottom: 0px; color: white; display: block; font-size: 75%; font-weight: bold; line-height: 100%; position: absolute;"><?php echo count($this->updates) ?></span>
+<?php endif ?>

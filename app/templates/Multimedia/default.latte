@@ -1,0 +1,14 @@
+{block content}
+
+<h2 n:block="title">Přehled obrázků</h2>
+
+<ul n:inner-foreach="$multimedia as $picture">
+	<li>
+		<img src="{$baseUri}/images/{$picture->name}" alt="{$picture->name}"><br>
+		adresa miniatury: <code>{$baseUri}/images/{$picture->name}</code><br>
+		adresa plné velikosti: <code>{$baseUri}/images/full/{$picture->name}</code><br>
+		velikost souboru miniatury: {$picture->size|bytes}<br>
+		datum a čas vytvoření: {$picture->time|date}<br>
+		<a n:href="delete $picture->name">smazat</a>{* // @todo : provést js dotaz 'opravdu...' *}
+	</li>
+</ul>

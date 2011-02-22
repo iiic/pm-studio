@@ -1,0 +1,13 @@
+{block #content}
+
+<h2 n:block="title">Upravit novinku</h2>
+
+{control newsForm}
+
+{snippet content section}
+	{ifset $content}
+		{!$content|texy}
+	{else}
+		<p>Zde se zobrazí náhled právě editované novinky</p>
+	{/ifset}
+{/snippet}
