@@ -11,6 +11,17 @@ class MenuModel
 		);
 	}
 
+	public static function fetchPairs()
+	{
+		return dibi::fetchPairs('
+			SELECT id, title
+			FROM [menu]
+			WHERE p_type > 1
+			AND title != ""'
+		);
+	}
+
+
 	public function update(array $data)
 	{
 		foreach($data as $row) {

@@ -2,6 +2,7 @@
 @barva-pozadi:black;
 @barva-textu:#eee;
 @svetlejsi-pozadi: @barva-pozadi + #111; // zesvětlení barvy pozadí
+@cesta-k-obrazkum: '../../www/images/'; // na localhostu a na ostrém webu je rozdíl v cestách
 
 
 
@@ -125,7 +126,7 @@ header
 		position:absolute;
 		margin-top:-30px;
 		color:#333;
-		content:url('../images/pm.gif');
+		content:url({@cesta-k-obrazkum}pm.gif);
 		background:@barva-pozadi;
 		@mixins > .odraz(-4px; 0.2; 0.4);
 	}
@@ -171,7 +172,7 @@ nav
 	padding-right:40px;
 	width:655px; // podle rozměrů obrázku na pozadí v
 	height:700px;
-	background-image:url(../images/bg.gif);
+	background-image:url({@cesta-k-obrazkum}bg.gif);
 	background-position:left center;
 	background-repeat:no-repeat;
 
@@ -186,7 +187,7 @@ nav
 		padding-top:22px;
 		list-style-position:inside;
 		text-align:left;
-		list-style-image:url(../images/bull.gif);
+		list-style-image:url({@cesta-k-obrazkum}bull.gif);
 		height:26px;
 
 		:nth-child(1) {

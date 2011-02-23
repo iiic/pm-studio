@@ -15,6 +15,7 @@ abstract class BasePresenter extends Presenter
 
 	public function startup()
 	{
+
 		$this->template->settings = SettingsModel::fetch();
 		if($this->template->settings->robots) {
 			$robots = $this->template->settings->robots;// $robots se z nějakého důvodu nepředá do šablony, přestože {$settings->robots} tam je... asi je to lokální proměnná, takže ji nějak zglobálnit
@@ -65,7 +66,7 @@ abstract class BasePresenter extends Presenter
 		$css = new CssLoader;
 
 		$css->media = "screen";
-		$css->sourcePath = WWW_DIR . "/../less";// cesta na disku ke zdroji
+		$css->sourcePath = APP_DIR . "/../less";// cesta na disku ke zdroji
 		$css->tempUri = Environment::getVariable("baseUri") . "webtemp";// cesta na webu k cílovému adresáři
 		$css->tempPath = WWW_DIR . "/webtemp";// cesta na disku k cílovému adresáři
 
@@ -84,7 +85,7 @@ abstract class BasePresenter extends Presenter
 
 		$js->tempUri = Environment::getVariable("baseUri") . "webtemp";// cesta na webu ke zdroji (kvůli absolutizaci cest v css souboru)
 		$js->tempPath = WWW_DIR . "/webtemp";// cesta na disku k cílovému adresáři
-		$js->sourcePath = WWW_DIR . "/../js";// cesta na disku ke zdroji
+		$js->sourcePath = APP_DIR . "/../js";// cesta na disku ke zdroji
 
 		$js->filters[] = new VariablesFilter(array(
 			// texyla

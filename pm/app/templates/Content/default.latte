@@ -1,0 +1,15 @@
+{block #content}
+
+<h2 n:block="title">Obsahový manager</h2>
+
+{control selectSectionForm}
+
+{control contentForm}
+
+{snippet content section}
+	{ifset $content}
+		{!$content|texy}
+	{else}
+		<p>Zde se zobrazí náhled právě editované obsahové sekce.</p>
+	{/ifset}
+{/snippet}
