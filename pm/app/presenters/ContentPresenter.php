@@ -10,15 +10,6 @@ class ContentPresenter extends BasePresenter
 	public function renderDefault()
 	{
 		$this->checkAuth();
-		$form = $this['contentForm'];
-		if(!$form->isSubmitted()) {
-			//$menu = new MenuModel;
-			//$row = $menu->fetch();
-			//if(!$row) {
-			//	throw new Nette\Application\BadRequestException('Nepodařilo se načíst data');
-			//}
-			//$form->setDefaults($row);
-		}
 	}
 
 
@@ -28,13 +19,23 @@ class ContentPresenter extends BasePresenter
 		$menu = new MenuModel;
 		$form = new AppForm;
 		$form->addGroup('Výběr obsahové sekce pro editaci:');
-		$form->addSelect('p11', '11. položka', $menu->fetchPairs())
+		$form->addSelect('section', 'vyberte sekci', $menu->fetchPairs())
 			->addRule(Form::FILLED, 'Musíte vybrat kterou sekci chcete upravovat.');
-		$form->addSubmit('save', 'uložit');
-		$form->addSubmit('cancel', 'zrušit')->setValidationScope(NULL);
-		$form->onSubmit[] = callback($this, 'contentFormSubmitted');
+		$form->addSubmit('chose', 'vybrat');
+		$form->onSubmit[] = callback($this, 'selectSectionFormSubmitted');
 		$form->addProtection('Prosím odešlete formulář znovu (vypršel čas sezení).');
 		return $form;
+	}
+
+
+
+	public function selectSectionFormSubmitted(AppForm $form)
+	{
+		if($form['chose']->isSubmittedBy()) {
+			$values = $form->values;
+			$this->redirect('content:', array('id' => $values['section']));
+		}
+		$this->redirect('content:');
 	}
 
 

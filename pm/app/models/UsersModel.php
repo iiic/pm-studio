@@ -28,15 +28,15 @@ class UsersModel extends Object implements Nette\Security\IAuthenticator
 
 		if(isset($password)) {
 			$row = dibi::select('*')
-				->from('users')
+				->from('pm_users')
 				->where('username=%s', $username)
 				->fetch();
 		} else { //jde o OpenID
 			$admins = $username[1];
 			$row = dibi::select('*')
-				->from('users')
+				->from('pm_users')
 				->innerJoin('users_openid')
-				->on('users.id = users_openid.user_id')
+				->on('pm_users.id = users_openid.user_id')
 				->where('openid=%s', $username[0])
 				->fetch();
 			//$username = $row->username;// asi
@@ -81,7 +81,7 @@ class UsersModel extends Object implements Nette\Security\IAuthenticator
 	{
 		$data['date'] = time();
 		$data['password'] = $this->encryptPasswd($data['password'], $data['username']);
-		dibi::query('INSERT INTO [users] %v', $data);
+		dibi::query('INSERT INTO [pm_users] %v', $data);
 		return dibi::InsertId();
 	}
 
@@ -93,7 +93,7 @@ class UsersModel extends Object implements Nette\Security\IAuthenticator
 		$identity = $data['identity'];
 		unset($data['identity']);
 		try {
-			dibi::query('INSERT IGNORE INTO [users] %v', $data);
+			dibi::query('INSERT IGNORE INTO [pm_users] %v', $data);
 			$id = dibi::InsertId();
 		} catch(DibiException $e) {
 			return false;// toto uživatelské jméno nebo email už máme, takže registrovat
@@ -109,7 +109,7 @@ class UsersModel extends Object implements Nette\Security\IAuthenticator
 
 	public function getUserList()
 	{
-		return dibi::select('*')->from('users')->orderBy('id')->fetchPairs('id', 'username');
+		return dibi::select('*')->from('pm_users')->orderBy('id')->fetchPairs('id', 'username');
 	}
 
 

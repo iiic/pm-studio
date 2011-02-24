@@ -16,7 +16,7 @@ class MenuModel
 		return dibi::fetchPairs('
 			SELECT id, title
 			FROM [menu]
-			WHERE p_type > 1
+			WHERE p_type = 0
 			AND title != ""'
 		);
 	}

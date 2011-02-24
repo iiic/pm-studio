@@ -24,7 +24,7 @@ require LIBS_DIR . '/Nette/loader.php';
 // Step 2: Configure environment
 // 2a) enable Nette\Debug for better exception and error visualisation
 Debug::$strictMode = TRUE;
-Debug::enable();// Nette\Debug::PRODUCTION
+Debug::enable(Nette\Debug::DEVELOPMENT);// Nette\Debug::PRODUCTION / Nette\Debug::DEVELOPMENT
 
 // 2b) load configuration from config.ini file
 Environment::loadConfig();
@@ -42,7 +42,7 @@ Nella\VersionPanel::register();
 // 3a) get and setup a front controller
 $application = Environment::getApplication();
 $application->errorPresenter = 'Error';
-//$application->catchExceptions = TRUE;
+$application->catchExceptions = FALSE;
 
 
 
