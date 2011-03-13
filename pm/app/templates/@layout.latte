@@ -32,7 +32,7 @@
 		<aside>
 			<p>
 			{snippet flashes span}
-				<span n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</span><br>
+				<span n:foreach="$flashes as $flash" class="flash {$flash->type}" onclick="this.className='hide'">{$flash->message}</span><br>
 			{/snippet}
 			<span n:if="$settings->important">
 				<strong>{$settings->important_title}</strong>
@@ -40,7 +40,14 @@
 				{$settings->important}
 				<br><br>
 			</span>
-			Lorem ipsum dolor sit amet consectetuer dolor platea Vestibulum est sed. Dui Ut euismod eget lacinia risus Morbi Aenean velit et Phasellus. Sem orci quis penatibus quis nibh wisi ut euismod tellus non. Sed sem pharetra Curabitur lacinia adipiscing eleifend consequat id eu condimentum. Laoreet ac Vestibulum cursus tincidunt Vestibulum ipsum et consectetuer Lorem.
+			<span n:if="$user->loggedIn">
+				<strong>možnosti úprav</strong><br>
+				<a n:href="menu:">upravit menu</a><br>
+				<a n:href="news:add">napsat novinku</a><br>
+				<a n:href="content:">upravit obsah obsahových sekcí</a><br>
+				<a n:href="contact:edit">upravit kontakt</a><br>
+				<a n:href="settings:">upravit nastavení webu</a><br>
+			</span>
 			</p>
 		</aside>
 

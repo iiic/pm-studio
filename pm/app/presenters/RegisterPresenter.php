@@ -36,7 +36,7 @@ class RegisterPresenter extends BasePresenter
 	 * Sign in form component factory.
 	 * @return Nette\Application\AppForm
 	 */
-	protected function createComponentRegisterForm()
+	public function createComponentRegisterForm()
 	{
 		$form = new AppForm;
 		$form->addGroup('Formulář pro registraci uživatele');

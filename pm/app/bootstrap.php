@@ -52,6 +52,7 @@ $router = $application->getRouter();
 Route::setStyleProperty('presenter', Route::FILTER_TABLE, array(
 	'novinky' => 'News',// jméno presenteru MUSÍ začínat velkým písmenem
 	'kontakt' => 'Contact',
+	'obsah' => 'Content',
 	'autentizace' => 'Auth',
 	'nastaveni' => 'Settings',
 	'registrace' => 'Register',

@@ -1,0 +1,2 @@
+[2011-03-12 18-15-14] PHP Fatal error: Uncaught exception DibiDriverException with message 'Table 'pm.introduction' doesn't exist' in C:\Program Files\xampp\htdocs\pm\pm\libs\dibi\drivers\mysqli.php:162  @  http://localhost/pm/www/obsah/upravit/3?do=contentForm-submit
+[2011-03-12 18-15-36] PHP Fatal error: Uncaught exception DibiDriverException with message 'Table 'pm.introduction' doesn't exist' in C:\Program Files\xampp\htdocs\pm\pm\libs\dibi\drivers\mysqli.php:162  @  http://localhost/pm/www/obsah/upravit/3?do=contentForm-submit

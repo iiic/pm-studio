@@ -44,7 +44,7 @@ class SettingsPresenter extends BasePresenter
 			->addRule(Form::FILLED, 'Nadpis důležité zprávy nemůže zůstat prázdný');
 		$form->addText('important', 'Důležitá zpráva');
 		$form->addSelect('important_efect', 'Efekt zobrazení důležité zprávy', array('bez efektu', 'psací stroj (js)'));
-		$form->addSelect('style', 'Defaultní vzhled', array('ic', 'brown'));
+		$form->addSelect('style', 'Defaultní vzhled', array('black'));
 		$form->addText('robots', 'Robots')
 			->setOption('description', Html::el('small')
 				->setText('(prázdná hodnota odpovídá zápisu \'all\', tedy \'index, follow\')')

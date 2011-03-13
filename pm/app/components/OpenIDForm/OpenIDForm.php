@@ -181,7 +181,7 @@ class OpenIDForm extends Nette\Application\Control
 		}
 		$form->addText( self::OID_FIELD, $this->formLabel)
 			->addRule( Nette\Forms\Form::FILLED, $this->formEmptyMsg );
-		$form->addSubmit( 'login', 'Login' );
+		$form->addSubmit( 'login', 'Přihlásit' );
 		$form->onSubmit[] = array( $this, 'processIdentifier' );
 		return $form;
 	}

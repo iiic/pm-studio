@@ -7,7 +7,7 @@ use Nette\Application\AppForm,
 class MenuPresenter extends BasePresenter
 {
 
-	private $menu_items = array('prázdné', 'novinky', 'kontakt', 'registrace', 'autentizace');// v databázi jsou tyto položky jako 'prázdné' p_type 1, 'novinky' p_type 2... a p_type 0 je pro vlastní obsah
+	private $menu_items = array('prázdné', 'novinky', 'kontakt', 'registrace');// v databázi jsou tyto položky jako 'prázdné' p_type 1, 'novinky' p_type 2... a p_type 0 je pro vlastní obsah
 
 	public function renderDefault()
 	{
@@ -30,7 +30,6 @@ class MenuPresenter extends BasePresenter
 			$r['p9'] = $row[8]->p_type-1; $r['cvp9'] = $row[8]->title; if($row[8]->p_type == 0){ $r['cp9'] = 1; }
 			$r['p10'] = $row[9]->p_type-1; $r['cvp10'] = $row[9]->title; if($row[9]->p_type == 0){ $r['cp10'] = 1; }
 			$r['p11'] = $row[10]->p_type-1; $r['cvp11'] = $row[10]->title; if($row[10]->p_type == 0){ $r['cp11'] = 1; }
-			$r['p12'] = $row[11]->p_type-1; $r['cvp12'] = $row[11]->title; if($row[11]->p_type == 0){ $r['cp12'] = 1; }
 			$form->setDefaults($r);
 		}
 	}
@@ -131,14 +130,6 @@ class MenuPresenter extends BasePresenter
 		$form->addCheckbox('cp11', 'vlastní')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
 				->toggle('cvp11');
-
-		$form->addSelect('p12', '12. položka', $this->menu_items);
-		$form->addText('cvp12', '12. vlastní sekce')
-			->setOption('id', 'cvp12')
-			->setOption('class', 'move-up');
-		$form->addCheckbox('cp12', 'vlastní')
-			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
-				->toggle('cvp12');
 
 		$form->addSubmit('save', 'uložit');
 		$form->addSubmit('cancel', 'zrušit')->setValidationScope(NULL);

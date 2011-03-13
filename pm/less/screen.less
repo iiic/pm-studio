@@ -1,6 +1,7 @@
 // definice
-@barva-pozadi:black;
-@barva-textu:#eee;
+@barva-pozadi: #060c0f;
+@barva-textu: #eee;
+@nenapadny-text: @barva-textu - #999;
 @svetlejsi-pozadi: @barva-pozadi + #111; // zesvětlení barvy pozadí
 @cesta-k-obrazkum: '../../www/images/'; // na localhostu a na ostrém webu je rozdíl v cestách
 
@@ -60,6 +61,17 @@
 		-webkit-box-reflect: below -4px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.2, transparent), to(rgba(255,255,255,0.4)));
 	}
 
+	.rotace (@stupen: -90deg) {
+		-webkit-transform:rotate(@stupen);
+		-moz-transform:rotate(@stupen);
+		-o-transform:rotate(@stupen);
+		transform:rotate(@stupen);
+	}
+
+	.debug (@typ: solid; @barva: red) { // pixelový rámeček pro testování který se na ostrém serveru zakomentuje // pro tabulky používám typ rámečku dashed
+		min-width:80px;		min-height:4px;		border: 1px @typ @barva;		overflow:visible;		visibility:visible;
+	}
+
 } // konec mixins
 
 
@@ -78,12 +90,14 @@
 article, aside, figure, footer, header, hgroup, menu, nav, section
 {
 	display:block;
+	@mixins > .debug(dotted; gray);
 }
 
 // vodorovná čára
 hr, .hide
 {
 	display:none;
+	@mixins > .debug(dotted; pink);
 }
 
 // nastavení těla stánky
@@ -96,6 +110,7 @@ body
 	margin:8px 3% 8px 3%;
 	color:@barva-textu;
 	background:@barva-pozadi;
+	@mixins > .debug(dashed; black);
 }
 
 // element hlavičky (může zastupovat i hlavičku článku)
@@ -104,6 +119,7 @@ header
 	text-align:left;
 	margin:66px auto;
 	max-width:880px;
+	@mixins > .debug;
 
 	strong {
 		float:right;
@@ -129,6 +145,7 @@ header
 		content:url({@cesta-k-obrazkum}pm.gif);
 		background:@barva-pozadi;
 		@mixins > .odraz(-4px; 0.2; 0.4);
+		@mixins > .debug(dotted);
 	}
 
 }
@@ -175,12 +192,14 @@ nav
 	background-image:url({@cesta-k-obrazkum}bg.gif);
 	background-position:left center;
 	background-repeat:no-repeat;
+	@mixins > .debug(solid; navy);
 
 	ul {
 		position:absolute;
 		padding-top:94px;
 		margin-left:140px;
-		z-index:2
+		z-index:2;
+		@mixins > .debug(dotted; gray);
 	}
 
 	li {
@@ -189,6 +208,7 @@ nav
 		text-align:left;
 		list-style-image:url({@cesta-k-obrazkum}bull.gif);
 		height:26px;
+		@mixins > .debug(dotted; black);
 
 		:nth-child(1) {
 			margin-left:132px;
@@ -239,6 +259,7 @@ nav
 			top:-8px;
 			display:inline-block;
 			font-size:18px;
+			@mixins > .debug(dotted; green);
 		}
 
 	}
@@ -251,6 +272,7 @@ section
 	margin-left:6%;
 	margin-right:6%;
 	list-style:none;
+	@mixins > .debug(solid; green);
 
 	>h2 { // selektor bezprostředně následujícího potomka
 		padding-top:30px;
@@ -260,7 +282,7 @@ section
 		padding-bottom:40px;
 	}
 
-	ul {
+	>ul {
 		padding:0;
 
 		li {
@@ -280,6 +302,15 @@ section
 
 }
 
+//section s id snippet--content používám pro zobrazení náhledů obsahu při editaci
+#snippet--content
+{
+	border:10px solid @svetlejsi-pozadi;
+	min-height:80px;
+	padding:6px;
+	@mixins > .zaobleni(9px);
+}
+
 // fieldset (použito hlavně u formulářů) v obsahu stránky... bude mít zvýrazněné pozadí
 fieldset
 {
@@ -288,13 +319,12 @@ fieldset
 	padding-top:16px;
 	padding-bottom:20px;
 	border-style:none;
-	border-radius:9px;
 	background:@svetlejsi-pozadi;
 	@mixins > .zaobleni(9px);
 
 	legend {
 		padding:4px 12px;
-		border:1px solid black;
+		border:1px solid @barva-pozadi;
 		margin-left:6px;
 		background:@svetlejsi-pozadi;
 		font-weight:bold;
@@ -320,6 +350,30 @@ form
 
 	td {
 		text-align:left;
+		@mixins > .debug(dotted; gray);
+	}
+
+}
+
+// form s id frm-contentForm
+#frm-contentForm
+{
+	margin-left:6%;
+	margin-right:6%;
+
+	fieldset {// v něm obsažený fieldset
+		width:auto;
+
+		table {
+			width:100%;
+			@mixins > .debug(dashed; green);
+
+			textarea {
+				width:99%;
+			}
+
+		}
+
 	}
 
 }
@@ -347,8 +401,8 @@ input, textarea
 		padding:2px 4px;
 		background:@barva-pozadi + #090909;
 		border-color:#666;
-		border-top-color:@barva-pozadi;
-		border-right-color:@barva-pozadi;
+		border-top-color:black;
+		border-right-color:black;
 	}
 
 }
@@ -358,8 +412,8 @@ textarea
 {
 	background:@barva-pozadi + #090909;
 	border-color:#666;
-	border-top-color:@barva-pozadi;
-	border-right-color:@barva-pozadi;
+	border-top-color:black;
+	border-right-color:black;
 }
 
 // (boční) část stránky, jejíž obsah nesouvisí (jen málo souvisí) s hlavní obsahovou částí stránky
@@ -376,6 +430,7 @@ aside
 		right:0;
 		width:180px;
 		margin-right:-60px;
+		@mixins > .debug(dashed; green);
 	}
 
 }
@@ -383,5 +438,37 @@ aside
 // klasická patička má vlastní element
 footer
 {
+	margin-top:20px;
 	margin-bottom:60px;
+	@mixins > .debug(solid; blue);
 }
+
+// snippet kontejner pro flash všechny zprávičky
+#snippet--flashes
+{
+	//něco
+
+	.flash {
+		display:block;
+		position:fixed;
+		margin-top:-12px;
+		margin-left:-20px;
+		padding:6px 20px;
+		background:@barva-pozadi;
+		// todo : přidat stín (z průhlednosti) pro tento objekt
+	}
+
+	.info {
+		//něco
+
+		:before {
+			margin-left:-28px;
+			content:"info";
+			font-weight:bold;
+			color:@nenapadny-text;
+			@mixins > .rotace;
+		}
+	}
+
+}
+

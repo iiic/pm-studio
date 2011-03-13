@@ -11,6 +11,15 @@ class MenuModel
 		);
 	}
 
+
+
+	public static function fetchRow($id)
+	{
+		return dibi::fetch('SELECT hash, title, content FROM [menu] WHERE id = %i', $id);
+	}
+
+
+
 	public static function fetchPairs()
 	{
 		return dibi::fetchPairs('
@@ -22,6 +31,7 @@ class MenuModel
 	}
 
 
+
 	public function update(array $data)
 	{
 		foreach($data as $row) {
@@ -29,6 +39,14 @@ class MenuModel
 			unset($row['id']);
 			dibi::query('UPDATE [menu] SET %a WHERE id = %i', $row, $id);
 		}
+		return true;
+	}
+
+
+
+	public function updateSingle(array $data, $id)
+	{
+		return dibi::query('UPDATE [menu] SET %a WHERE id = %i', $data, $id);
 	}
 
 }

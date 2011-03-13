@@ -26,7 +26,7 @@ jQuery.extend({
 					jQuery.nette.updateSnippet(i, payload.snippets[i]);
 				}
 			}
-			$.dependentselectbox.hideSubmits();
+			$.dependentselectbox.hideSubmits(); // todo : tohle vypustit
 		}
 	}
 });

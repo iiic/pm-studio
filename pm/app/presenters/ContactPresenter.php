@@ -50,19 +50,18 @@ class ContactPresenter extends BasePresenter
 
 	public function contactFormSubmitted(AppForm $form)
 	{
-		if( ($form['save']->isSubmittedBy()) || ($form['preview']->isSubmittedBy()) ) {
+		if($form['save']->isSubmittedBy()) {
 			$values = $form->values;
 			unset($values['null']);
 			$contact = new ContactModel;
 			$contact->update($values);
 			$this->flashMessage('sekce kontakt byla úspěšně upravena.');
-			if($form['preview']->isSubmittedBy()) {
-				$this->template->content = $contact->getContent();
-				$this->invalidateControl('content');
-			}
-			if((!$this->isAjax()) || ($form['save']->isSubmittedBy())) {
-				// @todo : přesměrovat na předchozí stránku
-				$this->redirect('contact:');
+			$this->redirect('contact:');// @todo : přesměrovat na předchozí stránku
+		} elseif($form['preview']->isSubmittedBy()) {
+			$this->template->content = $form->values['content'];
+			$this->invalidateControl('content');
+			if(!$this->isAjax()) {
+				$this->redirect('this');
 			}
 		} else {
 			$this->redirect('contact:');

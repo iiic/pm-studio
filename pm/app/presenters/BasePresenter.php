@@ -13,10 +13,12 @@ use Nette\Environment,
 abstract class BasePresenter extends Presenter
 {
 
+	public $menu;
+
 	public function startup()
 	{
-
 		$this->template->settings = SettingsModel::fetch();
+		$this->menu = MenuModel::fetchAll();
 		if($this->template->settings->robots) {
 			$robots = $this->template->settings->robots;// $robots se z nějakého důvodu nepředá do šablony, přestože {$settings->robots} tam je... asi je to lokální proměnná, takže ji nějak zglobálnit
 		}
@@ -24,7 +26,7 @@ abstract class BasePresenter extends Presenter
 		if(!$httpResponse->isSent()) {// isSent, ta vrací TRUE pokud byly hlavičky odeslány a nelze tedy už odeslat další.
 			$httpResponse->addHeader('Content-Script-Type', 'text/javascript');// odešle HTTP hlavičku
 			$httpResponse->addHeader('Content-Style-Type', 'text/css');// odešle HTTP hlavičku
-			$httpResponse->addHeader('Vary', 'Accept,User-Agent,Accept-Language,Accept-Encoding');// odešle HTTP hlavičku
+			//$httpResponse->addHeader('Vary', 'Accept,User-Agent,Accept-Language,Accept-Encoding');// odešle HTTP hlavičku
 			if($this->template->settings->keywords) {
 				$httpResponse->addHeader('keywords', $this->template->settings->keywords);// odešle HTTP hlavičku
 			}
@@ -40,6 +42,17 @@ abstract class BasePresenter extends Presenter
 		if( ($this->user->isLoggedIn()) && ($this->user->isInRole('administrator')) ) {
 			Nette\Debug::enable(Nette\Debug::DEVELOPMENT);
 		}
+		$data = $this->menu;
+		$sectionNames = array('vlastní', 'prázdné', 'novinky', 'kontakt', 'registrace');
+		$sectionPresenters = array('content','', 'news', 'contact', 'register');// @todo : article presenter
+		foreach($data as $i => $row) {
+			if($data[$i]['p_type'] != 1) {
+				if($data[$i]['title'] == ''){ $data[$i]['title'] = $sectionNames[$data[$i]['p_type']]; }
+				$data[$i]['link'] = $sectionPresenters[$data[$i]['p_type']];
+				unset($data[$i]['id']);// není potřeba
+			}
+		}
+		$this->template->siteContent = $data;
 	}
 
 
@@ -153,7 +166,7 @@ abstract class BasePresenter extends Presenter
 
 	public function createComponentMenu()
 	{
-		$data = new MenuControl();
+		$data = new MenuControl($this->menu);
 		return $data;
 	}
 /*

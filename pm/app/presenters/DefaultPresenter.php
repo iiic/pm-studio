@@ -18,13 +18,17 @@ class DefaultPresenter extends BasePresenter
 		return $data;
 	}
 
-
+	public function createComponentRegister()
+	{
+		$data = new RegisterControl();
+		return $data;
+	}
 
 	public function renderDefault()
 	{
-		$this->template->data = IntroductionModel::fetch();
-	}
 
+	}
+/*
 	public function renderEdit()
 	{
 		$this->checkAuth();
@@ -59,6 +63,8 @@ class DefaultPresenter extends BasePresenter
 		return $form;
 	}
 
+
+
 	public function introductionFormSubmitted(AppForm $form)
 	{
 		if( ($form['save']->isSubmittedBy()) || ($form['preview']->isSubmittedBy()) ) {
@@ -71,7 +77,7 @@ class DefaultPresenter extends BasePresenter
 				$this->template->content = $introduction->getContent();
 				$this->invalidateControl('content');
 			}
-			if((!$this->isAjax()) || ($form['save']->isSubmittedBy())) {
+			if( (!$this->isAjax()) || ($form['save']->isSubmittedBy()) ) {
 				// @todo : přesměrovat na předchozí stránku
 				$this->redirect('default:');
 			}
@@ -79,5 +85,5 @@ class DefaultPresenter extends BasePresenter
 			$this->redirect('default:');
 		}
 	}
-
+*/
 }

@@ -75,7 +75,7 @@ class NewsPresenter extends BasePresenter
 			);
 		$form->addSubmit('preview', 'náhled')->setAttribute('class', 'default');
 		$form->addSubmit('save', 'uložit');
-		$form->addButton('null','původní hodnoty')->setAttribute('type', 'reset');
+		$form->addButton('null','původní hodnoty')->setAttribute('type', 'reset');// todo : sem přidat asi nějaký js potvrzovadlo, aby si uživatel nesmazal omylem obsah co píše... stejně tak nějak pojistit escape klávesu
 		$form->addSubmit('cancel', 'přerušit úpravy')->setValidationScope(NULL);
 		$form->onSubmit[] = callback($this, 'newsFormSubmitted');
 		$form->addProtection('Prsoším odešlete tento formulář znovu (doba sezení vypršela).');
@@ -98,14 +98,12 @@ class NewsPresenter extends BasePresenter
 				$this->flashMessage('Novinka byla přidána.');
 				$this->redirect('news:detail', array('id'=>$id));
 			}
-
 		} elseif($form['preview']->isSubmittedBy()) {
 			$this->template->content = $form->values['content'];
 			$this->invalidateControl('content');
 			if(!$this->isAjax()) {
 				$this->redirect('this');
 			}
-
 		} else {
 			$this->redirect('news:');
 		}

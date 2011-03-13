@@ -14,12 +14,29 @@ class ContentPresenter extends BasePresenter
 
 
 
+	public function renderEdit($id = 0)
+	{
+		$this->checkAuth();
+		$form = $this['contentForm'];
+		if(!$form->isSubmitted()) {
+			$content = new MenuModel;
+			$row = $content->fetchRow($id);
+			if (!$row) {
+				throw new Nette\Application\BadRequestException('Nepodařilo se načíst data');
+			}
+			$form->setDefaults($row);
+		}
+	}
+
+
+
 	protected function createComponentSelectSectionForm()
 	{
 		$menu = new MenuModel;
 		$form = new AppForm;
-		$form->addGroup('Výběr obsahové sekce pro editaci:');
+		$form->addGroup('Výběr obsahové sekce pro editaci');
 		$form->addSelect('section', 'vyberte sekci', $menu->fetchPairs())
+			->setDefaultValue($this->getParam('id'))
 			->addRule(Form::FILLED, 'Musíte vybrat kterou sekci chcete upravovat.');
 		$form->addSubmit('chose', 'vybrat');
 		$form->onSubmit[] = callback($this, 'selectSectionFormSubmitted');
@@ -31,9 +48,9 @@ class ContentPresenter extends BasePresenter
 
 	public function selectSectionFormSubmitted(AppForm $form)
 	{
-		if($form['chose']->isSubmittedBy()) {
+		if($form['chose']->isSubmittedBy()) {// teď je tady ta podmínka asi zbytečná
 			$values = $form->values;
-			$this->redirect('content:', array('id' => $values['section']));
+			$this->redirect('content:edit', array('id' => $values['section']));
 		}
 		$this->redirect('content:');
 	}
@@ -43,9 +60,15 @@ class ContentPresenter extends BasePresenter
 	protected function createComponentContentForm()
 	{
 		$form = new AppForm;
-		$form->addGroup('Formulář pro úpravu nastavení webu');
-		$form->addTextArea('content', 'Text')
-			->addRule(Form::FILLED, 'Prosím zadejte titulek těchto stránek.');
+		$form->getElementPrototype()->class('ajax');
+		$form->addGroup('Formulář pro úpravu obsahu obsahových sekcí webu');
+		$form->addText('title', 'Nadpis')
+			->addRule(Form::FILLED, 'Musíte zadat nějaký nadpis.');
+		$form->addText('hash', 'Adresa')
+			->addRule(Form::FILLED, 'Musíte zadat určenovací část URI adresy.');
+		$form->addTextArea('content', 'Obsah')
+			->addRule(Form::FILLED, 'Musíte zadat nějaký obsah.');
+		$form->addSubmit('preview', 'náhled');
 		$form->addSubmit('save', 'uložit');
 		$form->addSubmit('cancel', 'zrušit')->setValidationScope(NULL);
 		$form->onSubmit[] = callback($this, 'contentFormSubmitted');
@@ -59,12 +82,19 @@ class ContentPresenter extends BasePresenter
 	{
 		if($form['save']->isSubmittedBy()) {
 			$values = $form->values;
-			//úpravy values !
 			$menu = new MenuModel;
-			$menu->updateSingle($values);
+			$menu->updateSingle($values, $this->getParam('id'));
 			$this->flashMessage('Obsah byl úspěšně uložen.');
+			$this->redirect('content:');
+		} elseif($form['preview']->isSubmittedBy()) {
+			$this->template->content = $form->values['content'];
+			$this->invalidateControl('content');
+			if(!$this->isAjax()) {
+				$this->redirect('this');
+			}
+		} else {
+			$this->redirect('content:');
 		}
-		$this->redirect('content:');
 	}
 
 }
