@@ -33,12 +33,13 @@ class ContactPresenter extends BasePresenter
 		$form = new AppForm;
 		$form->getElementPrototype()->class('ajax');
 		$form->addGroup('Formulář pro úpravu sekce kontakt');
-		$form->addText('title', 'Nadpis:')
+		$form->addText('title', 'Nadpis')
 			->addRule(Form::FILLED, 'Prosím zadejte nadpis.');
-		$form->addTextArea('content', 'Obsah:')
+		$form->addTextArea('content', 'Obsah')
 			->addRule(Form::FILLED, 'Prosím vložte obsah.');
-		$form->addText('email', 'e-mail:')
-			->addRule(Form::EMAIL, 'Zadejte e-mailovou adresu na kterou budou uživatelé psát');
+		$form->addText('email', 'Email příjemce vzkazů')
+			->addRule(Form::FILLED, 'Zapoměl jste vyplnit váš email.')
+			->addRule(Form::EMAIL, 'Zadejte platnou emailovou adresu na kterou budou uživatelé psát.');
 		$form->addSubmit('preview', 'náhled')->setAttribute('class', 'default');
 		$form->addSubmit('save', 'uložit');
 		$form->addButton('null','původní hodnoty')->setAttribute('type', 'reset');
@@ -72,9 +73,13 @@ class ContactPresenter extends BasePresenter
 	{
 		$form = new AppForm;
 		$form->addGroup('Formulář pro rychlé zaslání emailu');
-		$form->addText('title', 'něco:')
-			->addRule(Form::FILLED, 'Prosím zadejte nadpis.');
-		$form->addTextArea('content', 'Obsah:')
+		$form->addText('shipper', 'Jméno odesílatele')
+			->addRule(Form::FILLED, 'Zadejte prosím vaše jméno.');
+		$form->addText('email', 'Email odesílatele')
+			//->setEmptyValue('@')// otravné
+			->addRule(Form::FILLED, 'Zadejte prosím vaši emailovou adresu.')
+			->addRule(Form::EMAIL, 'Zadaný email není platný.');
+		$form->addTextArea('content', 'Vzkaz')
 			->addRule(Form::FILLED, 'Prosím vložte obsah.');
 		$form->addSubmit('send', 'odeslat e-mail');
 		$form->addButton('null','smazat obsah')->setAttribute('type', 'reset');

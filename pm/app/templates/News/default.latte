@@ -2,9 +2,9 @@
 
 <h2 n:block="title">Novinky</h2>
 
-<div id="posts">
-	{ifset $items}
-		<div n:foreach="$items as $item">
+{ifset $items}
+	<ul n:inner-foreach="$items as $item" id="lol" class="list">
+		<li>
 			<h3>{$item->title}</h3>
 			<small>Přidáno {$item->date|date}</small>
 			<p>{!$item->content|texy|truncate:300}</p>
@@ -13,8 +13,8 @@
 				| <a href="{plink news:edit $item->id}">upravit</a>
 				| <a href="{plink news:delete $item->id}">smazat</a>
 			{/if}
-		</div>
-	{else}
-		Zatím nebyly napsány žádné novinky
-	{/ifset}
-</div>
+		</li>
+	</ul>
+{else}
+	<p>Zatím nebyly napsány žádné novinky</p>
+{/ifset}

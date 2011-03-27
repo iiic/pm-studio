@@ -24,7 +24,7 @@ require LIBS_DIR . '/Nette/loader.php';
 // Step 2: Configure environment
 // 2a) enable Nette\Debug for better exception and error visualisation
 Debug::$strictMode = TRUE;
-Debug::enable(Nette\Debug::DEVELOPMENT);// Nette\Debug::PRODUCTION / Nette\Debug::DEVELOPMENT
+Debug::enable(Nette\Debug::PRODUCTION);// Nette\Debug::PRODUCTION / Nette\Debug::DEVELOPMENT
 
 // 2b) load configuration from config.ini file
 Environment::loadConfig();
@@ -50,7 +50,7 @@ $application->catchExceptions = FALSE;
 $router = $application->getRouter();
 
 Route::setStyleProperty('presenter', Route::FILTER_TABLE, array(
-	'novinky' => 'News',// jméno presenteru MUSÍ začínat velkým písmenem
+	'novinky' => 'News',// jméno presenteru MUSÍ začínat velkým písmenem, aby došlo ke kanonizaci na nový tvar
 	'kontakt' => 'Contact',
 	'obsah' => 'Content',
 	'autentizace' => 'Auth',
@@ -66,7 +66,7 @@ Route::setStyleProperty('action', Route::FILTER_TABLE, array(
 	'odhlasit' => 'logout',
 ));
 
-$router[] = new Route('<presenter>/<action>/<id>', array(
+$router[] = new Route('<presenter>[/<action>[/<id>]]', array(
 	'presenter' => 'Default',
 	'action' => 'default',
 	'id' => NULL,

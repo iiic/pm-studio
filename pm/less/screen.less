@@ -68,8 +68,14 @@
 		transform:rotate(@stupen);
 	}
 
+	.vnitrni-stin-celkovy (@dosah: 80px; @barva: @barva-pozadi) {
+		-moz-box-shadow: inset 0 0 @dosah @dosah @barva; // v FF4 už není potřeba -moz-, takže je to asi jen pro 3-ky
+		-webkit-box-shadow: inset 0 0 @dosah @dosah @barva;
+		box-shadow: inset 0 0 @dosah @dosah @barva;
+	}
+
 	.debug (@typ: solid; @barva: red) { // pixelový rámeček pro testování který se na ostrém serveru zakomentuje // pro tabulky používám typ rámečku dashed
-		min-width:80px;		min-height:4px;		border: 1px @typ @barva;		overflow:visible;		visibility:visible;
+		//min-width:80px;		min-height:4px;		border: 1px @typ @barva;		overflow:visible;		visibility:visible;
 	}
 
 } // konec mixins
@@ -180,6 +186,13 @@ h1
 		@mixins > .prechod-sikmy;
 	}
 
+}
+
+// nadpis třetí úrovně použit například u článku
+h3
+{
+	text-align:left;
+	margin-bottom:14px;
 }
 
 // prostě menu
@@ -300,7 +313,30 @@ section
 
 	}
 
+	ul.list {
+		@mixins > .debug(dashed; red);
+
+		li {
+			display:block;
+			margin-bottom:28px;
+			@mixins > .debug(dotted; blue);
+
+			small {
+				float:right;
+				margin-top:-32px;
+			}
+
+			p {
+				text-align:left;
+			}
+
+		}
+
+	}
+
 }
+
+
 
 //section s id snippet--content používám pro zobrazení náhledů obsahu při editaci
 #snippet--content
@@ -344,7 +380,7 @@ form
 
 	.move-up { // použito v backendové sekci menu
 		position:absolute;
-		margin-top:-27px;
+		margin-top:-32px;
 		background:@svetlejsi-pozadi;
 	}
 
@@ -353,10 +389,60 @@ form
 		@mixins > .debug(dotted; gray);
 	}
 
+	select {
+		padding:4px;
+		color:@barva-textu;
+		background:@barva-pozadi;
+		border:1px solid #666;
+		border-top-color:black;
+		border-right-color:black;
+		@mixins > .zaobleni(4px);
+
+		option {
+			margin:4px 0;
+			background:@barva-pozadi + #060606;
+		}
+	}
+
+	input, textarea { // prvek formuláře (formuláře vypadají trochu jako z hl2 : http://www.notebookreview.com/assets/7436.jpg)
+		text-align:left;
+		border-width:1px;
+		border-style:solid;
+		color:@barva-textu;
+		@mixins > .zaobleni(4px);
+
+		[type="submit"], [type="button"], [type="reset"] { // (formulářová) tlačítka
+			margin-bottom:8px;
+			padding:4px 12px;
+			border-color:#888;
+			border-bottom-color:@svetlejsi-pozadi;
+			cursor:pointer;
+			@mixins > .prechod-vertikalni;
+			@mixins > .zaobleni(6px);
+		}
+
+		[type="text"], [type="password"] { // (formulářová) vstupní pole
+			padding:2px 4px;
+			background:@barva-pozadi + #090909;
+			border-color:#666;
+			border-top-color:black;
+			border-right-color:black;
+		}
+
+	}
+
+	textarea { // (znovu) víceřádkové vstupní textové pole
+		background:@barva-pozadi + #090909;
+		border-color:#666;
+		border-top-color:black;
+		border-right-color:black;
+		width:358px;
+	}
+
 }
 
-// form s id frm-contentForm
-#frm-contentForm
+// form s id frm-contentForm slouží pro náhledy editovaných obsahů
+#frm-contentForm, #frm-contactForm, #frm-newsForm
 {
 	margin-left:6%;
 	margin-right:6%;
@@ -372,48 +458,78 @@ form
 				width:99%;
 			}
 
+			input {
+				[type="text"] {
+					width:300px;
+				}
+
+			}
+
 		}
 
 	}
 
 }
 
-// prvek formuláře (formuláře vypadají trochu jako z hl2 : http://www.notebookreview.com/assets/7436.jpg)
-input, textarea
+// formulář s kontaktem
+#frm-contactForm
 {
-	text-align:left;
-	border-width:1px;
-	border-style:solid;
-	color:@barva-textu;
-	@mixins > .zaobleni(4px);
-
-	[type="submit"], [type="button"], [type="reset"] { // (formulářová) tlačítka
-		margin-bottom:8px;
-		padding:4px 12px;
-		border-color:#888;
-		border-bottom-color:@svetlejsi-pozadi;
-		cursor:pointer;
-		@mixins > .prechod-vertikalni;
-		@mixins > .zaobleni(6px);
+	th {
+		width:200px;
 	}
+}
 
-	[type="text"], [type="password"] { // (formulářová) vstupní pole
-		padding:2px 4px;
-		background:@barva-pozadi + #090909;
-		border-color:#666;
-		border-top-color:black;
-		border-right-color:black;
+// formulář pro přihlášení uživatele do aplikace
+#frm-authForm
+{
+	input {
+		[type="text"], [type="password"] {
+			width:260px;
+		}
+	}
+}
+
+// formulář pro výběr obsahové sekce k editaci
+#frm-selectSectionForm
+{
+	margin-bottom:80px;
+}
+
+// formulář pro výběr obsahové sekce k editaci
+#frm-mailForm, #frm-contact-mailForm // tyto id jsou stejný formulář, rozdíl je jen v tom, že druhý jmenovaný je v komponentě
+{
+	margin-top:60px;
+	margin-left:auto;
+	margin-right:auto;
+
+	fieldset {
+		width:540px;
+
+		input {
+			[type="text"] {
+				width:350px;
+			}
+		}
 	}
 
 }
 
-// (znovu) víceřádkové vstupní textové pole
-textarea
+// formulář pro editaci položek menu
+#frm-menuForm
 {
-	background:@barva-pozadi + #090909;
-	border-color:#666;
-	border-top-color:black;
-	border-right-color:black;
+	
+
+	tr {
+		height:32px;
+	}
+
+	input {
+		[type="checkbox"] {
+			margin-bottom:40px;
+			margin-right:8px;
+		}
+	}
+
 }
 
 // (boční) část stránky, jejíž obsah nesouvisí (jen málo souvisí) s hlavní obsahovou částí stránky
@@ -438,8 +554,7 @@ aside
 // klasická patička má vlastní element
 footer
 {
-	margin-top:20px;
-	margin-bottom:60px;
+	margin:60px auto;
 	@mixins > .debug(solid; blue);
 }
 
@@ -472,3 +587,28 @@ footer
 
 }
 
+// hr předělané na podúrovňové pozadí meníčka
+#bg
+{
+	background: url({@cesta-k-obrazkum}hr.gif) 58% 0 repeat-y;
+	height:600px;
+	width:100%;
+	max-width:880px;
+	display:block;
+	position:relative;
+	z-index:-1;
+	margin-top:-136px;
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom:-600px;
+	z-index:-1;
+	@mixins > .vnitrni-stin-celkovy;
+}
+
+/* zajímavé skutečnosti:
+ * ---------------------
+ * less filter vytvoří z '>h2' vnořeného do section zápis 'section>h2', kdežto 
+ * z '.trida' vloženého taktéž do section zápis 'section .trida', mezera zajistí
+ * že se jedná o potomka section a ne o jeho třídu, to je dost divné chování.
+ * Pravděpodobně souvisí s tím že '.něco' je chápáno jako mixinis.
+ */

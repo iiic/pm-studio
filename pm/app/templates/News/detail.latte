@@ -1,26 +1,31 @@
 {block content}
 <a n:href="news:">&lt;&lt; zobrazit všechny novinky</a>
-<div class="post">
-	<h2 n:block="title">{$item->title}</h2>
-	<small>Přidáno {$item->date|date}</small>
-	<p>{!$item->content|texy}</p>
-</div>
+
+<h2 n:block="title">{$item->title}</h2>
+<small>Přidáno {$item->date|date}</small>
+<p>{!$item->content|texy}</p>
+
 <br>
 
 <strong>Komentáře:</strong>
-<div id="comments">
-	{if count($comments)}
-		<div id="comment-{$comment->id}" class="commment" n:foreach="$comments as $comment">
-			<p>{$comment->content}</p>
-			<small>{$comment->author}, {$comment->date|date}</small>
-			{if $user->isInRole('administrator')}
-				<a n:href="news:deleteComment $comment->id, $item->id">odstranit</a>
-			{/if}
-			<hr>
-		</div>
-	{else}
-		K novince zatím nebyly napsány žádné komentáře. Buďte první!
-	{/if}
-</div>
+
+<br>
+<br>
+
+{if count($comments)}
+	<div id="comment-{$comment->id}" n:foreach="$comments as $comment">
+		<p>{$comment->content}</p>
+		<small>{$comment->author}, {$comment->date|date}</small>
+		{if $user->isInRole('administrator')}
+			<a n:href="news:deleteComment $comment->id, $item->id">odstranit</a>
+		{/if}
+		<hr>
+	</div>
+{else}
+	K novince zatím nebyly napsány žádné komentáře. Buďte první!
+{/if}
+
+<br>
+<br>
 
 {control commentForm}

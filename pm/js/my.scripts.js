@@ -29,5 +29,9 @@ function disInput(arg) {// funkce nastaví všechny inputy na readonly a vypne v
 */
 $(function () {// proběhne po načtení celé stránky
 	$('.hide-with-js').hide();// schovat to, co se schovat má
+/*
+	if(!location.hash) {
+		window.location.replace("#novniky");
+	}
+*/
 });
-
