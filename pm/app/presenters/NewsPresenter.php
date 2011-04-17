@@ -25,7 +25,7 @@ class NewsPresenter extends BasePresenter
 		$this->flashMessage('Komentář byl odebrán.');
 		$this->redirect('news:detail', array('id'=>$postId));
 	}
-	
+
 	public function renderDefault()
 	{
 		$news = new NewsModel;
@@ -63,9 +63,9 @@ class NewsPresenter extends BasePresenter
 		$form = new AppForm;
 		$form->getElementPrototype()->class('ajax');
 		$form->addGroup('Formulář pro vložení novinky');
-		$form->addText('title', 'Nadpis:')
+		$form->addText('title', 'Nadpis')
 			->addRule(Form::FILLED, 'Prosím vložte nadpis.');
-		$form->addTextArea('content', 'Obsah:')
+		$form->addTextArea('content', 'Obsah')
 			->addRule(Form::FILLED, 'Musíte zadat nějaký obsah novinky.')
 			->setOption('description', Html::el('a')
 				->setText('texy! syntax')

@@ -50,7 +50,7 @@ $application->catchExceptions = FALSE;
 $router = $application->getRouter();
 
 Route::setStyleProperty('presenter', Route::FILTER_TABLE, array(
-	'novinky' => 'News',// jméno presenteru MUSÍ začínat velkým písmenem, aby došlo ke kanonizaci na nový tvar
+	'novinky' => 'News',// jméno presenteru musí začínat velkým písmenem, aby došlo ke kanonizaci na nový tvar
 	'kontakt' => 'Contact',
 	'obsah' => 'Content',
 	'autentizace' => 'Auth',
@@ -64,6 +64,13 @@ Route::setStyleProperty('action', Route::FILTER_TABLE, array(
 	'registrovat' => 'register',
 	'smazat' => 'delete',
 	'odhlasit' => 'logout',
+	'vypsat' => 'view',
+));
+
+$router[] = new Route('sekce[/<id>]', array(
+	'presenter' => 'Content',
+	'action' => 'view',
+	'id' => NULL,
 ));
 
 $router[] = new Route('<presenter>[/<action>[/<id>]]', array(

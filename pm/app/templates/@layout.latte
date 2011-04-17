@@ -25,9 +25,12 @@
 
 		<hr id="bg">
 
+		<section>
 		<nav id="menu"><strong class="hide">menu:</strong>{control menu}</nav>
+			{include #content}
+		</section>
 
-		<hr>
+		<hr class="show">
 
 		<aside>
 			<p>
@@ -51,12 +54,6 @@
 			</p>
 		</aside>
 
-		<hr class="show">
-
-		<section>
-			{include #content}
-		</section>
-
 		<hr>
 
 		<footer>
@@ -64,31 +61,37 @@
 		</footer>
 
 		{control packedJs 'jquery.js', 'jquery.ajaxform.js', 'jquery.nette.js', 'netteForms.js', 'my.scripts.js'}
-		{ifset $_GET['lol']}
 			<script>
-				// pěkná animace posunu pozadí objektu, ale náročná jak sviňa,
-				//lepší by to teoreticky mělo být na Win7 s některým prohlížečem,
-				//který podporuje hardwarovou akceleraci webu, ale tohle nemohu vyzkoušet.
-				var scrollSpeed = 1; 		// Speed in milliseconds
-				var step = 1; 				// How many pixels to move per step
-				var current = 0;			// The current pixel row
-				var imageHeight = 2247;		// Background image width
-				var headerHeight = 1280;		// How wide the header is.
-				//The pixel row where to start a new loop
-				var restartPosition = -(imageHeight - headerHeight);
-				function scrollBg(){
-					//Go to next pixel row.
-					current -= step;
-					//If at the end of the image, then go to the top.
-					if (current == restartPosition){
-						current = 0;
+				{ifset $_GET['lol']}
+					// pěkná animace posunu pozadí objektu, ale náročná jak sviňa,
+					//lepší by to teoreticky mělo být na Win7 s některým prohlížečem,
+					//který podporuje hardwarovou akceleraci webu, ale tohle nemohu vyzkoušet.
+					var scrollSpeed = 1; 		// Speed in milliseconds
+					var step = 1; 				// How many pixels to move per step
+					var current = 0;			// The current pixel row
+					var imageHeight = 2247;		// Background image width
+					var headerHeight = 1280;		// How wide the header is.
+					//The pixel row where to start a new loop
+					var restartPosition = -(imageHeight - headerHeight);
+					function scrollBg(){
+						//Go to next pixel row.
+						current -= step;
+						//If at the end of the image, then go to the top.
+						if (current == restartPosition){
+							current = 0;
+						}
+						//Set the CSS of the header.
+						$('#bg').css("background-position","58% "+current+"px");
 					}
-					//Set the CSS of the header.
-					$('#bg').css("background-position","58% "+current+"px");
+					//Calls the scrolling function repeatedly
+					var init = setInterval("scrollBg()", scrollSpeed);
+				{/ifset}
+				if($.browser.msie) {
+					el = document.getElementsByTagName('ul')[0].children;
+					for(var i = 0; i < el.length; i++) {
+						el[i].lastChild.href = el[i].lastChild.getAttribute('data-rel-bookmark');
+					}
 				}
-				//Calls the scrolling function repeatedly
-				var init = setInterval("scrollBg()", scrollSpeed);
 			</script>
-		{/ifset}
 	</body>
 </html>

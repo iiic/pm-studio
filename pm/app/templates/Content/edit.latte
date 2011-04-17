@@ -4,6 +4,8 @@
 
 {control selectSectionForm}
 
+{ifset $id}
+
 {control contentForm}
 
 {snippet content section}
@@ -13,3 +15,5 @@
 		<p>Zde se zobrazí náhled právě editované obsahové sekce.</p>
 	{/ifset}
 {/snippet}
+
+{/ifset}

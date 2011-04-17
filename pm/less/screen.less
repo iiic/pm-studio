@@ -1,9 +1,15 @@
 // definice
+@sirka-stranky: 1024px - 20px; //20px má běžný posuvník
 @barva-pozadi: #060c0f;
 @barva-textu: #eee;
+@vyska-radku: 20px;
 @nenapadny-text: @barva-textu - #999;
 @svetlejsi-pozadi: @barva-pozadi + #111; // zesvětlení barvy pozadí
-@cesta-k-obrazkum: '../../www/images/'; // na localhostu a na ostrém webu je rozdíl v cestách
+@velikost-radio-checkbox: 16px; // musí jít o čtverec (!) takže zadaná velikost je délka jedné strany
+@vzdalenost-obrazku-radio-checkbox: 4px; // vzdálenost mezi jednotlivými klikatelnými ikonkami na obrázku
+@posun-radio-checkbox: 2px;
+//@cesta-k-obrazkum: 'images/'; // Úvodní lomítko nemůže být v cestě, ale musí být u každé položky zvlášť, asi bug.
+@cesta-k-obrazkum: '../../www/images/';
 
 
 
@@ -55,10 +61,12 @@
 
 	.odraz (@posun-odrazu: 12px; @od-pruhlednosti: 0.01; @do-pruhlednosti: 0.2) {
 		-webkit-box-reflect: below @posun-odrazu -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(@od-pruhlednosti, transparent), to(rgba(255,255,255,@do-pruhlednosti)));
+		// pro firefox 4.0 stále nic ;-( prej někde kolem 4.0.4 se dočláme
 	}
 
 	.odraz-velky {
 		-webkit-box-reflect: below -4px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.2, transparent), to(rgba(255,255,255,0.4)));
+		// pro firefox 4.0 stále nic ;-( prej někde kolem 4.0.4 se dočláme
 	}
 
 	.rotace (@stupen: -90deg) {
@@ -68,7 +76,7 @@
 		transform:rotate(@stupen);
 	}
 
-	.vnitrni-stin-celkovy (@dosah: 80px; @barva: @barva-pozadi) {
+	.vnitrni-stin-celkovy (@dosah: 96px; @barva: @barva-pozadi) {
 		-moz-box-shadow: inset 0 0 @dosah @dosah @barva; // v FF4 už není potřeba -moz-, takže je to asi jen pro 3-ky
 		-webkit-box-shadow: inset 0 0 @dosah @dosah @barva;
 		box-shadow: inset 0 0 @dosah @dosah @barva;
@@ -109,31 +117,86 @@ hr, .hide
 // nastavení těla stánky
 body
 {
+	font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+	font-size:16px;
+	line-height:@vyska-radku;
+	width:(@sirka-stranky - 40px);
 	margin:auto;
-	font:16px/20px 'Trebuchet MS', Arial, Helvetica, sans-serif;
-	min-width:800px;
-	max-width:1920px;
-	margin:8px 3% 8px 3%;
+	padding:8px 20px 0 0;
 	color:@barva-textu;
 	background:@barva-pozadi;
 	@mixins > .debug(dashed; black);
 }
 
+// obyčejný odkaz
+a
+{
+	color:#c00;
+
+	:visited {
+		color:#901
+	}
+
+	:hover, :focus, :active {
+		color:#f40;
+		text-decoration:underline;
+	}
+
+}
+
 // element hlavičky (může zastupovat i hlavičku článku)
 header
 {
-	text-align:left;
-	margin:66px auto;
-	max-width:880px;
+	padding:0 20px;
 	@mixins > .debug;
+
+	h1 { // hlavní nadpis stránky (pro vyhledávače je lepší aby se vyskytoval jen 1x)
+		text-align:left;
+		font-family: Calibri, corbel, 'Trebuchet MS', Arial;
+		font-size:66px;
+		margin-top:60px;
+		font-weight:normal;
+		letter-spacing:-4px;
+		color:#444;
+		@mixins > .odraz;
+
+		em {
+			color:@barva-textu;
+			position:relative;
+			top:-30px;
+			float:left;
+			display:block;
+			font-style:normal;
+			font-weight:bold;
+			letter-spacing:-2px;
+			width:90px;
+			height:60px;
+			padding-top:30px;
+			background:red;
+			@mixins > .zaobleni;
+			@mixins > .prechod-sikmy;
+		}
+
+		:after {
+			z-index:1;
+			position:absolute;
+			margin-top:-32px;
+			margin-left:-236px;
+			color:#333;
+			content:url({@cesta-k-obrazkum}pm.gif);
+			background:@barva-pozadi;
+			@mixins > .odraz(-4px; 0.2; 0.4);
+			@mixins > .debug(dotted);
+		}
+
+	}
 
 	strong {
 		float:right;
+		margin-top:-60px;
 		text-align:right;
 		font-size:52px;
 		width:220px;
-		margin-top:-100px;
-		margin-right:-30px;
 		line-height:50px;
 		text-shadow: 1px 1px 1px @barva-pozadi, 0px 0px 8px red, 0px 0px 8px red, 0px 0px 8px red, 0px 0px 8px red, 0px 0px 8px red, 0px 0px 16px #fff;
 
@@ -141,49 +204,6 @@ header
 			font-size:40px;
 		}
 
-	}
-
-	:before {
-		z-index:1;
-		position:absolute;
-		margin-top:-30px;
-		color:#333;
-		content:url({@cesta-k-obrazkum}pm.gif);
-		background:@barva-pozadi;
-		@mixins > .odraz(-4px; 0.2; 0.4);
-		@mixins > .debug(dotted);
-	}
-
-}
-
-// hlavní nadpis stránky (pro vyhledávače je lepší aby se vyskytoval jen 1x)
-h1
-{
-	text-align:left;
-	font-family: Calibri, corbel, 'Trebuchet MS', Arial;
-	font-size:66px;
-	margin-bottom:20px;
-	font-weight:normal;
-	letter-spacing:-4px;
-	color:#444;
-	@mixins > .odraz;
-
-	em {
-		color:@barva-textu;
-		position:relative;
-		z-index:-1;
-		top:-30px;
-		float:left;
-		display:block;
-		font-style:normal;
-		font-weight:bold;
-		letter-spacing:-2px;
-		width:90px;
-		height:60px;
-		padding-top:30px;
-		background:red;
-		@mixins > .zaobleni;
-		@mixins > .prechod-sikmy;
 	}
 
 }
@@ -198,29 +218,31 @@ h3
 // prostě menu
 nav
 {
-	margin:-150px auto 80px auto;
-	padding-right:40px;
-	width:655px; // podle rozměrů obrázku na pozadí v
+	position:relative;
+	margin:18px 0 20px 66px;
+	float:left;
+	width:655px;
 	height:700px;
 	background-image:url({@cesta-k-obrazkum}bg.gif);
+	z-index:1; // 1 je tu minimum, jinak půjde obtékaný text přes menu
 	background-position:left center;
 	background-repeat:no-repeat;
 	@mixins > .debug(solid; navy);
 
 	ul {
-		position:absolute;
 		padding-top:94px;
 		margin-left:140px;
-		z-index:2;
 		@mixins > .debug(dotted; gray);
+		position:relative;
+		z-index:2;
 	}
 
 	li {
 		padding-top:22px;
 		list-style-position:inside;
 		text-align:left;
-		list-style-image:url({@cesta-k-obrazkum}bull.gif);
 		height:26px;
+		list-style-image:url({@cesta-k-obrazkum}bull.gif);
 		@mixins > .debug(dotted; black);
 
 		:nth-child(1) {
@@ -273,6 +295,17 @@ nav
 			display:inline-block;
 			font-size:18px;
 			@mixins > .debug(dotted; green);
+
+			:visited {
+				text-decoration:none;
+				color:@barva-textu - #222;
+			}
+
+			:hover, :active, :focus{
+				text-decoration:none;
+				color:white;
+			}
+
 		}
 
 	}
@@ -282,26 +315,45 @@ nav
 // hlavní obsahová část stránky
 section
 {
-	margin-left:6%;
-	margin-right:6%;
+	position:absolute;
+	top:0;
+	width:(@sirka-stranky - 20px);
+	text-align:left;
 	list-style:none;
 	@mixins > .debug(solid; green);
 
-	>h2 { // selektor bezprostředně následujícího potomka
-		padding-top:30px;
+	>h2 {
+		padding-top:200px;
 	}
 
 	h2 {
-		padding-bottom:40px;
+		text-align:left;
+		margin-bottom:40px;
+	}
+
+	p {
+		text-align:left;
+		margin-bottom:@vyska-radku;
+	}
+
+	.shift-left { // tento prvek posunuju směrem k menu do prostoru nad obrázek
+		position:relative;
+		left:-240px;
+		z-index:3;
+	}
+
+	ul {
+		li {
+			text-align:left;
+		}
 	}
 
 	>ul {
 		padding:0;
 
-		li {
-			padding-top:30px;
+		li[id] {
+			padding-top:200px;
 			display:none;
-			text-align:left;
 			list-style-type:none;
 
 			:target {
@@ -314,11 +366,12 @@ section
 	}
 
 	ul.list {
+		padding-left:0;
 		@mixins > .debug(dashed; red);
 
 		li {
 			display:block;
-			margin-bottom:28px;
+			margin-bottom:40px;
 			@mixins > .debug(dotted; blue);
 
 			small {
@@ -326,8 +379,24 @@ section
 				margin-top:-32px;
 			}
 
-			p {
-				text-align:left;
+		}
+
+	}
+
+	ul.block {
+		clear:both;
+
+		li {
+			list-style-type:none;
+			padding:30px 18px 60px 18px;
+
+			:nth-child(2n+1) {
+				background:black;
+			}
+
+			img {
+				display:block;
+				margin:0 auto;
 			}
 
 		}
@@ -336,14 +405,19 @@ section
 
 }
 
-
-
 //section s id snippet--content používám pro zobrazení náhledů obsahu při editaci
 #snippet--content
 {
-	border:10px solid @svetlejsi-pozadi;
+	@ramecek: 10px;
+	@vnitrni-okraj: 6px;
+
+	position:static;
+	clear:both;
+	border:@ramecek solid @svetlejsi-pozadi;
+	margin-bottom:60px;
 	min-height:80px;
-	padding:6px;
+	width:((@sirka-stranky - 20px) - (2 * @ramecek) - (2 * @vnitrni-okraj));
+	padding:@vnitrni-okraj;
 	@mixins > .zaobleni(9px);
 }
 
@@ -387,6 +461,15 @@ form
 	td {
 		text-align:left;
 		@mixins > .debug(dotted; gray);
+
+		a {
+			position:relative;
+			font-style:italic;
+			float:right;
+			margin-bottom:-@vyska-radku;
+			color:@barva-textu !important; // bez !important to tady skutečně nejde
+		}
+
 	}
 
 	select {
@@ -414,14 +497,13 @@ form
 		[type="submit"], [type="button"], [type="reset"] { // (formulářová) tlačítka
 			margin-bottom:8px;
 			padding:4px 12px;
-			border-color:#888;
-			border-bottom-color:@svetlejsi-pozadi;
+			border-style:none;
 			cursor:pointer;
 			@mixins > .prechod-vertikalni;
 			@mixins > .zaobleni(6px);
 		}
 
-		[type="text"], [type="password"] { // (formulářová) vstupní pole
+		[type="text"], [type="password"], [type="file"] { // (formulářová) vstupní pole
 			padding:2px 4px;
 			background:@barva-pozadi + #090909;
 			border-color:#666;
@@ -439,13 +521,90 @@ form
 		width:358px;
 	}
 
+	fieldset input[type='checkbox'], fieldset input[type='radio'] {
+		height:@velikost-radio-checkbox;
+		width:@velikost-radio-checkbox;
+		float:left;
+		position:absolute;
+		opacity:0;
+	}
+
+	fieldset label {
+		line-height:@velikost-radio-checkbox;
+		padding-left:@velikost-radio-checkbox + 4px;
+	}
+
+	fieldset:not(#foo) input + label {
+		background:url({@cesta-k-obrazkum}inputs.png) 0 @posun-radio-checkbox no-repeat;
+		height:@velikost-radio-checkbox;
+	}
+
+	fieldset:not(#foo) input[type=radio] + label {
+		background-position: 0 ((((@velikost-radio-checkbox + @vzdalenost-obrazku-radio-checkbox) * 8) - @posun-radio-checkbox) * -1);
+	}
+
+	fieldset:not(#foo) input[type=radio]:checked + label {
+		background-position: 0 ((((@velikost-radio-checkbox + @vzdalenost-obrazku-radio-checkbox) * 12) - @posun-radio-checkbox) * -1);
+	}
+
+	fieldset:not(#foo) input[type=checkbox]:checked + label {
+		background-position: 0 ((((@velikost-radio-checkbox + @vzdalenost-obrazku-radio-checkbox) * 4) - @posun-radio-checkbox) * -1);
+	}
+
+	fieldset:not(#foo) input[type=checkbox]:hover:checked + label, fieldset:not(#foo) input[type=checkbox]:focus:checked + label, fieldset:not(#foo) input[type=checkbox]:checked + label:hover, fieldset:not(#foo) input[type=checkbox]:focus:checked + label {
+		background-position: 0 ((((@velikost-radio-checkbox + @vzdalenost-obrazku-radio-checkbox) * 5) - @posun-radio-checkbox) * -1);
+	}
+
+	fieldset:not(#foo) input[type=radio]:hover:checked + label, fieldset:not(#foo) input[type=radio]:focus:checked + label, fieldset:not(#foo) input[type=radio]:checked + label:hover, fieldset:not(#foo) input[type=radio]:focus:checked + label {
+		background-position: 0 ((((@velikost-radio-checkbox + @vzdalenost-obrazku-radio-checkbox) * 13) - @posun-radio-checkbox) * -1);
+	}
+
+	fieldset:not(#foo) input[type=checkbox]:hover + label, fieldset:not(#foo) input[type=checkbox]:focus + label, fieldset:not(#foo) input[type=checkbox] + label:hover {
+		background-position: 0 ((@velikost-radio-checkbox + @vzdalenost-obrazku-radio-checkbox - @posun-radio-checkbox) * -1);
+	}
+
+	fieldset:not(#foo) input[type=radio]:hover + label, fieldset:not(#foo) input[type=radio]:focus + label, fieldset:not(#foo) input[type=radio] + label:hover {
+		background-position: 0 ((((@velikost-radio-checkbox + @vzdalenost-obrazku-radio-checkbox) * 9) - @posun-radio-checkbox) * -1);
+	}
+
+	fieldset:not(#foo) input[type=checkbox]:active + label, fieldset:not(#foo) input[type=checkbox] + label:hover:active {
+		background-position: 0 ((((@velikost-radio-checkbox + @vzdalenost-obrazku-radio-checkbox) * 2) - @posun-radio-checkbox) * -1);
+	}
+
+	fieldset:not(#foo) input[type=radio]:active + label, fieldset:not(#foo) input[type=radio] + label:hover:active {
+		background-position: 0 ((((@velikost-radio-checkbox + @vzdalenost-obrazku-radio-checkbox) * 10) - @posun-radio-checkbox) * -1);
+	}
+
+	fieldset:not(#foo) input[type=checkbox]:active:checked + label, fieldset:not(#foo) input[type=checkbox]:checked + label:hover:active {
+		background-position: 0 ((((@velikost-radio-checkbox + @vzdalenost-obrazku-radio-checkbox) * 6) - @posun-radio-checkbox) * -1);
+	}
+
+	fieldset:not(#foo) input[type=radio]:active:checked + label, fieldset:not(#foo) input[type=radio]:checked + label:hover:active {
+		background-position: 0 ((((@velikost-radio-checkbox + @vzdalenost-obrazku-radio-checkbox) * 14) - @posun-radio-checkbox) * -1);
+	}
+
+	fieldset:not(#foo) input[type=checkbox]:disabled + label, fieldset:not(#foo) input[type=checkbox]:hover:disabled + label, fieldset:not(#foo) input[type=checkbox]:focus:disabled + label, fieldset:not(#foo) input[type=checkbox]:disabled + label:hover, fieldset:not(#foo) input[type=checkbox]:disabled + label:hover:active {
+		background-position: 0 ((((@velikost-radio-checkbox + @vzdalenost-obrazku-radio-checkbox) * 3) - @posun-radio-checkbox) * -1);
+	}
+
+	fieldset:not(#foo) input[type=radio]:disabled + label, fieldset:not(#foo) input[type=radio]:hover:disabled + label, fieldset:not(#foo) input[type=radio]:focus:disabled + label, fieldset:not(#foo) input[type=radio]:disabled + label:hover, fieldset:not(#foo) input[type=radio]:disabled + label:hover:active {
+		background-position: 0 ((((@velikost-radio-checkbox + @vzdalenost-obrazku-radio-checkbox) * 11) - @posun-radio-checkbox) * -1);
+	}
+
+	fieldset:not(#foo) input[type=checkbox]:disabled:checked + label, fieldset:not(#foo) input[type=checkbox]:hover:disabled:checked + label, fieldset:not(#foo) input[type=checkbox]:focus:disabled:checked + label, fieldset:not(#foo) input[type=checkbox]:disabled:checked + label:hover, fieldset:not(#foo) input[type=checkbox]:disabled:checked + label:hover:active {
+		background-position: 0 ((((@velikost-radio-checkbox + @vzdalenost-obrazku-radio-checkbox) * 7) - @posun-radio-checkbox) * -1);
+	}
+
+	fieldset:not(#foo) input[type=radio]:disabled:checked + label, fieldset:not(#foo) input[type=radio]:hover:disabled:checked + label, fieldset:not(#foo) input[type=radio]:focus:disabled:checked + label, fieldset:not(#foo) input[type=radio]:disabled:checked + label:hover, fieldset:not(#foo) input[type=radio]:disabled:checked + label:hover:active {
+		background-position: 0 ((((@velikost-radio-checkbox + @vzdalenost-obrazku-radio-checkbox) * 15) - @posun-radio-checkbox) * -1);
+	}
+
 }
 
 // form s id frm-contentForm slouží pro náhledy editovaných obsahů
 #frm-contentForm, #frm-contactForm, #frm-newsForm
 {
-	margin-left:6%;
-	margin-right:6%;
+	clear:both;
 
 	fieldset {// v něm obsažený fieldset
 		width:auto;
@@ -471,6 +630,12 @@ form
 
 }
 
+// formulář pro přidání komentáře k novince
+#frm-commentForm {
+	clear:both;
+	margin-bottom:60px;
+}
+
 // formulář s kontaktem
 #frm-contactForm
 {
@@ -482,6 +647,10 @@ form
 // formulář pro přihlášení uživatele do aplikace
 #frm-authForm
 {
+	margin-top:50px;
+	position:relative;
+	left:-160px;
+
 	input {
 		[type="text"], [type="password"] {
 			width:260px;
@@ -495,12 +664,11 @@ form
 	margin-bottom:80px;
 }
 
-// formulář pro výběr obsahové sekce k editaci
+// kontakt - odeslání mailu
 #frm-mailForm, #frm-contact-mailForm // tyto id jsou stejný formulář, rozdíl je jen v tom, že druhý jmenovaný je v komponentě
 {
-	margin-top:60px;
-	margin-left:auto;
-	margin-right:auto;
+	float:left;
+	margin:12px auto 60px auto;
 
 	fieldset {
 		width:540px;
@@ -514,20 +682,37 @@ form
 
 }
 
+// nová registrace
+#frm-register-registerForm, #frm-registerForm
+{
+	margin-top:80px;
+	left:-200px;
+}
+
+// výběr sekce pro editaci
+#frm-selectSectionForm
+{
+	margin-top:190px; 
+}
+
 // formulář pro editaci položek menu
 #frm-menuForm
 {
-	
+	clear:both;
+	margin-bottom:60px;
 
 	tr {
 		height:32px;
-	}
 
-	input {
-		[type="checkbox"] {
-			margin-bottom:40px;
-			margin-right:8px;
+		select {
+			margin-top:18px;
 		}
+
+		th {
+			vertical-align:bottom;
+			padding-bottom:6px;
+		}
+
 	}
 
 }
@@ -535,6 +720,8 @@ form
 // (boční) část stránky, jejíž obsah nesouvisí (jen málo souvisí) s hlavní obsahovou částí stránky
 aside
 {
+display:none;
+/*
 	position:relative;
 	margin:-640px auto 640px auto;
 	max-width:880px;
@@ -548,13 +735,17 @@ aside
 		margin-right:-60px;
 		@mixins > .debug(dashed; green);
 	}
-
+*/
 }
 
 // klasická patička má vlastní element
 footer
 {
-	margin:60px auto;
+	position:fixed;
+	bottom:0;
+	left:0;
+	background:@barva-pozadi;
+	width:100%;
 	@mixins > .debug(solid; blue);
 }
 
@@ -590,17 +781,13 @@ footer
 // hr předělané na podúrovňové pozadí meníčka
 #bg
 {
-	background: url({@cesta-k-obrazkum}hr.gif) 58% 0 repeat-y;
-	height:600px;
-	width:100%;
-	max-width:880px;
+	background: url({@cesta-k-obrazkum}hr.gif) 0 0 repeat-y;
+	height:560px;
+	width:450px;
 	display:block;
-	position:relative;
-	z-index:-1;
-	margin-top:-136px;
-	margin-left:auto;
-	margin-right:auto;
-	margin-bottom:-600px;
+	position:absolute;
+	margin-left:210px;
+	top:30px;
 	z-index:-1;
 	@mixins > .vnitrni-stin-celkovy;
 }

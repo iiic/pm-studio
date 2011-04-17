@@ -9,22 +9,38 @@ class ContentPresenter extends BasePresenter
 
 	public function renderDefault()
 	{
-		$this->checkAuth();
+		//$this->checkAuth();
 	}
 
 
 
-	public function renderEdit($id = 0)
+	public function renderView($id = null)
+	{
+		if($id == null) {
+			$this->redirect('content:');
+		} else {
+			foreach($this->template->siteContent as $content) {
+				if( ($content->p_type == 0) && ($content->hash == $id) ) {
+					$this->template->title = $content->title;
+					$this->template->content = $content->content;
+				}
+			}
+		}
+	}
+
+
+
+	public function renderEdit($id)
 	{
 		$this->checkAuth();
 		$form = $this['contentForm'];
+		$this->template->id = $id;
 		if(!$form->isSubmitted()) {
 			$content = new MenuModel;
 			$row = $content->fetchRow($id);
-			if (!$row) {
-				throw new Nette\Application\BadRequestException('Nepodařilo se načíst data');
+			if ($row) {
+				$form->setDefaults($row);
 			}
-			$form->setDefaults($row);
 		}
 	}
 
@@ -34,6 +50,7 @@ class ContentPresenter extends BasePresenter
 	{
 		$menu = new MenuModel;
 		$form = new AppForm;
+		$form->getElementPrototype()->class('shift-left');
 		$form->addGroup('Výběr obsahové sekce pro editaci');
 		$form->addSelect('section', 'vyberte sekci', $menu->fetchPairs())
 			->setDefaultValue($this->getParam('id'))

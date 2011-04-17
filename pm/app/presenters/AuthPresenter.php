@@ -72,11 +72,13 @@ class AuthPresenter extends BasePresenter// bylo by lepší (z bezpečnostíníc
 	protected function createComponentAuthForm()
 	{
 		$form = new AppForm;
+		//$form->getElementPrototype()->setNovalidate('novalidate');// zastaví defaultní validaci HTML5
 		$form->addGroup('Formulář pro přihlášení uživatele')
 			->setOption('description', Html::el('p')
 				->setText('Pokud nebudete mít zapnutý javascript vaše heslo se odešle v čitelné podobě, hrozí tedy možnost jeho odposlechu.')
 				->setClass('hide-with-js important')
 			);
+		$form->getElementPrototype()->class('shift-left');
 
 		$form->addText('username', 'Uživatelské jméno')
 			->addRule(Form::FILLED, 'Prosím zadejte uživatelské jméno.');
@@ -177,6 +179,7 @@ class AuthPresenter extends BasePresenter// bylo by lepší (z bezpečnostíníc
 			throw Exception('Ztratila se OpenID session... proces nemůže pokračovat!');
 		}
 		$form = new AppForm;
+		$form->getElementPrototype()->class('shift-left');
 		if($username) {
 			$infoText = 'Vaše přezdívka z OpenID už na tomto serveru existuje, zvolte si prosím nějakou jinou.';
 		} else {

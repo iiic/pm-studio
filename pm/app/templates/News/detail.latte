@@ -1,10 +1,11 @@
 {block content}
-<a n:href="news:">&lt;&lt; zobrazit všechny novinky</a>
 
 <h2 n:block="title">{$item->title}</h2>
 <small>Přidáno {$item->date|date}</small>
-<p>{!$item->content|texy}</p>
+{!$item->content|texy}
 
+<a n:href="news:">&lt;&lt; zobrazit všechny novinky</a>
+<br>
 <br>
 
 <strong>Komentáře:</strong>

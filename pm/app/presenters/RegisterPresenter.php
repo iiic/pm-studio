@@ -40,6 +40,7 @@ class RegisterPresenter extends BasePresenter
 	{
 		$form = new AppForm;
 		$form->addGroup('Formulář pro registraci uživatele');
+		$form->getElementPrototype()->class('shift-left');
 		//přidat onsubmit
 		$form->addText('username', 'Uživatelské jméno')
 			->addRule(Form::FILLED, 'Prosím zadejte uživatelské jméno.');

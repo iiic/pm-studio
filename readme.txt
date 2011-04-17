@@ -50,9 +50,13 @@ Globální nastavení webu je k nalezení v sekci 'upravit nastavení webu' (/se
 
 * stručně - základní vlastnosti: *
 
-SEO URI jsou kanonické v českém jazyce, ale mají své funkční anglické alternativy. Například adresa /novinky/pridat má stejný obsah jako /news/add, ale druhá jmenovaná bude viditelně přesměrována na první.
-Přihlášenému uživateli s právy administrátora je zobrazen debug bar nette, ten má navíc hodně přídavků, což aplikaci mírně spomaluje.
-Všechny soubory jsou v kódování UTF-8 s UNIXovým ukončováním řádků.
+	- frontend:
+	Graceful degradation (pro starší prohlížeče má web omezené možnosti, nikdy však na úkor čitelnosti obsahu, vždy jen na úkor designu)
+
+	- backend:
+	SEO URI jsou kanonické v českém jazyce, ale mají své funkční anglické alternativy. Například adresa /novinky/pridat má stejný obsah jako /news/add, ale druhá jmenovaná bude viditelně přesměrována na první.
+	Přihlášenému uživateli s právy administrátora je zobrazen debug bar nette, ten má navíc hodně přídavků, což aplikaci mírně spomaluje.
+	Všechny soubory jsou v kódování UTF-8 s UNIXovým ukončováním řádků.
 
 
 

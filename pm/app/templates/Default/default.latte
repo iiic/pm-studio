@@ -1,11 +1,11 @@
 {block content}
 
-<h2 n:block="title" class="hide">Vítejte</h2>
+<strong n:block="title" class="hide">Vítejte</strong>
 
 <ul n:inner-foreach="$siteContent as $item">
 	<li n:ifset="$item->link" id="{$item->hash}">
 		{if $item->link=='content'}
-			{$item->content}
+			{!$item->content|texy}
 		{else}
 			{control $item->link}
 		{/if}

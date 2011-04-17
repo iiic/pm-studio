@@ -175,6 +175,7 @@ class OpenIDForm extends Nette\Application\Control
 	 */
 	public function createComponentIdentifierForm() {
 		$form = new AppForm;
+		$form->getElementPrototype()->class('shift-left');
 		$form->addGroup($this->formCaption);
 		if ( $this->translator ) {
 			$form->setTranslator( $this->translator );

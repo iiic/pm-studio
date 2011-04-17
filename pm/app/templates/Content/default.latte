@@ -1,5 +1,9 @@
 {block content}
 
-<h2 n:block="title">Obsahový manager</h2>
+<h2 n:block="title">Naše sekce</h2>
 
-{control selectSectionForm}
+<ul n:inner-foreach="$siteContent as $item">
+	<li n:if="$item->p_type == 0">
+		<a n:href="content:view, $item->hash">{$item->title}</a>
+	</li>
+</ul>

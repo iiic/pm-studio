@@ -28,7 +28,8 @@ class SettingsPresenter extends BasePresenter
 	{
 		$users = new UsersModel;
 		$form = new AppForm;
-		$form->getElementPrototype();
+		//$form->getElementPrototype();
+		$form->getElementPrototype()->class('shift-left');
 		$form->addGroup('Formulář pro úpravu nastavení webu');
 		$form->addText('title', 'Titulek (nadpis)')
 			->addRule(Form::FILLED, 'Prosím zadejte titulek těchto stránek.');
