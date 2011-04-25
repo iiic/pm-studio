@@ -150,7 +150,7 @@ header
 	padding:0 20px;
 	@mixins > .debug;
 
-	h1 { // hlavní nadpis stránky (pro vyhledávače je lepší aby se vyskytoval jen 1x)
+	h1 { // hlavní nadpis stránky
 		text-align:left;
 		font-family: Calibri, corbel, 'Trebuchet MS', Arial;
 		font-size:66px;
@@ -720,62 +720,72 @@ form
 // (boční) část stránky, jejíž obsah nesouvisí (jen málo souvisí) s hlavní obsahovou částí stránky
 aside
 {
-display:none;
-/*
-	position:relative;
-	margin:-640px auto 640px auto;
-	max-width:880px;
-	z-index:1;
+	margin-top:60px;
+	@mixins > .debug(dashed; green);
 
 	p {
-		position:absolute;
+		width:220px;
 		text-align:left;
-		right:0;
-		width:180px;
-		margin-right:-60px;
-		@mixins > .debug(dashed; green);
+		margin-bottom:20px;
+		@mixins > .debug(solid; red);
 	}
-*/
+
+	>p {
+		position:relative;
+		z-index:3;
+	}
+
+	>div {
+		position:fixed;
+
+		p {
+			width:200px;
+			position:relative;
+			z-index:4;
+			cursor:crosshair;
+			padding:6px 2px;
+			border:1px solid red;
+			background:@barva-pozadi;
+			opacity:1;
+			-moz-transition:all 1s ease-in-out;
+		}
+
+		p.hide {
+			display:block;
+			border:1px solid blue;
+			position:relative;
+			opacity:0;
+			z-index:-1;
+		}
+
+		.info {
+			//něco
+
+			:before {
+				position:absolute;
+				margin-left:-30px;
+				content:"info";
+				font-weight:bold;
+				color:@nenapadny-text;
+				@mixins > .rotace;
+			}
+
+		}
+
+	}
+
 }
 
 // klasická patička má vlastní element
 footer
 {
 	position:fixed;
+	z-index:1;
 	bottom:0;
 	left:0;
 	background:@barva-pozadi;
 	width:100%;
 	@mixins > .debug(solid; blue);
-}
-
-// snippet kontejner pro flash všechny zprávičky
-#snippet--flashes
-{
-	//něco
-
-	.flash {
-		display:block;
-		position:fixed;
-		margin-top:-12px;
-		margin-left:-20px;
-		padding:6px 20px;
-		background:@barva-pozadi;
-		// todo : přidat stín (z průhlednosti) pro tento objekt
-	}
-
-	.info {
-		//něco
-
-		:before {
-			margin-left:-28px;
-			content:"info";
-			font-weight:bold;
-			color:@nenapadny-text;
-			@mixins > .rotace;
-		}
-	}
-
 }
 
 // hr předělané na podúrovňové pozadí meníčka

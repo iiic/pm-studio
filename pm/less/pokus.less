@@ -1,0 +1,481 @@
+// definice
+@sirka-stranky: 1024px - 20px; //20px má běžný posuvník
+@barva-pozadi: #fff;
+@barva-textu: #222;
+@vyska-radku: 20px;
+@nenapadny-text: @barva-textu - #666;
+@tmavsi-pozadi: @barva-pozadi - #111;
+@tmavsi-barva-textu: @barva-textu - #030303;
+
+
+
+// mixins
+@mixins {
+
+	.zaobleni (@radius : 45px) {
+		border-radius: @radius;
+		-webkit-border-radius: @radius;
+		-moz-border-radius: @radius;
+	}
+
+	.prechod-vertikalni (@barva-od : #222; @barva-do : #666) {
+		background-image: -webkit-gradient(
+			linear,
+			left bottom,
+			left top,
+			color-stop(0, @barva-od),
+			color-stop(1, @barva-do)
+		);
+		background-image: -moz-linear-gradient(
+			center bottom,
+			@barva-od 0%,
+			@barva-do 100%
+		);
+		background-image: gradient(
+			linear,
+			left top,
+			left bottom,
+			color-stop(0, @barva-od),
+			color-stop(1, @barva-do)
+		);
+	}
+
+	.rotace (@stupen: -90deg) {
+		-webkit-transform:rotate(@stupen);
+		-moz-transform:rotate(@stupen);
+		-o-transform:rotate(@stupen);
+		transform:rotate(@stupen);
+	}
+
+	.debug (@typ: solid; @barva: red) { // pixelový rámeček pro testování který se na ostrém serveru zakomentuje // pro tabulky používám typ rámečku dashed
+		//min-width:80px;		min-height:4px;		border: 1px @typ @barva;		overflow:visible;		visibility:visible;
+	}
+
+} // konec mixins
+
+
+
+// css (2.1) reset (jednoduchý)
+*
+{
+	text-decoration:none;
+	margin:0;
+	padding:0;
+	border:0;
+	text-align:center;
+	background:#333;
+}
+
+// oprava html5 elementů v prohlížečích které je neznají
+article, aside, figure, footer, header, hgroup, menu, nav, section
+{
+	display:block;
+	@mixins > .debug(dotted; gray);
+}
+
+// vodorovná čára
+hr, .hide
+{
+	display:none;
+	@mixins > .debug(dotted; pink);
+}
+
+// nastavení těla stánky
+body
+{
+	font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+	font-size:16px;
+	line-height:@vyska-radku;
+	width:(@sirka-stranky - 40px);
+	margin:30px auto;
+	padding:20px 18px;
+	color:@barva-textu;
+	background:@barva-pozadi;
+	@mixins > .debug(dashed; black);
+}
+
+// obyčejný odkaz
+a
+{
+	background:none;
+	color:#c12;
+
+	:visited {
+		color:#901
+	}
+
+	:hover, :focus, :active {
+		color:#f40;
+		text-decoration:underline;
+	}
+
+}
+
+// element hlavičky (může zastupovat i hlavičku článku)
+header
+{
+	background:@tmavsi-barva-textu;
+	height:120px;
+	margin-bottom:20px;
+	@mixins > .debug;
+
+	h1 { // hlavní nadpis stránky
+		background:none;
+		font-size:80px;
+		padding-top:44px;
+		margin-bottom:26px;
+		color:@barva-pozadi !important;
+
+		em {
+			background:none;
+		}
+
+	}
+
+	strong {
+		background:none;
+		display:block;
+		text-align:right;
+		margin-right:8px;
+		text-shadow: 1px 1px 6px #fff, 1px 1px 8px #fff, 1px 1px 12px #fff, 1px 1px 16px #fff;
+	}
+
+}
+
+// nadpis třetí úrovně použit například u článku
+h3
+{
+	text-align:left;
+	margin-bottom:14px;
+}
+
+// hlavní obsahová část stránky
+section
+{
+	background:none;
+	text-align:left;
+	list-style:none;
+	@mixins > .debug(solid; green);
+
+	strong, b, em, ul, li, h3, img, small { // něco jako reset pozadí
+		background:none;
+	}
+
+	h2 {
+		font-size:16px;
+		background:@tmavsi-barva-textu;
+		color:@barva-pozadi;
+		text-align:left;
+		padding:6px 8px;
+		text-indent:8px;
+		margin-bottom:10px;
+	}
+
+	h3 {
+		padding:6px 8px;
+		background:#cdf;
+	}
+
+	p {
+		background:none;
+		text-indent:8px;
+		text-align:left;
+		margin-bottom:@vyska-radku;
+	}
+
+	ul.list {
+		li {
+			text-align:left;
+			list-style-type:none;
+			margin-bottom:40px;
+		}
+	}
+
+	>ul {
+		padding:0;
+
+		li[id] {
+			display:none;
+			list-style-type:none;
+
+			:target {
+				display:block;
+				margin-bottom:20px;
+			}
+
+		}
+
+	}
+
+}
+
+// prostě menu
+nav
+{
+	background:@barva-pozadi;
+	position:relative;
+	float:left;
+	width:280px;
+	margin-bottom:20px;
+	border-right:20px solid @barva-pozadi;
+	@mixins > .debug(solid; navy);
+
+	.hide {
+		text-align:left;
+		display:block;
+		background:@tmavsi-barva-textu;
+		color:@barva-pozadi;
+		padding:6px 8px;
+	}
+
+	ul {
+		padding:8px 0;
+		background:@tmavsi-pozadi !important;
+		@mixins > .debug(dotted; gray);
+	}
+
+	li {
+		margin-left:30px;
+		background:none;
+		list-style-type:inside;
+		text-align:left;
+		height:26px;
+		@mixins > .debug(dotted; black);
+
+		a {
+			color:#06c;
+
+			:visited {
+				text-decoration:none;
+				color:#06c;
+			}
+
+			:hover, :active, :focus{
+				text-decoration:none;
+			}
+
+		}
+
+	}
+
+}
+
+// fieldset (použito hlavně u formulářů) v obsahu stránky... bude mít zvýrazněné pozadí
+fieldset
+{
+	margin:auto;
+	border-style:none;
+	background:#ceb;
+
+	legend {
+		display:block;
+		text-align:left;
+		width:100%;
+		font-size:16px;
+		background:@tmavsi-barva-textu;
+		color:@barva-pozadi;
+		font-weight:bold;
+		padding:6px 8px;
+		text-indent:8px;
+	}
+
+	p {
+		margin-bottom:14px;
+	}
+
+}
+
+// formulář
+form
+{
+	background:none;
+	margin-right:20px;
+
+	.move-up { // použito v backendové sekci menu
+		position:absolute;
+		margin-top:-32px;
+		background:@svetlejsi-pozadi;
+	}
+
+	table {
+		background:none;
+
+		tbody {
+			background:none;
+		}
+
+		tr {
+			background:none;
+
+			label {
+				background:none;
+			}
+
+			th {
+				background:none;
+			}
+
+			td {
+				text-align:left;
+				background:none;
+				@mixins > .debug(dotted; gray);
+		
+				a {
+					background:none;
+					position:relative;
+					font-style:italic;
+					float:right;
+					margin-bottom:-@vyska-radku;
+					color:@barva-textu !important; // bez !important to tady skutečně nejde
+				}
+		
+			}
+
+		}
+
+	}
+
+	select {
+		padding:4px;
+		color:@barva-textu;
+		background:@barva-pozadi;
+		border:1px solid #666;
+		border-top-color:black;
+		border-right-color:black;
+		@mixins > .zaobleni(4px);
+
+		option {
+			margin:4px 0;
+			background:@barva-pozadi + #060606;
+		}
+	}
+
+	input, textarea { // prvek formuláře (formuláře vypadají trochu jako z hl2 : http://www.notebookreview.com/assets/7436.jpg)
+		text-align:left;
+		border-width:1px;
+		border-style:solid;
+		color:@barva-textu;
+		@mixins > .zaobleni(4px);
+
+		[type="submit"], [type="button"], [type="reset"] { // (formulářová) tlačítka
+			margin-bottom:8px;
+			padding:4px 12px;
+			border-style:none;
+			cursor:pointer;
+			color:@barva-pozadi;
+			@mixins > .prechod-vertikalni;
+			@mixins > .zaobleni(6px);
+		}
+
+		[type="text"], [type="password"], [type="file"] { // (formulářová) vstupní pole
+			padding:2px 4px;
+			background:@barva-pozadi + #090909;
+			border-color:#666;
+			border-top-color:black;
+			border-right-color:black;
+		}
+
+	}
+
+	textarea { // (znovu) víceřádkové vstupní textové pole
+		background:@barva-pozadi + #090909;
+		border-color:#666;
+		border-top-color:black;
+		border-right-color:black;
+		width:358px;
+	}
+
+}
+
+// (boční) část stránky, jejíž obsah nesouvisí (jen málo souvisí) s hlavní obsahovou částí stránky
+aside
+{
+	background:#ff8;
+	width:280px;
+	float:left;
+	margin-bottom:20px;
+	padding-bottom:10px;
+	@mixins > .debug(dashed; green);
+
+	p {
+		background:none;
+		text-align:left;
+		@mixins > .debug(solid; red);
+	}
+
+	a {
+		padding:2px 12px;
+	}
+
+	strong {
+		display:block;
+		font-size:16px;
+		background:@tmavsi-barva-textu;
+		color:@barva-pozadi;
+		text-align:left;
+		padding:6px 8px 0 8px;
+	}
+
+	>div {
+		position:fixed;
+
+		p {
+			width:200px;
+			position:relative;
+			z-index:4;
+			cursor:crosshair;
+			padding:6px 2px;
+			border:1px solid red;
+			background:@barva-pozadi;
+			opacity:1;
+			-moz-transition:all 1s ease-in-out;
+		}
+
+		p.hide {
+			display:block;
+			border:1px solid blue;
+			position:relative;
+			opacity:0;
+			z-index:-1;
+		}
+
+		.info {
+			//něco
+
+			:before {
+				position:absolute;
+				margin-left:-30px;
+				content:"info";
+				font-weight:bold;
+				color:@nenapadny-text;
+				@mixins > .rotace;
+			}
+
+		}
+
+	}
+
+}
+
+// klasická patička má vlastní element
+footer
+{
+	clear:both;
+	background:@tmavsi-barva-textu;
+	color:@barva-pozadi;
+	padding:12px;
+	@mixins > .debug(solid; blue);
+
+	p {
+		background:none;
+	}
+
+}
+
+/* zajímavé skutečnosti:
+ * ---------------------
+ * less filter vytvoří z '>h2' vnořeného do section zápis 'section>h2', kdežto 
+ * z '.trida' vloženého taktéž do section zápis 'section .trida', mezera zajistí
+ * že se jedná o potomka section a ne o jeho třídu, to je dost divné chování.
+ * Pravděpodobně souvisí s tím že '.něco' je chápáno jako mixinis.
+ */

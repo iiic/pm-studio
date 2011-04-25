@@ -7,8 +7,8 @@ class MenuModel
 	{
 		return dibi::fetchAll('
 			SELECT *
-			FROM [menu]'
-		);
+			FROM [menu]
+		');
 	}
 
 
@@ -26,8 +26,8 @@ class MenuModel
 			SELECT id, title
 			FROM [menu]
 			WHERE p_type = 0
-			AND title != ""'
-		);
+			AND title != ""
+		');
 	}
 
 

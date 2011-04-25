@@ -35,7 +35,7 @@ Environment::loadConfig();
 \Panel\TodoPanel::register();
 Nella\VersionPanel::register();
 //Extras\Debug\ComponentTreePanel::register();
-
+//NetteTranslator\Panel::register();
 
 
 // Step 3: Configure application

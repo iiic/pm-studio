@@ -47,12 +47,28 @@ abstract class BasePresenter extends Presenter
 		$sectionPresenters = array('content','', 'news', 'contact', 'register');// @todo : article presenter
 		foreach($data as $i => $row) {
 			if($data[$i]['p_type'] != 1) {
-				if($data[$i]['title'] == ''){ $data[$i]['title'] = $sectionNames[$data[$i]['p_type']]; }
+				if($data[$i]['title'] == '') { $data[$i]['title'] = $sectionNames[$data[$i]['p_type']]; }
 				$data[$i]['link'] = $sectionPresenters[$data[$i]['p_type']];
+				if($this->template->settings->default_presenter == $data[$i]['id']) { $this->template->settings->default_presenter = $data[$i]['hash']; }
 				unset($data[$i]['id']);// není potřeba
 			}
 		}
 		$this->template->siteContent = $data;
+		$session = Environment::getSession('session');
+		if(isset($session->skin_id)) {
+			$this->template->settings->style = $session->skin_id;
+		}
+	}
+
+
+
+	public function handleSwitchSkin($skinId = 1) {
+		$session = Environment::getSession('session');
+		$session->setExpiration('+ 14 days');
+		if(intval($skinId) < 9) {
+			$session->skin_id = $skinId;
+		}
+		$this->redirect('this');
 	}
 
 
@@ -62,7 +78,7 @@ abstract class BasePresenter extends Presenter
 		// user authentication
 		if(!$this->user->isLoggedIn()) {
 			if($this->user->logoutReason === Nette\Web\User::INACTIVITY) {
-				$this->flashMessage('You have been signed out due to inactivity. Please sign in again.');
+				$this->flashMessage('Byl jste odhlášen z důvodu neaktivity... přihlašte se prosím znovu.');
 			}
 			$backlink = $this->application->storeRequest();
 			$this->redirect('auth:', array('backlink' => $backlink));
@@ -160,6 +176,7 @@ abstract class BasePresenter extends Presenter
 		$template = parent::createTemplate();
 		// zaregistruji texy helper
 		$template->registerHelper('texy', callback($texy, 'process'));
+		//$template->setTranslator(\Nette\Environment::getService('Nette\ITranslator'));// překladač
 
 		return $template;
 	}

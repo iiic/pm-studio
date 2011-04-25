@@ -28,7 +28,6 @@ class SettingsPresenter extends BasePresenter
 	{
 		$users = new UsersModel;
 		$form = new AppForm;
-		//$form->getElementPrototype();
 		$form->getElementPrototype()->class('shift-left');
 		$form->addGroup('Formulář pro úpravu nastavení webu');
 		$form->addText('title', 'Titulek (nadpis)')
@@ -41,11 +40,12 @@ class SettingsPresenter extends BasePresenter
 				->setText('(velmi málá důležitost)')
 				->setClass('description')
 			);
+		$form->addSelect('default_presenter', 'Úvodní sekce', array(0=>'žádná',1,2,3,4,5,6,7,8,9,10,11));
 		$form->addText('important_title', 'Nadpis důležité zprávy')
 			->addRule(Form::FILLED, 'Nadpis důležité zprávy nemůže zůstat prázdný');
 		$form->addText('important', 'Důležitá zpráva');
 		$form->addSelect('important_efect', 'Efekt zobrazení důležité zprávy', array('bez efektu', 'psací stroj (js)'));
-		$form->addSelect('style', 'Defaultní vzhled', array('black'));
+		$form->addSelect('style', 'Defaultní vzhled', array(0=>'bez css', 1=>'black', 2=>'pokus'));
 		$form->addText('robots', 'Robots')
 			->setOption('description', Html::el('small')
 				->setText('(prázdná hodnota odpovídá zápisu \'all\', tedy \'index, follow\')')
