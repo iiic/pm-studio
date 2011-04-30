@@ -1,0 +1,20 @@
+Předpokládané šířky různých zařízení jsou:
+
+
+<= 320px
+	Smartphone
+
+
+
+321px až 768px
+	Tablet
+
+
+
+769px až 1024px
+	Netbook
+
+
+
+> 1025px
+	Desktop

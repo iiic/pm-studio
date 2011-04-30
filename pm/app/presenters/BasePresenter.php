@@ -43,10 +43,10 @@ abstract class BasePresenter extends Presenter
 			Nette\Debug::enable(Nette\Debug::DEVELOPMENT);
 		}
 		$data = $this->menu;
-		$sectionNames = array('vlastní', 'prázdné', 'novinky', 'kontakt', 'registrace');
-		$sectionPresenters = array('content','', 'news', 'contact', 'register');// @todo : article presenter
+		$sectionNames = array('prázdné', 'vlastní obsah', 'novinky', 'kontakt', 'reklama', 'registrace');
+		$sectionPresenters = array('','content', 'news', 'contact', 'ad', 'register');// @todo : article presenter
 		foreach($data as $i => $row) {
-			if($data[$i]['p_type'] != 1) {
+			if($data[$i]['p_type'] != 0) {
 				if($data[$i]['title'] == '') { $data[$i]['title'] = $sectionNames[$data[$i]['p_type']]; }
 				$data[$i]['link'] = $sectionPresenters[$data[$i]['p_type']];
 				if($this->template->settings->default_presenter == $data[$i]['id']) { $this->template->settings->default_presenter = $data[$i]['hash']; }
@@ -90,7 +90,7 @@ abstract class BasePresenter extends Presenter
 
 
 
-	protected function createComponentCss()
+	protected function createComponentCssSmall()
 	{
 		$css = new CssLoader;
 
@@ -107,6 +107,26 @@ abstract class BasePresenter extends Presenter
 
 		return $css;
 	}
+
+	protected function createComponentCssBig()
+	{
+		$css = new CssLoader;
+
+		$css->media = "screen and (min-width: 600px)";
+		$css->sourcePath = APP_DIR . "/../less";// cesta na disku ke zdroji
+		$css->tempUri = Environment::getVariable("baseUri") . "webtemp";// cesta na webu k cílovému adresáři
+		$css->tempPath = WWW_DIR . "/webtemp";// cesta na disku k cílovému adresáři
+
+		$css->fileFilters[] = new Webloader\LessFilter;
+
+		$css->filters[] = function ($code) {
+			return cssmin::minify($code, "remove-last-semicolon");
+		};
+
+		return $css;
+	}
+
+
 
 	protected function createComponentJs()
 	{

@@ -1,13 +1,13 @@
 <?php
 
-class ContactModel
+class AdModel
 {
 
 	public static function fetch()
 	{
 		return dibi::fetch('
 			SELECT *
-			FROM [contact]'
+			FROM [ad]'
 		);
 	}
 
@@ -15,14 +15,14 @@ class ContactModel
 	{
 		return dibi::fetchSingle('
 			SELECT content
-			FROM [contact]'
+			FROM [ad]'
 		);
 	}
 
 	public function update(array $data)
 	{
 		$data['date'] = time();
-		return dibi::query('UPDATE [contact] SET %a', $data);
+		return dibi::query('UPDATE [ad] SET %a', $data);
 	}
 
 }

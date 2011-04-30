@@ -56,6 +56,7 @@ Route::setStyleProperty('presenter', Route::FILTER_TABLE, array(
 	'autentizace' => 'Auth',
 	'nastaveni' => 'Settings',
 	'registrace' => 'Register',
+	'reklama' => 'Ad',
 ));
 
 Route::setStyleProperty('action', Route::FILTER_TABLE, array(

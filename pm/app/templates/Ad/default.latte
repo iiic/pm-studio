@@ -1,0 +1,124 @@
+{block content}
+
+<h2 n:block="title">{$data->title}</h2>
+
+{*!$data->content|texy*}
+
+<br>
+
+{control adForm begin}
+	{control adForm errors}
+	<fieldset>
+		<legend>cenová kalkulačka</legend>
+			<strong>
+				{$control['adForm']['print']->control}
+				{$control['adForm']['print']->label}
+			</strong><br>
+			<table id="print-box">
+				<tr>
+					<th>
+						{$control['adForm']['printMaterial']->label}
+					</th>
+					<td>
+						{$control['adForm']['printMaterial']->control}
+					</td>
+				</tr>
+				<tr>
+					<th>
+						{$control['adForm']['printColors']->label}
+					</th>
+					<td>
+						{$control['adForm']['printColors']->control}
+					</td>
+				</tr>
+				<tr>
+					<th>
+						{$control['adForm']['printArea']->label}
+					</th>
+					<td>
+						{$control['adForm']['printArea']->control} [m<sup>2</sup>]
+					</td>
+				</tr>
+				<tr>
+					<th>
+						{$control['adForm']['printCount']->label}
+					</th>
+					<td>
+						{$control['adForm']['printCount']->control}
+					</td>
+				</tr>
+			</table>
+			<strong>
+				{$control['adForm']['card']->control}
+				{$control['adForm']['card']->label}
+			</strong><br>
+			<table id="card-box">
+				<tr>
+					<th>
+						{$control['adForm']['cardSize']->label}
+					</th>
+					<td>
+						{$control['adForm']['cardSize']->control}
+					</td>
+				</tr>
+				<tr>
+					<th>
+						{$control['adForm']['cardColors']->label}
+					</th>
+					<td>
+						{$control['adForm']['cardColors']->control}
+					</td>
+				</tr>
+				<tr>
+					<th>
+						{$control['adForm']['cardCount']->label}
+					</th>
+					<td>
+						{$control['adForm']['cardCount']->control}
+					</td>
+				</tr>
+			</table>
+			<strong>
+				{$control['adForm']['car']->control}
+				{$control['adForm']['car']->label}
+			</strong><br>
+			<table id="car-box">
+				<tr>
+					<th>
+						{$control['adForm']['carSize']->label}
+					</th>
+					<td>
+						{$control['adForm']['carSize']->control}
+					</td>
+				</tr>
+				<tr>
+					<th>
+						{$control['adForm']['carColors']->label}
+					</th>
+					<td>
+						{$control['adForm']['carColors']->control}
+					</td>
+				</tr>
+				<tr>
+					<th>
+						{$control['adForm']['carCount']->label}
+					</th>
+					<td>
+						{$control['adForm']['carCount']->control}
+					</td>
+				</tr>
+			</table>
+			<br>
+			<br>
+			{$control['adForm']['save']->control} {$control['adForm']['null']->control}
+	</fieldset>
+{control adForm end}
+
+<fieldset id="result">
+	<legend>vypočtená cena</legend>
+	Zde se zobrazí předběžná cenová kalkulace
+</fieldset>
+
+<script>
+	var vatRatio = 0.1667; // koeficient pro výpočet DPH
+</script>

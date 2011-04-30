@@ -1,5 +1,4 @@
 // definice
-@sirka-stranky: 1024px - 20px; //20px má běžný posuvník
 @barva-pozadi: #060c0f;
 @barva-textu: #eee;
 @vyska-radku: 20px;
@@ -59,16 +58,6 @@
 		);
 	}
 
-	.odraz (@posun-odrazu: 12px; @od-pruhlednosti: 0.01; @do-pruhlednosti: 0.2) {
-		-webkit-box-reflect: below @posun-odrazu -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(@od-pruhlednosti, transparent), to(rgba(255,255,255,@do-pruhlednosti)));
-		// pro firefox 4.0 stále nic ;-( prej někde kolem 4.0.4 se dočláme
-	}
-
-	.odraz-velky {
-		-webkit-box-reflect: below -4px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.2, transparent), to(rgba(255,255,255,0.4)));
-		// pro firefox 4.0 stále nic ;-( prej někde kolem 4.0.4 se dočláme
-	}
-
 	.rotace (@stupen: -90deg) {
 		-webkit-transform:rotate(@stupen);
 		-moz-transform:rotate(@stupen);
@@ -120,9 +109,8 @@ body
 	font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
 	font-size:16px;
 	line-height:@vyska-radku;
-	width:(@sirka-stranky - 40px);
 	margin:auto;
-	padding:8px 20px 0 0;
+	padding:2px 4px;
 	color:@barva-textu;
 	background:@barva-pozadi;
 	@mixins > .debug(dashed; black);
@@ -158,7 +146,6 @@ header
 		font-weight:normal;
 		letter-spacing:-4px;
 		color:#444;
-		@mixins > .odraz;
 
 		em {
 			color:@barva-textu;
@@ -185,25 +172,16 @@ header
 			color:#333;
 			content:url({@cesta-k-obrazkum}pm.gif);
 			background:@barva-pozadi;
-			@mixins > .odraz(-4px; 0.2; 0.4);
 			@mixins > .debug(dotted);
 		}
 
 	}
 
 	strong {
-		float:right;
-		margin-top:-60px;
+		display:block;
+		margin:70px 4px 18px 0;
 		text-align:right;
-		font-size:52px;
-		width:220px;
-		line-height:50px;
-		text-shadow: 1px 1px 1px @barva-pozadi, 0px 0px 8px red, 0px 0px 8px red, 0px 0px 8px red, 0px 0px 8px red, 0px 0px 8px red, 0px 0px 16px #fff;
-
-		::first-line {
-			font-size:40px;
-		}
-
+		font-size:26px;
 	}
 
 }
@@ -218,92 +196,41 @@ h3
 // prostě menu
 nav
 {
-	position:relative;
-	margin:18px 0 20px 66px;
-	float:left;
-	width:655px;
-	height:700px;
-	background-image:url({@cesta-k-obrazkum}bg.gif);
-	z-index:1; // 1 je tu minimum, jinak půjde obtékaný text přes menu
-	background-position:left center;
-	background-repeat:no-repeat;
+	margin-bottom:30px;
 	@mixins > .debug(solid; navy);
 
 	ul {
-		padding-top:94px;
-		margin-left:140px;
 		@mixins > .debug(dotted; gray);
-		position:relative;
-		z-index:2;
-	}
 
-	li {
-		padding-top:22px;
-		list-style-position:inside;
-		text-align:left;
-		height:26px;
-		list-style-image:url({@cesta-k-obrazkum}bull.gif);
-		@mixins > .debug(dotted; black);
-
-		:nth-child(1) {
-			margin-left:132px;
-		}
-
-		:nth-child(2) {
-			margin-left:70px;
-		}
-
-		:nth-child(3) {
-			margin-left:18px;
-		}
-
-		:nth-child(4) {
-			margin-left:-24px;
-		}
-
-		:nth-child(5) {
-			margin-left:-60px;
-		}
-
-		:nth-child(6) {
-			margin-left:-80px;
-		}
-
-		:nth-child(7) {
-			//margin-left:140px;
-		}
-
-		:nth-child(8) {
-			//margin-left:140px;
-		}
-
-		:nth-child(9) {
-			//margin-left:140px;
-		}
-
-		a {
-			font-family:Lucida Console;
-			letter-spacing:2px;
-			color:@barva-textu;
-			height:26px;
-			margin-left:-34px;
-			padding-left:40px;
-			padding-top:2px;
+		li {
+			padding-top:16px;
 			text-align:left;
-			position:relative;
-			top:-8px;
-			display:inline-block;
-			font-size:18px;
-			@mixins > .debug(dotted; green);
+			height:26px;
+			list-style-image:url({@cesta-k-obrazkum}bull.gif);
+			@mixins > .debug(dotted; black);
 
-			:visited {
-				text-decoration:none;
-				color:@barva-textu - #222;
-			}
+			a {
+				color:@barva-textu;
+				margin-left:-34px;
+				padding-left:40px;
+				padding-top:2px;
+				text-align:left;
+				position:relative;
+				top:-8px;
+				display:inline-block;
+				font-size:18px;
+				@mixins > .debug(dotted; green);
 
-			:hover, :active, :focus{
-				text-decoration:none;
-				color:white;
+				:visited {
+					text-decoration:none;
+					color:@barva-textu - #222;
+				}
+
+				:hover, :active, :focus{
+					text-decoration:none;
+					color:white;
+				}
+
 			}
 
 		}
@@ -315,16 +242,12 @@ nav
 // hlavní obsahová část stránky
 section
 {
-	position:absolute;
+	position:relative;
 	top:0;
 	width:(@sirka-stranky - 20px);
 	text-align:left;
 	list-style:none;
 	@mixins > .debug(solid; green);
-
-	>h2 {
-		padding-top:200px;
-	}
 
 	h2 {
 		text-align:left;
@@ -334,12 +257,6 @@ section
 	p {
 		text-align:left;
 		margin-bottom:@vyska-radku;
-	}
-
-	.shift-left { // tento prvek posunuju směrem k menu do prostoru nad obrázek
-		position:relative;
-		left:-240px;
-		z-index:3;
 	}
 
 	ul {
@@ -352,7 +269,6 @@ section
 		padding:0;
 
 		li[id] {
-			padding-top:200px;
 			display:none;
 			list-style-type:none;
 
@@ -601,126 +517,10 @@ form
 
 }
 
-// form s id frm-contentForm slouží pro náhledy editovaných obsahů
-#frm-contentForm, #frm-contactForm, #frm-newsForm
-{
-	clear:both;
-
-	fieldset {// v něm obsažený fieldset
-		width:auto;
-
-		table {
-			width:100%;
-			@mixins > .debug(dashed; green);
-
-			textarea {
-				width:99%;
-			}
-
-			input {
-				[type="text"] {
-					width:300px;
-				}
-
-			}
-
-		}
-
-	}
-
-}
-
-// formulář pro přidání komentáře k novince
-#frm-commentForm {
-	clear:both;
-	margin-bottom:60px;
-}
-
-// formulář s kontaktem
-#frm-contactForm
-{
-	th {
-		width:200px;
-	}
-}
-
-// formulář pro přihlášení uživatele do aplikace
-#frm-authForm
-{
-	margin-top:50px;
-	position:relative;
-	left:-160px;
-
-	input {
-		[type="text"], [type="password"] {
-			width:260px;
-		}
-	}
-}
-
-// formulář pro výběr obsahové sekce k editaci
-#frm-selectSectionForm
-{
-	margin-bottom:80px;
-}
-
-// kontakt - odeslání mailu
-#frm-mailForm, #frm-contact-mailForm // tyto id jsou stejný formulář, rozdíl je jen v tom, že druhý jmenovaný je v komponentě
-{
-	float:left;
-	margin:12px auto 60px auto;
-
-	fieldset {
-		width:540px;
-
-		input {
-			[type="text"] {
-				width:350px;
-			}
-		}
-	}
-
-}
-
-// nová registrace
-#frm-register-registerForm, #frm-registerForm
-{
-	margin-top:80px;
-	left:-200px;
-}
-
-// výběr sekce pro editaci
-#frm-selectSectionForm
-{
-	margin-top:190px; 
-}
-
-// formulář pro editaci položek menu
-#frm-menuForm
-{
-	clear:both;
-	margin-bottom:60px;
-
-	tr {
-		height:32px;
-
-		select {
-			margin-top:18px;
-		}
-
-		th {
-			vertical-align:bottom;
-			padding-bottom:6px;
-		}
-
-	}
-
-}
-
 // (boční) část stránky, jejíž obsah nesouvisí (jen málo souvisí) s hlavní obsahovou částí stránky
 aside
 {
-	margin-top:60px;
+	margin:30px 0 30px 0;
 	@mixins > .debug(dashed; green);
 
 	p {
@@ -779,27 +579,8 @@ aside
 // klasická patička má vlastní element
 footer
 {
-	position:fixed;
-	z-index:1;
-	bottom:0;
-	left:0;
 	background:@barva-pozadi;
-	width:100%;
 	@mixins > .debug(solid; blue);
-}
-
-// hr předělané na podúrovňové pozadí meníčka
-#bg
-{
-	background: url({@cesta-k-obrazkum}hr.gif) 0 0 repeat-y;
-	height:560px;
-	width:450px;
-	display:block;
-	position:absolute;
-	margin-left:210px;
-	top:30px;
-	z-index:-1;
-	@mixins > .vnitrni-stin-celkovy;
 }
 
 /* zajímavé skutečnosti:

@@ -15,8 +15,8 @@ GIT 1.7.0.2 msgit
 HTML5
 CSS3
 Less CSS 0.2.0 lessphp
-Poedit 1.4.6
-NetBeans IDE 7.0 Beta 2 (PHP Nette Framework plugin, Git plugin)
+//Poedit 1.4.6
+NetBeans IDE 7.0 (PHP Nette Framework plugin, Git plugin)
 mspaint 5.1
 Firefox 4.0 (Firebug 1.7.0, FireQuery 0.9, FireLogger 0.9, HTML validator 0.9.0.4)
 
@@ -64,11 +64,11 @@ Globální nastavení webu je k nalezení v sekci 'upravit nastavení webu' (/se
 
 Ručně testováno zobrazení a funkce na prohlížečích @todo: otestovat
 
-@todo: udělat alespoň pár ukázkových unit testů.
+unit testy: bez šance
 
 
 
 ukázka na http://sl.edov.at
 zdrojové kódy https://github.com/iiic/pm-studio
 
-poslední změna 27. 03. 2011
+poslední změna 30. 04. 2011

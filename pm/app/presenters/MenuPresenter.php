@@ -7,7 +7,8 @@ use Nette\Application\AppForm,
 class MenuPresenter extends BasePresenter
 {
 
-	private $menu_items = array('prázdné', 'novinky', 'kontakt', 'registrace');// v databázi jsou tyto položky jako 'prázdné' p_type 1, 'novinky' p_type 2... a p_type 0 je pro vlastní obsah
+	private $menu_items = array('prázdné', 'vlastní obsah', 'novinky', 'kontakt', 'reklama', 'registrace');// v databázi jsou tyto položky jako 'prázdné' p_type 1, 'novinky' p_type 2... a p_type 0 je pro vlastní obsah
+	private $menu_hashes = array('', '', 'novinky', 'kontakt', 'reklama', 'registrace');
 
 	public function renderDefault()
 	{
@@ -19,17 +20,17 @@ class MenuPresenter extends BasePresenter
 			if(!$row) {
 				throw new Nette\Application\BadRequestException('Nepodařilo se načíst data');
 			}
-			$r['p1'] = $row[0]->p_type-1; $r['cvp1'] = $row[0]->title; if($row[0]->p_type == 0){ $r['cp1'] = 1; }
-			$r['p2'] = $row[1]->p_type-1; $r['cvp2'] = $row[1]->title; if($row[1]->p_type == 0){ $r['cp2'] = 1; }
-			$r['p3'] = $row[2]->p_type-1; $r['cvp3'] = $row[2]->title; if($row[2]->p_type == 0){ $r['cp3'] = 1; }
-			$r['p4'] = $row[3]->p_type-1; $r['cvp4'] = $row[3]->title; if($row[3]->p_type == 0){ $r['cp4'] = 1; }
-			$r['p5'] = $row[4]->p_type-1; $r['cvp5'] = $row[4]->title; if($row[4]->p_type == 0){ $r['cp5'] = 1; }
-			$r['p6'] = $row[5]->p_type-1; $r['cvp6'] = $row[5]->title; if($row[5]->p_type == 0){ $r['cp6'] = 1; }
-			$r['p7'] = $row[6]->p_type-1; $r['cvp7'] = $row[6]->title; if($row[6]->p_type == 0){ $r['cp7'] = 1; }
-			$r['p8'] = $row[7]->p_type-1; $r['cvp8'] = $row[7]->title; if($row[7]->p_type == 0){ $r['cp8'] = 1; }
-			$r['p9'] = $row[8]->p_type-1; $r['cvp9'] = $row[8]->title; if($row[8]->p_type == 0){ $r['cp9'] = 1; }
-			$r['p10'] = $row[9]->p_type-1; $r['cvp10'] = $row[9]->title; if($row[9]->p_type == 0){ $r['cp10'] = 1; }
-			$r['p11'] = $row[10]->p_type-1; $r['cvp11'] = $row[10]->title; if($row[10]->p_type == 0){ $r['cp11'] = 1; }
+			$r['p_type_1'] = $row[0]->p_type; $r['title_1'] = $row[0]->title; if( ($row[0]->title != '') || ($row[0]->p_type == 1) ){ $r['custom_title_1'] = 1; }
+			$r['p_type_2'] = $row[1]->p_type; $r['title_2'] = $row[1]->title; if( ($row[1]->title != '') || ($row[1]->p_type == 1) ){ $r['custom_title_2'] = 1; }
+			$r['p_type_3'] = $row[2]->p_type; $r['title_3'] = $row[2]->title; if( ($row[2]->title != '') || ($row[2]->p_type == 1) ){ $r['custom_title_3'] = 1; }
+			$r['p_type_4'] = $row[3]->p_type; $r['title_4'] = $row[3]->title; if( ($row[3]->title != '') || ($row[3]->p_type == 1) ){ $r['custom_title_4'] = 1; }
+			$r['p_type_5'] = $row[4]->p_type; $r['title_5'] = $row[4]->title; if( ($row[4]->title != '') || ($row[4]->p_type == 1) ){ $r['custom_title_5'] = 1; }
+			$r['p_type_6'] = $row[5]->p_type; $r['title_6'] = $row[5]->title; if( ($row[5]->title != '') || ($row[5]->p_type == 1) ){ $r['custom_title_6'] = 1; }
+			$r['p_type_7'] = $row[6]->p_type; $r['title_7'] = $row[6]->title; if( ($row[6]->title != '') || ($row[6]->p_type == 1) ){ $r['custom_title_7'] = 1; }
+			$r['p_type_8'] = $row[7]->p_type; $r['title_8'] = $row[7]->title; if( ($row[7]->title != '') || ($row[7]->p_type == 1) ){ $r['custom_title_8'] = 1; }
+			$r['p_type_9'] = $row[8]->p_type; $r['title_9'] = $row[8]->title; if( ($row[8]->title != '') || ($row[8]->p_type == 1) ){ $r['custom_title_9'] = 1; }
+			$r['p_type_10'] = $row[9]->p_type; $r['title_10'] = $row[9]->title; if( ($row[9]->title != '') || ($row[9]->p_type == 1) ){ $r['custom_title_10'] = 1; }
+			$r['p_type_11'] = $row[10]->p_type; $r['title_11'] = $row[10]->title; if( ($row[10]->title != '') || ($row[10]->p_type == 1) ){ $r['custom_title_11'] = 1; }
 			$form->setDefaults($r);
 		}
 	}
@@ -43,93 +44,82 @@ class MenuPresenter extends BasePresenter
 		$form->getElementPrototype();
 		$form->addGroup('Formulář pro sestavení menu');
 
-		$form->addSelect('p1', '1. položka', $this->menu_items);
-		$form->addText('cvp1', '1. vlastní sekce')
-			->setOption('id', 'cvp1')
-			->setOption('class', 'move-up');
-		$form->addCheckbox('cp1', 'vlastní')
+		$form->addSelect('p_type_1', '1. položka', $this->menu_items);
+		$form->addText('title_1', 'vlastní nadpis')
+			->setOption('id', 'title_1');
+		$form->addCheckbox('custom_title_1', 'použí vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE)// conditional rule: if is checkbox checked...
-				->toggle('cvp1');
+				->toggle('title_1');
 
-		$form->addSelect('p2', '2. položka', $this->menu_items);
-		$form->addText('cvp2', '2. vlastní sekce')
-			->setOption('id', 'cvp2')
-			->setOption('class', 'move-up');
-		$form->addCheckbox('cp2', 'vlastní')
+		$form->addSelect('p_type_2', '2. položka', $this->menu_items);
+		$form->addText('title_2', 'vlastní nadpis')
+			->setOption('id', 'title_2');
+		$form->addCheckbox('custom_title_2', 'použí vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
-				->toggle('cvp2');
+				->toggle('title_2');
 
-		$form->addSelect('p3', '3. položka', $this->menu_items);
-		$form->addText('cvp3', '3. vlastní sekce')
-			->setOption('id', 'cvp3')
-			->setOption('class', 'move-up');
-		$form->addCheckbox('cp3', 'vlastní')
+		$form->addSelect('p_type_3', '3. položka', $this->menu_items);
+		$form->addText('title_3', 'vlastní nadpis')
+			->setOption('id', 'title_3');
+		$form->addCheckbox('custom_title_3', 'použí vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
-				->toggle('cvp3');
+				->toggle('title_3');
 
-		$form->addSelect('p4', '4. položka', $this->menu_items);
-		$form->addText('cvp4', '4. vlastní sekce')
-			->setOption('id', 'cvp4')
-			->setOption('class', 'move-up');
-		$form->addCheckbox('cp4', 'vlastní')
+		$form->addSelect('p_type_4', '4. položka', $this->menu_items);
+		$form->addText('title_4', 'vlastní nadpis')
+			->setOption('id', 'title_4');
+		$form->addCheckbox('custom_title_4', 'použí vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
-				->toggle('cvp4');
+				->toggle('title_4');
 
-		$form->addSelect('p5', '5. položka', $this->menu_items);
-		$form->addText('cvp5', '5. vlastní sekce')
-			->setOption('id', 'cvp5')
-			->setOption('class', 'move-up');
-		$form->addCheckbox('cp5', 'vlastní')
+		$form->addSelect('p_type_5', '5. položka', $this->menu_items);
+		$form->addText('title_5', 'vlastní nadpis')
+			->setOption('id', 'title_5');
+		$form->addCheckbox('custom_title_5', 'použí vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
-				->toggle('cvp5');
+				->toggle('title_5');
 
-		$form->addSelect('p6', '6. položka', $this->menu_items);
-		$form->addText('cvp6', '6. vlastní sekce')
-			->setOption('id', 'cvp6')
-			->setOption('class', 'move-up');
-		$form->addCheckbox('cp6', 'vlastní')
+		$form->addSelect('p_type_6', '6. položka', $this->menu_items);
+		$form->addText('title_6', 'vlastní nadpis')
+			->setOption('id', 'title_6');
+		$form->addCheckbox('custom_title_6', 'použí vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
-				->toggle('cvp6');
+				->toggle('title_6');
 
-		$form->addSelect('p7', '7. položka', $this->menu_items);
-		$form->addText('cvp7', '7. vlastní sekce')
-			->setOption('id', 'cvp7')
-			->setOption('class', 'move-up');
-		$form->addCheckbox('cp7', 'vlastní')
+		$form->addSelect('p_type_7', '7. položka', $this->menu_items);
+		$form->addText('title_7', 'vlastní nadpis')
+			->setOption('id', 'title_7');
+		$form->addCheckbox('custom_title_7', 'použí vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
-				->toggle('cvp7');
+				->toggle('title_7');
 
-		$form->addSelect('p8', '8. položka', $this->menu_items);
-		$form->addText('cvp8', '8. vlastní sekce')
-			->setOption('id', 'cvp8')
-			->setOption('class', 'move-up');
-		$form->addCheckbox('cp8', 'vlastní')
+		$form->addSelect('p_type_8', '8. položka', $this->menu_items);
+		$form->addText('title_8', 'vlastní nadpis')
+			->setOption('id', 'title_8');
+		$form->addCheckbox('custom_title_8', 'použí vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
-				->toggle('cvp8');
+				->toggle('title_8');
 
-		$form->addSelect('p9', '9. položka', $this->menu_items);
-		$form->addText('cvp9', '9. vlastní sekce')
-			->setOption('id', 'cvp9')
-			->setOption('class', 'move-up');
-		$form->addCheckbox('cp9', 'vlastní')
+		$form->addSelect('p_type_9', '9. položka', $this->menu_items);
+		$form->addText('title_9', 'vlastní nadpis')
+			->setOption('id', 'title_9');
+		$form->addCheckbox('custom_title_9', 'použí vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
-				->toggle('cvp9');
+				->toggle('title_9');
 
-		$form->addSelect('p10', '10. položka', $this->menu_items);
-		$form->addText('cvp10', '10. vlastní sekce')
-			->setOption('id', 'cvp10')
-			->setOption('class', 'move-up');
-		$form->addCheckbox('cp10', 'vlastní')
+		$form->addSelect('p_type_10', '10. položka', $this->menu_items);
+		$form->addText('title_10', 'vlastní nadpis')
+			->setOption('id', 'title_10');
+		$form->addCheckbox('custom_title_10', 'použí vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
-				->toggle('cvp10');
+				->toggle('title_10');
 
-		$form->addSelect('p11', '11. položka', $this->menu_items);
-		$form->addText('cvp11', '11. vlastní sekce')
-			->setOption('id', 'cvp11')
-			->setOption('class', 'move-up');
-		$form->addCheckbox('cp11', 'vlastní')
+		$form->addSelect('p_type_11', '11. položka', $this->menu_items);
+		$form->addText('title_11', 'vlastní nadpis')
+			->setOption('id', 'title_11');
+		$form->addCheckbox('custom_title_11', 'použí vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
-				->toggle('cvp11');
+				->toggle('title_11');
 
 		$form->addSubmit('save', 'uložit');
 		$form->addSubmit('cancel', 'zrušit')->setValidationScope(NULL);
@@ -145,20 +135,18 @@ class MenuPresenter extends BasePresenter
 	{
 		if($form['save']->isSubmittedBy()) {
 			$values = $form->values;
-			$data = array(
-				array('id' => 1, 'p_type' => ($values['cp1']==1)? 0 : $values['p1']+1, 'title' => $values['cvp1']),
-				array('id' => 2, 'p_type' => ($values['cp2']==1)? 0 : $values['p2']+1, 'title' => $values['cvp2']),
-				array('id' => 3, 'p_type' => ($values['cp3']==1)? 0 : $values['p3']+1, 'title' => $values['cvp3']),
-				array('id' => 4, 'p_type' => ($values['cp4']==1)? 0 : $values['p4']+1, 'title' => $values['cvp4']),
-				array('id' => 5, 'p_type' => ($values['cp5']==1)? 0 : $values['p5']+1, 'title' => $values['cvp5']),
-				array('id' => 6, 'p_type' => ($values['cp6']==1)? 0 : $values['p6']+1, 'title' => $values['cvp6']),
-				array('id' => 7, 'p_type' => ($values['cp7']==1)? 0 : $values['p7']+1, 'title' => $values['cvp7']),
-				array('id' => 8, 'p_type' => ($values['cp8']==1)? 0 : $values['p8']+1, 'title' => $values['cvp8']),
-				array('id' => 9, 'p_type' => ($values['cp9']==1)? 0 : $values['p9']+1, 'title' => $values['cvp9']),
-				array('id' => 10, 'p_type' => ($values['cp10']==1)? 0 : $values['p10']+1, 'title' => $values['cvp10']),
-				array('id' => 11, 'p_type' => ($values['cp11']==1)? 0 : $values['p11']+1, 'title' => $values['cvp11']),
-				array('id' => 12, 'p_type' => ($values['cp12']==1)? 0 : $values['p12']+1, 'title' => $values['cvp12']),
-			);
+			$data = array();
+			for($i=1; $i<12; $i++) {
+				$id = $i;
+				$p_type = $values['p_type_'.$i];
+				$hash = $this->menu_hashes[$values['p_type_'.$i]];
+				$title = ($values['custom_title_'.$i]==1) ? $values['title_'.$i] : '';
+				if($p_type != 1) {
+					$data[] = array('id' => $id, 'p_type' => $p_type, 'hash' => $hash, 'title' => $title);
+				} else {
+					$data[] = array('id' => $id, 'p_type' => $p_type, 'title' => $title);
+				}
+			}
 			$menu = new MenuModel;
 			$menu->update($data);
 			$this->flashMessage('Úpravy v menu byly uloženy.');

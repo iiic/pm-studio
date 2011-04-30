@@ -3,18 +3,21 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="author" content="ic - ic.czech@gmail.com">
-		<link rel="made" href="ic.czech@gmail.com">
+		<meta name="viewport" content="width=device-width">{* říká smartphonům (Android, iPhone, ...) že mají použít svou skutečnou šířku monitoru a nesnažit se simulovat skutečný počítač *}
 		<meta n:ifset="$robots" name="robots" content="{$robots}">
 		<meta n:ifset="$settings->description" name="description" content="{$settings->description}">
+		<link rel="made" href="ic.czech@gmail.com">
 		<link rel="profile" href="http://purl.org/uF/2008/03/">{* profile="http://purl.org/uF/2008/03/" značí specifikaci hodně druhů mikroformátů (včetně hCard), které nejsou ve stádiu návrhu, což je třeba hAtom: http://purl.org/uF/hAtom/0.1/ *}
 		<link rel="profile" href="http://purl.org/uF/hAtom/0.1/">
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">{* ikonka webu *}
 		<link rel="home" href="{$basePath}" title="úvodní stránka">{* odkaz na homepage *}
-		<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+		<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->{* javascriptová oprava vad v IE8 a menších *}
 		<link n:if="$presenter->getParam(Nette\Application\Presenter::FLASH_KEY)" rel="canonical" href="{link this, Nette\Application\Presenter::FLASH_KEY => NULL}">{* v případě existence flash identifikátoru v uri (_fid=XXXX) přidá odkaz na kanonickou adresu *}
 		{if $settings->style != '0'}
-			{var $css = array('null', 'screen.less', 'pokus.less')}
-			{control css $css[$settings->style]}
+			{var $css = array('null', 'black', 'pokus')}
+			<!--[if lt IE 9]>{control cssSmall $css[$settings->style].'/netbook.less'}<![endif]-->{* pro IE starší než 9 je tu takovýhle hack, aby z nich nebyla mobilní verze *}
+			{control cssSmall $css[$settings->style].'/smartphone.less'}{* defaultní vzhled je pro smartphony, aby nemusely (na často mobilním) připojení stahovat veškerou luxusní grafiku s obrázky pro normální počítače.  *}
+			{control cssBig $css[$settings->style].'/netbook.less'}
 		{/if}
 		<title>{block #title|striptags|trim}{/block} | {$settings->title}</title>
 		{* @todo: vložit google analytics sem *}
@@ -53,6 +56,7 @@
 				<a n:href="content:edit">upravit obsah obsahových sekcí</a><br>
 				<a n:href="contact:edit">upravit kontakt</a><br>
 				<a n:href="settings:">upravit nastavení webu</a><br>
+				<a n:href="auth:logout">odhlásit se</a><br>
 			</p>
 		</aside>
 
@@ -63,42 +67,42 @@
 		</footer>
 
 		{control packedJs 'jquery.js', 'jquery.ajaxform.js', 'jquery.nette.js', 'netteForms.js', 'my.scripts.js'}
-			<script>
-				{if $settings->default_presenter != '0' && $presenter->getName() == 'Default'}
-					if(!location.hash) {
-						window.location.replace("#{!$settings->default_presenter}");
-					}
-				{/if}
-				{ifset $_GET['lol']}
-					// pěkná animace posunu pozadí objektu, ale náročná jak sviňa,
-					//lepší by to teoreticky mělo být na Win7 s některým prohlížečem,
-					//který podporuje hardwarovou akceleraci webu, ale tohle nemohu vyzkoušet.
-					var scrollSpeed = 1; 		// Speed in milliseconds
-					var step = 1; 				// How many pixels to move per step
-					var current = 0;			// The current pixel row
-					var imageHeight = 2247;		// Background image width
-					var headerHeight = 1280;		// How wide the header is.
-					//The pixel row where to start a new loop
-					var restartPosition = -(imageHeight - headerHeight);
-					function scrollBg(){
-						//Go to next pixel row.
-						current -= step;
-						//If at the end of the image, then go to the top.
-						if (current == restartPosition){
-							current = 0;
-						}
-						//Set the CSS of the header.
-						$('#bg').css("background-position","58% "+current+"px");
-					}
-					//Calls the scrolling function repeatedly
-					var init = setInterval("scrollBg()", scrollSpeed);
-				{/ifset}
-				if( ($.browser.msie) && (parseInt($.browser.version, 10) > 7) ) {
-					el = document.getElementsByTagName('ul')[0].children;
-					for(var i = 0; i < el.length; i++) {
-						el[i].lastChild.href = el[i].lastChild.getAttribute('data-rel-bookmark');
-					}
+		<script>
+			{if $settings->default_presenter != '0' && $presenter->getName() == 'Default'}
+				if(!location.hash) {
+					window.location.replace("#{!$settings->default_presenter}");
 				}
-			</script>
+			{/if}
+			{ifset $_GET['lol']}
+				// pěkná animace posunu pozadí objektu, ale náročná jak sviňa,
+				//lepší by to teoreticky mělo být na Win7 s některým prohlížečem,
+				//který podporuje hardwarovou akceleraci webu, ale tohle nemohu vyzkoušet.
+				var scrollSpeed = 1; 		// Speed in milliseconds
+				var step = 1; 				// How many pixels to move per step
+				var current = 0;			// The current pixel row
+				var imageHeight = 2247;		// Background image width
+				var headerHeight = 1280;	// How wide the header is.
+				//The pixel row where to start a new loop
+				var restartPosition = -(imageHeight - headerHeight);
+				function scrollBg(){
+					//Go to next pixel row.
+					current -= step;
+					//If at the end of the image, then go to the top.
+					if (current == restartPosition){
+						current = 0;
+					}
+					//Set the CSS of the header.
+					$('#bg').css("background-position","58% "+current+"px");
+				}
+				//Calls the scrolling function repeatedly
+				var init = setInterval("scrollBg()", scrollSpeed);
+			{/ifset}
+			if( ($.browser.msie) && (parseInt($.browser.version, 10) > 7) ) {
+				el = document.getElementsByTagName('ul')[0].children;
+				for(var i = 0; i < el.length; i++) {
+					el[i].lastChild.href = el[i].lastChild.getAttribute('data-rel-bookmark');
+				}
+			}
+		</script>
 	</body>
 </html>

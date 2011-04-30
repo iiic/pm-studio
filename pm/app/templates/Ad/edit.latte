@@ -1,0 +1,13 @@
+{block #content}
+
+<h2 n:block="title">Editovat raklamu</h2>
+
+{control contactForm}
+
+{snippet content section}
+	{ifset $content}
+		{!$content|texy}
+	{else}
+		<p>Zde se zobrazí náhled upravované sekce reklama.</p>
+	{/ifset}
+{/snippet}

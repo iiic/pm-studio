@@ -20,7 +20,7 @@ class ContentPresenter extends BasePresenter
 			$this->redirect('content:');
 		} else {
 			foreach($this->template->siteContent as $content) {
-				if( ($content->p_type == 0) && ($content->hash == $id) ) {
+				if( ($content->p_type == 1) && ($content->hash == $id) ) {
 					$this->template->title = $content->title;
 					$this->template->content = $content->content;
 				}

@@ -3,7 +3,7 @@
 <h2 n:block="title">Naše sekce</h2>
 
 <ul n:inner-foreach="$siteContent as $item">
-	<li n:if="$item->p_type == 0">
+	<li n:if="$item->p_type == 1">
 		<a n:href="content:view, $item->hash">{$item->title}</a>
 	</li>
 </ul>

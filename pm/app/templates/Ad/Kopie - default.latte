@@ -1,0 +1,15 @@
+{block content}
+
+<h2 n:block="title">{$data->title}</h2>
+
+{*!$data->content|texy*}
+
+<br>
+
+<fieldset id="calc">{* Trochu finta, ale výsledek vypadá pěkně... ještě že nejde o XHTML 1.1 , tam by to byl problém *}
+	{control adForm}
+</fieldset>
+
+<fieldset id="calc-result">
+	Zde se zobrazí předběžná cenová kalkulace
+</fieldset>
