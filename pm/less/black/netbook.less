@@ -606,7 +606,7 @@ form
 }
 
 // form s id frm-contentForm slouží pro náhledy editovaných obsahů
-#frm-contentForm, #frm-contactForm, #frm-newsForm
+#frm-contentForm, #frm-contactForm, #frm-newsForm, #frm-adEditForm
 {
 	clear:both;
 
@@ -634,8 +634,25 @@ form
 
 }
 
+// formulář pro výpočet reklamy
+#frm-adEditForm
+{
+	
+
+	#frmadEditForm-content { // první textarea ve formuláři
+		height:120px;
+		width:99% !important;
+	}
+
+	textarea {
+		height:40px;
+		width:400px !important;
+	}
+}
+
 // formulář pro přidání komentáře k novince
-#frm-commentForm {
+#frm-commentForm
+{
 	clear:both;
 	margin-bottom:60px;
 }
@@ -722,7 +739,7 @@ form
 }
 
 // kalkulace reklamy
-#frm-adForm
+#frm-adForm, #frm-ad-adForm
 {
 	clear:both;
 	float:left;
@@ -757,6 +774,10 @@ form
 
 	span {
 		margin-top:-70px;
+		float:right;
+	}
+
+	small {
 		float:right;
 	}
 

@@ -23,21 +23,21 @@ jQuery.fn.calculator = function() {
 		var localCount = 0;
 		result += '<h4>'+$('#frmadForm-print').next().text()+'</h4>';
 
+		r = $(this).getRowFromId('frmadForm-printArea');
+		result += r[1]+' [m<sup>2</sup>]<br>';
+
+		c = $(this).getRowFromId('frmadForm-printCount');
+		result += c[1]+'<br>';
+
 		n = $(this).getRowFromId('frmadForm-printMaterial');
-		localCount += n[0];
-		result += n[1];
+		actPlus = (n[0] * r[0] * c[0]);
+		localCount += actPlus;
+		result += n[1]+'<small>'+actPlus.toFixed(2)+' Kč</small><br>';
 
 		n = $(this).getRowFromId('frmadForm-printColors');
-		localCount *= n[0];
-		result += n[1];
-
-		n = $(this).getRowFromId('frmadForm-printArea');
-		localCount *= n[0];
-		result += n[1];
-
-		n = $(this).getRowFromId('frmadForm-printCount');
-		localCount *= n[0];
-		result += n[1];
+		actPlus = (n[0] * r[0] * c[0]);
+		localCount += actPlus;
+		result += n[1]+'<small>'+actPlus.toFixed(2)+' Kč</small><br>';
 
 		result += '<hr>';
 
@@ -57,17 +57,18 @@ jQuery.fn.calculator = function() {
 		var localCount = 0;
 		result += '<h4>'+$('#frmadForm-card').next().text()+'</h4>';
 
+		c = $(this).getRowFromId('frmadForm-cardCount');
+		result += c[1]+'<br>';
+
 		n = $(this).getRowFromId('frmadForm-cardSize');
-		localCount += n[0];
-		result += n[1];
+		actPlus = (n[0] * c[0]);
+		localCount += actPlus;
+		result += n[1]+'<small>'+actPlus.toFixed(2)+' Kč</small><br>';
 
 		n = $(this).getRowFromId('frmadForm-cardColors');
-		localCount *= n[0];
-		result += n[1];
-
-		n = $(this).getRowFromId('frmadForm-cardCount');
-		localCount *= n[0];
-		result += n[1];
+		actPlus = (n[0] * c[0]);
+		localCount += actPlus;
+		result += n[1]+'<small>'+actPlus.toFixed(2)+' Kč</small><br>';
 
 		result += '<hr>';
 
@@ -87,17 +88,18 @@ jQuery.fn.calculator = function() {
 		var localCount = 0;
 		result += '<h4>'+$('#frmadForm-car').next().text()+'</h4>';
 
+		c = $(this).getRowFromId('frmadForm-carCount');
+		result += c[1]+'<br>';
+
 		n = $(this).getRowFromId('frmadForm-carSize');
-		localCount += n[0];
-		result += n[1];
+		actPlus = (n[0] * c[0]);
+		localCount += actPlus;
+		result += n[1]+'<small>'+actPlus.toFixed(2)+' Kč</small><br>';
 
 		n = $(this).getRowFromId('frmadForm-carColors');
-		localCount *= n[0];
-		result += n[1];
-
-		n = $(this).getRowFromId('frmadForm-carCount');
-		localCount *= n[0];
-		result += n[1];
+		actPlus = (n[0] * c[0]);
+		localCount += actPlus;
+		result += n[1]+'<small>'+actPlus.toFixed(2)+' Kč</small><br>';
 
 		result += '<hr>';
 
@@ -124,7 +126,7 @@ jQuery.fn.calculator = function() {
 		} else {
 			count = (Math.round(count * 10)/10);
 			vat = (Math.round(count * vatRatio * 10)/10);
-			$('#result').append('<table><tr>');
+			$('#result').append('<br><table><tr>');
 			$('#result').append('<th>cena bez DPH : </th><td>'+(count - vat).toFixed(2)+' Kč</td>');
 			$('#result').append('</tr><tr>');
 			$('#result').append('<th>+ DPH : </th><td>'+vat.toFixed(2)+' Kč</td>');
@@ -140,7 +142,7 @@ jQuery.fn.getRowFromId = function(id) {
 		selectedText = $('#'+id+' option:selected').text();
 		selectedLabel = jQuery.trim($('#'+id).parent().prev().text());
 		num = parseFloat(selectedText.split('|')[1]);
-		result = '<b>'+selectedLabel+'</b> '+selectedText.split('|')[0]+'<br>';
+		result = '<b>'+selectedLabel+'</b> '+selectedText.split('|')[0];
 		return [num, result];
 	} else if($('#'+id).is('input')) {
 		insertedValue = $('#'+id).val();
@@ -148,19 +150,19 @@ jQuery.fn.getRowFromId = function(id) {
 		insertedValue = insertedValue.replace(' ',''); // odstraní mezery v číslech
 		inserdedLabel = jQuery.trim($('#'+id).parent().prev().text());
 		num = parseFloat(insertedValue);
-		result = '<b>'+inserdedLabel+'</b> '+insertedValue+'<br>';
+		result = '<b>'+inserdedLabel+'</b> '+insertedValue;
 		return [num, result];
 	} else {
 		return false;
 	}
 };
 
-$("#frm-adForm").live("submit", function () {
+$("#frm-adForm,#frm-ad-adForm").live("submit", function () {
 	$(this).calculator();
 	return false;
 });
 
-$("#frm-adForm :submit").live("click", function () {
+$("#frm-adForm :submit,#frm-ad-adForm :submit").live("click", function () {
 	$(this).calculator();
 	return false;
 });

@@ -24,6 +24,12 @@ class DefaultPresenter extends BasePresenter
 		return $data;
 	}
 
+	public function createComponentAd()
+	{
+		$data = new AdControl();
+		return $data;
+	}
+
 	public function renderDefault()
 	{
 		//nic

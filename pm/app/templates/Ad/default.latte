@@ -2,7 +2,7 @@
 
 <h2 n:block="title">{$data->title}</h2>
 
-{*!$data->content|texy*}
+{!$data->content|texy}
 
 <br>
 
@@ -120,5 +120,5 @@
 </fieldset>
 
 <script>
-	var vatRatio = 0.1667; // koeficient pro výpočet DPH
+	var vatRatio = {!$data->vatRatio}; // koeficient pro výpočet DPH
 </script>
