@@ -7,12 +7,12 @@ use Nette\Application\AppForm,
 class AdPresenter extends BasePresenter
 {
 
-	private $printMaterial;
-	private $printColors;
-	private $cardSize;
-	private $cardColors;
-	private $carSize;
-	private $carColors;
+	public $printMaterial;
+	public $printColors;
+	public $cardSize;
+	public $cardColors;
+	public $carSize;
+	public $carColors;
 
 	public function renderDefault()
 	{

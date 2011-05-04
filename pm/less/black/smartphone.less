@@ -7,8 +7,8 @@
 @velikost-radio-checkbox: 16px; // musí jít o čtverec (!) takže zadaná velikost je délka jedné strany
 @vzdalenost-obrazku-radio-checkbox: 4px; // vzdálenost mezi jednotlivými klikatelnými ikonkami na obrázku
 @posun-radio-checkbox: 2px;
-//@cesta-k-obrazkum: 'images/'; // Úvodní lomítko nemůže být v cestě, ale musí být u každé položky zvlášť, asi bug.
-@cesta-k-obrazkum: '../../www/images/';
+@cesta-k-obrazkum: 'images/'; // Úvodní lomítko nemůže být v cestě, ale musí být u každé položky zvlášť, asi bug.
+//@cesta-k-obrazkum: '../../www/images/';
 
 
 
@@ -170,7 +170,7 @@ header
 			margin-top:-32px;
 			margin-left:-236px;
 			color:#333;
-			content:url({@cesta-k-obrazkum}pm.gif);
+			content:url(/{@cesta-k-obrazkum}pm.gif);
 			background:@barva-pozadi;
 			@mixins > .debug(dotted);
 		}
@@ -206,7 +206,7 @@ nav
 			padding-top:16px;
 			text-align:left;
 			height:26px;
-			list-style-image:url({@cesta-k-obrazkum}bull.gif);
+			list-style-image:url(/{@cesta-k-obrazkum}bull.gif);
 			@mixins > .debug(dotted; black);
 
 			a {
@@ -451,7 +451,7 @@ form
 	}
 
 	fieldset:not(#foo) input + label {
-		background:url({@cesta-k-obrazkum}inputs.png) 0 @posun-radio-checkbox no-repeat;
+		background:url(/{@cesta-k-obrazkum}inputs.png) 0 @posun-radio-checkbox no-repeat;
 		height:@velikost-radio-checkbox;
 	}
 

@@ -2,12 +2,14 @@
 
 <strong n:block="title" class="hide">Vítejte</strong>
 
-<ul n:inner-foreach="$siteContent as $item">
-	<li n:ifset="$item->link" id="{$item->hash}">
-		{if $item->link=='content'}
-			{!$item->content|texy}
-		{else}
-			{control $item->link}
-		{/if}
-	</li>
-</ul>
+{cache 'default', expire => '+'.$settings->cache.' minutes', if => $settings->cache > 0}
+	<ul n:inner-foreach="$siteContent as $item">
+		<li n:ifset="$item->link" id="{$item->hash}">
+			{if $item->link=='content'}
+				{!$item->content|texy}
+			{else}
+				{control $item->link}
+			{/if}
+		</li>
+	</ul>
+{/cache}

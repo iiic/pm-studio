@@ -16,7 +16,7 @@ HTML5
 CSS3
 Less CSS 0.2.0 lessphp
 //Poedit 1.4.6
-NetBeans IDE 7.0 (PHP Nette Framework plugin, Git plugin)
+NetBeans IDE 7.0 (PHP Nette Framework plugin - http://plugins.netbeans.org/PluginPortal/faces/PluginDetailPage.jsp?pluginid=32720, Git plugin)
 mspaint 5.1
 Firefox 4.0 (Firebug 1.7.0, FireQuery 0.9, FireLogger 0.9, HTML validator 0.9.0.4)
 
@@ -51,7 +51,7 @@ Globální nastavení webu je k nalezení v sekci 'upravit nastavení webu' (/se
 * stručně - základní vlastnosti: *
 
 	- frontend:
-	Graceful degradation (pro starší prohlížeče má web omezené možnosti, nikdy však na úkor čitelnosti obsahu, vždy jen na úkor designu)
+	Graceful degradation (pro starší prohlížeče má web omezené možnosti, nikdy však na úkor čitelnosti obsahu, vždy jen na úkor designu, nebo použetelnosti)
 
 	- backend:
 	SEO URI jsou kanonické v českém jazyce, ale mají své funkční anglické alternativy. Například adresa /novinky/pridat má stejný obsah jako /news/add, ale druhá jmenovaná bude viditelně přesměrována na první.

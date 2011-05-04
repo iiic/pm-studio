@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="cs">
+<html lang="cs" dir="ltr">{* lang cs, někdy také cs-cz je definice jazyka a dir ltr značí, že texe se čte zleva doprava *}
 	<head>
 		<meta charset="utf-8">
 		<meta name="author" content="ic - ic.czech@gmail.com">
@@ -32,7 +32,9 @@
 		<hr id="bg">
 
 		<section>
-			<nav id="menu"><strong class="hide">menu:</strong>{control menu}</nav>
+			{cache 'menu', expire => '+'.$settings->cache.' minutes', if => $settings->cache > 0}
+				<nav id="menu"><strong class="hide">menu:</strong>{control menu}</nav>
+			{/cache}
 			<hr>
 			{include #content}
 		</section>
@@ -67,6 +69,7 @@
 		</footer>
 
 		{control packedJs 'jquery.js', 'jquery.ajaxform.js', 'jquery.nette.js', 'netteForms.js', 'my.scripts.js'}
+
 		<script>
 			{if $settings->default_presenter != '0' && $presenter->getName() == 'Default'}
 				if(!location.hash) {
