@@ -15,7 +15,10 @@
 		<link n:if="$presenter->getParam(Nette\Application\Presenter::FLASH_KEY)" rel="canonical" href="{link this, Nette\Application\Presenter::FLASH_KEY => NULL}">{* v případě existence flash identifikátoru v uri (_fid=XXXX) přidá odkaz na kanonickou adresu *}
 		{if $settings->style != '0'}
 			{var $css = array('null', 'black', 'pokus')}
-			<!--[if lt IE 9]>{control cssSmall $css[$settings->style].'/netbook.less'}<![endif]-->{* pro IE starší než 9 je tu takovýhle hack, aby z nich nebyla mobilní verze *}
+			<!--[if lt IE 9]>
+			{control cssSmall $css[$settings->style].'/netbook.less'}
+			{control cssSmall $css[$settings->style].'/ie_hack.less'}
+			<![endif]-->{* pro IE starší než 9 je tu takovýhle hack, aby z nich nebyla mobilní verze *}
 			{control cssSmall $css[$settings->style].'/smartphone.less'}{* defaultní vzhled je pro smartphony, aby nemusely (na často mobilním) připojení stahovat veškerou luxusní grafiku s obrázky pro normální počítače.  *}
 			{control cssBig $css[$settings->style].'/netbook.less'}
 		{/if}
