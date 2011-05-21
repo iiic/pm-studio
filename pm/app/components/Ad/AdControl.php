@@ -10,7 +10,7 @@ class AdControl extends BaseControl
 	private $carSize;
 	private $carColors;
 
-	public function __construct($data) {
+	public function __construct() {
 		$this->template->data = AdModel::fetch();
 		$this->printMaterial = explode('
 ', $this->template->data->printMaterial); // odenterování se dělá takhle blbě XD

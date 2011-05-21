@@ -28,7 +28,6 @@ class SettingsPresenter extends BasePresenter
 	{
 		$users = new UsersModel;
 		$form = new AppForm;
-		$form->getElementPrototype()->class('shift-left');
 		$form->addGroup('Formulář pro úpravu nastavení webu');
 		$form->addText('title', 'Titulek (nadpis)')
 			->addRule(Form::FILLED, 'Prosím zadejte titulek těchto stránek.');
@@ -49,6 +48,13 @@ class SettingsPresenter extends BasePresenter
 		$form->addText('robots', 'Robots')
 			->setOption('description', Html::el('small')
 				->setText('(prázdná hodnota odpovídá zápisu \'all\', tedy \'index, follow\')')
+				->setClass('description')
+			);
+		$form->addText('global_email', 'hlavní email');
+		$form->addText('global_phone', 'hlavní telefon');
+		$form->addText('cache', 'platnost cache')
+			->setOption('description', Html::el('small')
+				->setText(' minut')
 				->setClass('description')
 			);
 		$form->addMultiSelect('admins', 'Administrátoři', $users->getUserList(), 10)

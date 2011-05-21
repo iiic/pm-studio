@@ -82,6 +82,20 @@
 		box-shadow: inset 0 0 @dosah @dosah @barva;
 	}
 
+	.menu-odkaz {
+
+		:visited {
+			text-decoration:none;
+			color:@barva-textu - #222;
+		}
+
+		:hover, :active, :focus {
+			text-decoration:none;
+			color:white;
+		}
+
+	}
+
 	.debug (@typ: solid; @barva: red) { // pixelový rámeček pro testování který se na ostrém serveru zakomentuje // pro tabulky používám typ rámečku dashed
 		//min-width:80px;		min-height:4px;		border: 1px @typ @barva;		overflow:visible;		visibility:visible;
 	}
@@ -302,18 +316,8 @@ nav
 			top:-8px;
 			display:inline-block;
 			font-size:18px;
+			@mixins > .menu-odkaz;
 			@mixins > .debug(dotted; green);
-
-			:visited {
-				text-decoration:none;
-				color:@barva-textu - #222;
-			}
-
-			:hover, :active, :focus{
-				text-decoration:none;
-				color:white;
-			}
-
 		}
 
 	}
@@ -330,6 +334,31 @@ section
 	list-style:none;
 	padding-bottom:40px;
 	@mixins > .debug(solid; green);
+
+	ul.contact {
+		position:absolute;
+		z-index:2;
+		font-weight:bold;
+		margin-top:640px;
+		margin-left:120px;
+		width:200px;
+
+		li {
+			margin-top:8px;
+			list-style-image:url({@cesta-k-obrazkum}at.bmp);
+
+			a {
+				color:@barva-textu;
+				@mixins > .menu-odkaz;
+			}
+
+		}
+
+		li.phone {
+			list-style-image:url({@cesta-k-obrazkum}phone.bmp);
+		}
+
+	}
 
 	>h2 {
 		padding-top:200px;

@@ -37,6 +37,10 @@
 		<section>
 			{cache 'menu', expire => '+'.$settings->cache.' minutes', if => $settings->cache > 0}
 				<nav id="menu"><strong class="hide">menu:</strong>{control menu}</nav>
+				<ul n:if="$settings->global_email != '' || $settings->global_phone != ''" class="contact">
+					<li n:if="$settings->global_email != ''"><a href="mailto:{$settings->global_email|replace:'@':'[at]'}">{!$settings->global_email|replace:'@':'<img src="/images/at-char.bmp" alt="@">'}</a></li>
+					<li n:if="$settings->global_phone != ''" class="phone">{$settings->global_phone}</li>
+				</ul>
 			{/cache}
 			<hr>
 			{include #content}
@@ -68,7 +72,7 @@
 		<hr>
 
 		<footer>
-			<p>vzhled <a n:href="switchSkin! 0">bez css</a>, <a n:href="switchSkin! 1">black</a> , <a n:href="switchSkin! 2">pokus</a> | <a href="https://github.com/iiic/pm-studio">fork me on github</a> | multihosting <a href="http://ovh.cz">OVH</a></p>
+			<p>vzhled <a n:href="switchSkin! 0">bez css</a>, <a n:href="switchSkin! 1">black</a> , <a n:href="switchSkin! 2">pokus</a> | <a href="https://github.com/iiic/pm-studio">fork me on github</a> | <a href="{$basePath}/prace">texty</a> | multihosting <a href="http://ovh.cz">OVH</a></p>
 		</footer>
 
 		{control packedJs 'jquery.js', 'jquery.ajaxform.js', 'jquery.nette.js', 'netteForms.js', 'my.scripts.js'}
