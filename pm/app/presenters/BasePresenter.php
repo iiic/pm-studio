@@ -34,6 +34,7 @@ abstract class BasePresenter extends Presenter
 			$httpResponse->addHeader('Content-Language', 'cs');// odešle HTTP hlavičku
 			$httpResponse->addHeader('Content-Type', 'text/html; charset=utf-8'); //odešle HTTP hlavičku
 			$httpResponse->addHeader('X-Frame-Options', 'deny');// zákaz zobrazování mojí stránky v frame a iframe
+			$httpResponse->addHeader('X-UA-Compatible', 'chrome=1');// hack pro IE6,7,8... nové nepodporované části HTML5 zprovozní pomocí chrome viz.: http://code.google.com/intl/cs/chrome/chromeframe/
 			//$httpResponse->addHeader('imagetoolbar', 'no');// zakáže v Internet Exploreru lištičku s ikonkami pro uložení, tisk, ... zobrazovanou u obrázků větších něž určité minimum
 		}
 		parent::startup();
@@ -43,16 +44,19 @@ abstract class BasePresenter extends Presenter
 			Nette\Debug::enable(Nette\Debug::DEVELOPMENT);
 		}
 		$data = $this->menu;
+		$hashes = array();
 		$sectionNames = array('prázdné', 'vlastní obsah', 'novinky', 'kontakt', 'reklama', 'registrace');
 		$sectionPresenters = array('','content', 'news', 'contact', 'ad', 'register');// @todo : article presenter
 		foreach($data as $i => $row) {
 			if($data[$i]['p_type'] != 0) {
+				$hashes[] = $data[$i]['hash'];
 				if($data[$i]['title'] == '') { $data[$i]['title'] = $sectionNames[$data[$i]['p_type']]; }
 				$data[$i]['link'] = $sectionPresenters[$data[$i]['p_type']];
 				if($this->template->settings->default_presenter == $data[$i]['id']) { $this->template->settings->default_presenter = $data[$i]['hash']; }
 				unset($data[$i]['id']);// není potřeba
 			}
 		}
+		$this->template->hashes = $hashes;
 		$this->template->siteContent = $data;
 		$session = Environment::getSession('session');
 		if(isset($session->skin_id)) {
@@ -169,6 +173,9 @@ abstract class BasePresenter extends Presenter
 		// inicializace Texy
 		TemplateFilters::$texy = new Texy();
 		TemplateFilters::$texy->encoding = 'utf-8';
+		TemplateFilters::$texy->imageModule->root = '/images/';
+		TemplateFilters::$texy->alignClasses['left'] = 'left';
+		TemplateFilters::$texy->headingModule->top = 3;// h1 a h2 jsou už v šabloně, takže startujeme s trojkou
 		TemplateFilters::$texy->allowedTags = Texy::NONE;
 		TemplateFilters::$texy->allowedStyles = Texy::NONE;
 		TemplateFilters::$texy->allowedClasses = Texy::NONE;
@@ -184,13 +191,16 @@ abstract class BasePresenter extends Presenter
 		$texy = new Texy();
 
 		$texy->encoding = 'utf-8';
+		$texy->imageModule->root = '/images/';
+		$texy->alignClasses['left'] = 'left';
+		$texy->headingModule->top = 3;// h1 a h2 jsou už v šabloně, takže startujeme s trojkou
 		$texy->allowedTags = Texy::NONE;
 		$texy->allowedStyles = Texy::NONE;
 		$texy->allowedClasses = Texy::NONE;
 		$texy->setOutputMode(Texy::HTML5);
 
-		$texy->allowed['emoticon'] = TRUE;
-		$texy->emoticonModule->fileRoot = WWW_DIR . '/images';
+		$texy->allowed['emoticon'] = FALSE;
+		//$texy->emoticonModule->fileRoot = WWW_DIR . '/images';
 
 		// zavolám původní createTemplate
 		$template = parent::createTemplate();

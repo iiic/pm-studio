@@ -1,11 +1,13 @@
 <?php
 
 /**
- * Texy! - human-readable text to HTML converter.
+ * Texy! is human-readable text to HTML converter (http://texy.info)
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @license    GNU GENERAL PUBLIC LICENSE version 2 or 3
- * @link       http://texy.info
+ * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ *
+ * For the full copyright and license information, please view
+ * the file license.txt that was distributed with this source code.
+ *
  * @package    Texy
  */
 
@@ -14,7 +16,7 @@
 /**
  * TexyObject is the ultimate ancestor of all instantiable classes.
  *
- * TexyObject is copy of Nette\Object from Nette Framework (http://nettephp.com).
+ * TexyObject is copy of Nette\Object from Nette Framework (http://nette.org).
  *
  * It defines some handful methods and enhances object core of PHP:
  *   - access to undeclared members throws exceptions
@@ -49,8 +51,7 @@
  * $obj->newMethod($x);
  * </code>
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @package    Texy
+ * @author     David Grudl
  */
 abstract class TexyObject
 {
@@ -89,14 +90,14 @@ abstract class TexyObject
 	 * @param  string  method name
 	 * @param  array   arguments
 	 * @return mixed
-	 * @throws MemberAccessException
+	 * @throws LogicException
 	 */
 	public function __call($name, $args)
 	{
 		$class = get_class($this);
 
 		if ($name === '') {
-			throw new MemberAccessException("Call to class '$class' method without name.");
+			throw new LogicException("Call to class '$class' method without name.");
 		}
 
 		// event functionality
@@ -124,7 +125,7 @@ abstract class TexyObject
 			return call_user_func_array($cb, $args);
 		}
 
-		throw new MemberAccessException("Call to undefined method $class::$name().");
+		throw new LogicException("Call to undefined method $class::$name().");
 	}
 
 
@@ -135,12 +136,12 @@ abstract class TexyObject
 	 * @param  string  method name (in lower case!)
 	 * @param  array   arguments
 	 * @return mixed
-	 * @throws MemberAccessException
+	 * @throws LogicException
 	 */
 	public static function __callStatic($name, $args)
 	{
 		$class = get_called_class();
-		throw new MemberAccessException("Call to undefined static method $class::$name().");
+		throw new LogicException("Call to undefined static method $class::$name().");
 	}
 
 
@@ -213,14 +214,14 @@ abstract class TexyObject
 	 *
 	 * @param  string  property name
 	 * @return mixed   property value
-	 * @throws MemberAccessException if the property is not defined.
+	 * @throws LogicException if the property is not defined.
 	 */
 	public function &__get($name)
 	{
 		$class = get_class($this);
 
 		if ($name === '') {
-			throw new MemberAccessException("Cannot read a class '$class' property without name.");
+			throw new LogicException("Cannot read a class '$class' property without name.");
 		}
 
 		// property getter support
@@ -241,7 +242,7 @@ abstract class TexyObject
 		}
 
 		$name = func_get_arg(0);
-		throw new MemberAccessException("Cannot read an undeclared property $class::\$$name.");
+		throw new LogicException("Cannot read an undeclared property $class::\$$name.");
 	}
 
 
@@ -252,14 +253,14 @@ abstract class TexyObject
 	 * @param  string  property name
 	 * @param  mixed   property value
 	 * @return void
-	 * @throws MemberAccessException if the property is not defined or is read-only
+	 * @throws LogicException if the property is not defined or is read-only
 	 */
 	public function __set($name, $value)
 	{
 		$class = get_class($this);
 
 		if ($name === '') {
-			throw new MemberAccessException("Cannot assign to a class '$class' property without name.");
+			throw new LogicException("Cannot assign to a class '$class' property without name.");
 		}
 
 		// property setter support
@@ -272,12 +273,12 @@ abstract class TexyObject
 
 			} else {
 				$name = func_get_arg(0);
-				throw new MemberAccessException("Cannot assign to a read-only property $class::\$$name.");
+				throw new LogicException("Cannot assign to a read-only property $class::\$$name.");
 			}
 		}
 
 		$name = func_get_arg(0);
-		throw new MemberAccessException("Cannot assign to an undeclared property $class::\$$name.");
+		throw new LogicException("Cannot assign to an undeclared property $class::\$$name.");
 	}
 
 
@@ -301,12 +302,12 @@ abstract class TexyObject
 	 *
 	 * @param  string  property name
 	 * @return void
-	 * @throws MemberAccessException
+	 * @throws LogicException
 	 */
 	public function __unset($name)
 	{
 		$class = get_class($this);
-		throw new MemberAccessException("Cannot unset the property $class::\$$name.");
+		throw new LogicException("Cannot unset the property $class::\$$name.");
 	}
 
 

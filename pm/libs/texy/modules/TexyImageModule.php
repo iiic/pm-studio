@@ -1,11 +1,13 @@
 <?php
 
 /**
- * Texy! - human-readable text to HTML converter.
+ * Texy! is human-readable text to HTML converter (http://texy.info)
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @license    GNU GENERAL PUBLIC LICENSE version 2 or 3
- * @link       http://texy.info
+ * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ *
+ * For the full copyright and license information, please view
+ * the file license.txt that was distributed with this source code.
+ *
  * @package    Texy
  */
 
@@ -14,8 +16,7 @@
 /**
  * Images module.
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @package    Texy
+ * @author     David Grudl
  */
 final class TexyImageModule extends TexyModule
 {
@@ -36,9 +37,6 @@ final class TexyImageModule extends TexyModule
 
 	/** @var string  default alternative text */
 	public $defaultAlt = '';
-
-	/** @var string  images onload handler */
-	public $onLoad = "var i=new Image();i.src='%i';if(typeof preload=='undefined')preload=new Array();preload[preload.length]=i;this.onload=''";
 
 	/** @var array image references */
 	private $references = array();
@@ -75,10 +73,11 @@ final class TexyImageModule extends TexyModule
 		if (!empty($texy->allowed['image/definition'])) {
 			// [*image*]: urls .(title)[class]{style}
 			$text = preg_replace_callback(
-				'#^\[\*([^\n]+)\*\]:\ +(.+)\ *'.TEXY_MODIFIER.'?\s*()$#mUu',
+				'#^\[\*([^\n]{1,100})\*\]:\ +(.{1,1000})\ *'.TEXY_MODIFIER.'?\s*()$#mUu',
 				array($this, 'patternReferenceDef'),
 				$text
 			);
+			if (TEXY_CHECK_PCRE && preg_last_error()) throw new TexyPcreException;
 		}
 	}
 
@@ -105,7 +104,7 @@ final class TexyImageModule extends TexyModule
 
 
 	/**
-	 * Callback for [* small.jpg 80x13 | small-over.jpg | big.jpg .(alternative text)[class]{style}>]:LINK.
+	 * Callback for [* small.jpg 80x13 | big.jpg .(alternative text)[class]{style}>]:LINK.
 	 *
 	 * @param  TexyLineParser
 	 * @param  array      regexp matches
@@ -173,7 +172,7 @@ final class TexyImageModule extends TexyModule
 
 	/**
 	 * Parses image's syntax.
-	 * @param  string  input: small.jpg 80x13 | small-over.jpg | linked.jpg
+	 * @param  string  input: small.jpg 80x13 | linked.jpg
 	 * @param  string
 	 * @param  bool
 	 * @return TexyImage
@@ -200,15 +199,9 @@ final class TexyImageModule extends TexyModule
 
 			if (!$tx->checkURL($image->URL, Texy::FILTER_IMAGE)) $image->URL = NULL;
 
-			// onmouseover image
+			// linked image
 			if (isset($content[1])) {
 				$tmp = trim($content[1]);
-				if ($tmp !== '' && $tx->checkURL($tmp, Texy::FILTER_IMAGE)) $image->overURL = $tmp;
-			}
-
-			// linked image
-			if (isset($content[2])) {
-				$tmp = trim($content[2]);
 				if ($tmp !== '' && $tx->checkURL($tmp, Texy::FILTER_ANCHOR)) $image->linkedURL = $tmp;
 			}
 		}
@@ -299,16 +292,6 @@ final class TexyImageModule extends TexyModule
 
 		$el->attrs['width'] = $image->width;
 		$el->attrs['height'] = $image->height;
-
-		// onmouseover actions generate
-		if ($image->overURL !== NULL) {
-			$overSrc = Texy::prependRoot($image->overURL, $this->root);
-			$el->attrs['onmouseover'] = 'this.src=\'' . addSlashes($overSrc) . '\'';
-			$el->attrs['onmouseout'] = 'this.src=\'' . addSlashes($el->attrs['src']) . '\'';
-			$el->attrs['onload'] = str_replace('%i', addSlashes($overSrc), $this->onLoad);
-			$tx->summary['preload'][] = $overSrc;
-		}
-
 		$tx->summary['images'][] = $el->attrs['src'];
 
 		if ($link) return $tx->linkModule->solve(NULL, $link, $el);
@@ -331,9 +314,6 @@ final class TexyImage extends TexyObject
 {
 	/** @var string  base image URL */
 	public $URL;
-
-	/** @var string  on-mouse-over image URL */
-	public $overURL;
 
 	/** @var string  anchored image URL */
 	public $linkedURL;

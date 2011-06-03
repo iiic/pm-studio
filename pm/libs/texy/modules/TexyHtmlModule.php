@@ -1,11 +1,13 @@
 <?php
 
 /**
- * Texy! - human-readable text to HTML converter.
+ * Texy! is human-readable text to HTML converter (http://texy.info)
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @license    GNU GENERAL PUBLIC LICENSE version 2 or 3
- * @link       http://texy.info
+ * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ *
+ * For the full copyright and license information, please view
+ * the file license.txt that was distributed with this source code.
+ *
  * @package    Texy
  */
 
@@ -14,8 +16,7 @@
 /**
  * Html tags module.
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @package    Texy
+ * @author     David Grudl
  */
 final class TexyHtmlModule extends TexyModule
 {
@@ -33,7 +34,7 @@ final class TexyHtmlModule extends TexyModule
 
 		$texy->registerLinePattern(
 			array($this, 'patternTag'),
-			'#<(/?)([a-z][a-z0-9_:-]*)((?:\s+[a-z0-9:-]+|=\s*"[^"'.TEXY_MARK.']*"|=\s*\'[^\''.TEXY_MARK.']*\'|=[^\s>'.TEXY_MARK.']+)*)\s*(/?)>#isu',
+			'#<(/?)([a-z][a-z0-9_:-]{0,50})((?:\s++[a-z0-9:-]++|=\s*+"[^"'.TEXY_MARK.']*+"|=\s*+\'[^\''.TEXY_MARK.']*+\'|=[^\s>'.TEXY_MARK.']++)*)\s*+(/?)>#isu',
 			'html/tag'
 		);
 

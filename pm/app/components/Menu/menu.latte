@@ -1,11 +1,5 @@
 {block content}
 
 <ul n:inner-foreach="$items as $item">
-	<li n:ifset="$item->link"><a href="{plink 'default:'}#{$item->hash}" data-rel-bookmark="<?php
-		if($item->p_type == 1) {
-			echo $presenter->link('content:view', Nette\Templates\TemplateHelpers::escapeHtml($item->hash));
-		} else {
-			echo $presenter->link(Nette\Templates\TemplateHelpers::escapeHtml($item->link).':');
-		}
-	?>">{$item->title}</a></li>
+	<li n:ifset="$item->link"><a href="{plink 'default:'}#{$item->hash}">{$item->title}</a></li>
 </ul>

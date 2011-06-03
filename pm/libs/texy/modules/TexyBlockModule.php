@@ -1,11 +1,13 @@
 <?php
 
 /**
- * Texy! - human-readable text to HTML converter.
+ * Texy! is human-readable text to HTML converter (http://texy.info)
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @license    GNU GENERAL PUBLIC LICENSE version 2 or 3
- * @link       http://texy.info
+ * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ *
+ * For the full copyright and license information, please view
+ * the file license.txt that was distributed with this source code.
+ *
  * @package    Texy
  */
 
@@ -14,8 +16,7 @@
 /**
  * Special blocks module.
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @package    Texy
+ * @author     David Grudl
  */
 final class TexyBlockModule extends TexyModule
 {
@@ -60,6 +61,9 @@ final class TexyBlockModule extends TexyModule
 			"\$1\$2\n\\--",
 			$text
 		);
+		if (TEXY_CHECK_PCRE && preg_last_error()) {
+			throw new TexyPcreException;
+		}
 	}
 
 
@@ -90,15 +94,6 @@ final class TexyBlockModule extends TexyModule
 		$param = empty($parts[1]) ? NULL : $parts[1];
 
 		return $this->texy->invokeAroundHandlers('block', $parser, array($blocktype, $mContent, $param, $mod));
-	}
-
-
-
-	// for backward compatibility
-	function outdent($s)
-	{
-		trigger_error('Use Texy::outdent()', E_USER_WARNING);
-		return Texy::outdent($s);
 	}
 
 

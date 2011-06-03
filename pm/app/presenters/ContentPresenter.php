@@ -25,6 +25,9 @@ class ContentPresenter extends BasePresenter
 					$this->template->content = $content->content;
 				}
 			}
+			if(empty($this->template->title)) {
+				$this->template->title = 'chyba';
+			}
 		}
 	}
 

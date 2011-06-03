@@ -1,11 +1,13 @@
 <?php
 
 /**
- * Texy! - human-readable text to HTML converter.
+ * Texy! is human-readable text to HTML converter (http://texy.info)
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @license    GNU GENERAL PUBLIC LICENSE version 2 or 3
- * @link       http://texy.info
+ * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ *
+ * For the full copyright and license information, please view
+ * the file license.txt that was distributed with this source code.
+ *
  * @package    Texy
  */
 
@@ -14,8 +16,7 @@
 /**
  * Paragraph module.
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @package    Texy
+ * @author     David Grudl
  */
 final class TexyParagraphModule extends TexyModule
 {
@@ -53,12 +54,15 @@ final class TexyParagraphModule extends TexyModule
 
 			// try to find modifier
 			$mx = $mod = NULL;
-			if (preg_match('#\A(.*)(?<=\A|\S)'.TEXY_MODIFIER_H.'(\n.*)?()\z#sUm', $s, $mx)) {
-				list(, $mC1, $mMod, $mC2) = $mx;
-				$s = trim($mC1 . $mC2);
+			if (preg_match('#'.TEXY_MODIFIER_H.'(?=\n|\z)#sUm', $s, $mx, PREG_OFFSET_CAPTURE)) {
+				list($mMod) = $mx[1];
+				$s = trim(substr_replace($s, '', $mx[0][1], strlen($mx[0][0])));
 				if ($s === '') continue;
 				$mod = new TexyModifier;
 				$mod->setProperties($mMod);
+
+			} elseif (TEXY_CHECK_PCRE && preg_last_error()) {
+				throw new TexyPcreException;
 			}
 
 			$res = $tx->invokeAroundHandlers('paragraph', $parser, array($s, $mod));

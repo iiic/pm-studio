@@ -1,11 +1,13 @@
 <?php
 
 /**
- * Texy! - human-readable text to HTML converter.
+ * Texy! is human-readable text to HTML converter (http://texy.info)
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @license    GNU GENERAL PUBLIC LICENSE version 2 or 3
- * @link       http://texy.info
+ * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ *
+ * For the full copyright and license information, please view
+ * the file license.txt that was distributed with this source code.
+ *
  * @package    Texy
  */
 
@@ -13,8 +15,7 @@
 
 /**
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @package    Texy
+ * @author     David Grudl
  */
 final class TexyHtmlOutputModule extends TexyModule
 {
@@ -71,10 +72,11 @@ final class TexyHtmlOutputModule extends TexyModule
 
 		// wellform and reformat
 		$s = preg_replace_callback(
-			'#(.*)<(?:(!--.*--)|(/?)([a-z][a-z0-9._:-]*)(|[ \n].*)\s*(/?))>()#Uis',
+			'#([^<]*+)<(?:(!--.*--)|(/?)([a-z][a-z0-9._:-]*)(|[ \n].*)\s*(/?))>()#Uis',
 			array($this, 'cb'),
 			$s . '</end/>'
 		);
+		if (TEXY_CHECK_PCRE && preg_last_error()) throw new TexyPcreException;
 
 		// empty out stack
 		foreach ($this->tagStack as $item) $s .= $item['close'];

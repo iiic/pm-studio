@@ -1,11 +1,13 @@
 <?php
 
 /**
- * Texy! - human-readable text to HTML converter.
+ * Texy! is human-readable text to HTML converter (http://texy.info)
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @license    GNU GENERAL PUBLIC LICENSE version 2 or 3
- * @link       http://texy.info
+ * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ *
+ * For the full copyright and license information, please view
+ * the file license.txt that was distributed with this source code.
+ *
  * @package    Texy
  */
 
@@ -14,8 +16,7 @@
 /**
  * Typography replacements module.
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @package    Texy
+ * @author     David Grudl
  */
 final class TexyTypographyModule extends TexyModule
 {
@@ -97,7 +98,7 @@ final class TexyTypographyModule extends TexyModule
 			'# <-{1,}#'                               => " \xe2\x86\x90 ",                 // left arrow <--
 			'#={1,}> #'                               => " \xe2\x87\x92 ",                 // right arrow ==>
 			'#\\+-#'                                  => "\xc2\xb1",                       // +-
-			'#(\d+)( ?)x\\2(?=\d)#'                   => "\$1\xc3\x97",                    // dimension sign 123 x 123...
+			'#(\d++)( ?)x\\2(?=\d)#'                  => "\$1\xc3\x97",                    // dimension sign 123 x 123...
 			'#(?<=\d)x(?= |,|.|$)#m'                  => "\xc3\x97",                       // dimension sign 123x
 			'#(\S ?)\(TM\)#i'                         => "\$1\xe2\x84\xa2",                // trademark (TM)
 			'#(\S ?)\(R\)#i'                          => "\$1\xc2\xae",                    // registered (R)
@@ -105,21 +106,21 @@ final class TexyTypographyModule extends TexyModule
 			'#\(EUR\)#'                               => "\xe2\x82\xac",                   // Euro (EUR)
 			'#(\d) (?=\d{3})#'                        => "\$1\xc2\xa0",                    // (phone) number 1 123 123 123...
 
-			'#(?<=[^\s\x17])\s+([\x17-\x1F]+)(?=\s)#u'=> "\$1",                            // remove intermarkup space phase 1
-			'#(?<=\s)([\x17-\x1F]+)\s+#u'             => "\$1",                            // remove intermarkup space phase 2
+			'#(?<=[^\s\x17])\s++([\x17-\x1F]++)(?=\s)#u'=> "\$1",                            // remove intermarkup space phase 1
+			'#(?<=\s)([\x17-\x1F]++)\s++#u'             => "\$1",                            // remove intermarkup space phase 2
 
-			'#(?<=.{50})\s+(?=[\x17-\x1F]*\S{1,6}[\x17-\x1F]*$)#us' => "\xc2\xa0",         // space before last short word
+			'#(?<=.{50})\s++(?=[\x17-\x1F]*\S{1,6}[\x17-\x1F]*$)#us' => "\xc2\xa0",         // space before last short word
 
 			// nbsp space between number (optionally followed by dot) and word, symbol, punctation, currency symbol
-			'#(?<=^| |\.|,|-|\+|\x16|\(|\d\x{A0})([\x17-\x1F]*\d+\.?[\x17-\x1F]*)\s+(?=[\x17-\x1F]*[%'.TEXY_CHAR.'\x{b0}-\x{be}\x{2020}-\x{214f}])#mu'
+			'#(?<=^| |\.|,|-|\+|\x16|\(|\d\x{A0})([\x17-\x1F]*\d++\.?[\x17-\x1F]*)\s++(?=[\x17-\x1F]*[%'.TEXY_CHAR.'\x{b0}-\x{be}\x{2020}-\x{214f}])#mu'
 													=> "\$1\xc2\xa0",
 
 			// space between preposition and word
-			'#(?<=^|[^0-9'.TEXY_CHAR.'])([\x17-\x1F]*[ksvzouiKSVZOUIA][\x17-\x1F]*)\s+(?=[\x17-\x1F]*[0-9'.TEXY_CHAR.'])#mus'
+			'#(?<=^|[^0-9'.TEXY_CHAR.'])([\x17-\x1F]*[ksvzouiKSVZOUIA][\x17-\x1F]*)\s++(?=[\x17-\x1F]*[0-9'.TEXY_CHAR.'])#mus'
 													=> "\$1\xc2\xa0",
 
-			'#(?<!"|\w)"(?!\ |")(.+)(?<!\ |")"(?!")()#U' => $locale['doubleQuotes'][0].'$1'.$locale['doubleQuotes'][1], // double ""
-			'#(?<!\'|\w)\'(?!\ |\')(.+)(?<!\ |\')\'(?!\')()#Uu' => $locale['singleQuotes'][0].'$1'.$locale['singleQuotes'][1], // single ''
+			'#(?<!"|\w)"(?!\ |")((?:[^"]++|")+)(?<!\ |")"(?!["'.TEXY_CHAR.'])()#Uu' => $locale['doubleQuotes'][0].'$1'.$locale['doubleQuotes'][1], // double ""
+			'#(?<!\'|\w)\'(?!\ |\')((?:[^\']++|\')+)(?<!\ |\')\'(?![\''.TEXY_CHAR.'])()#Uu' => $locale['singleQuotes'][0].'$1'.$locale['singleQuotes'][1], // single ''
 		);
 
 		$this->pattern = array_keys($pairs);

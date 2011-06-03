@@ -8,8 +8,8 @@
 @velikost-radio-checkbox: 16px; // musí jít o čtverec (!) takže zadaná velikost je délka jedné strany
 @vzdalenost-obrazku-radio-checkbox: 4px; // vzdálenost mezi jednotlivými klikatelnými ikonkami na obrázku
 @posun-radio-checkbox: 2px;
-//@cesta-k-obrazkum: 'images/'; // Úvodní lomítko nemůže být v cestě, ale musí být u každé položky zvlášť, asi bug.
-@cesta-k-obrazkum: '../../www/images/';
+@cesta-k-obrazkum: 'images/'; // Úvodní lomítko nemůže být v cestě, ale musí být u každé položky zvlášť, asi bug.
+//@cesta-k-obrazkum: '../../www/images/';
 
 
 
@@ -197,7 +197,7 @@ header
 			margin-top:-32px;
 			margin-left:-236px;
 			color:#333;
-			content:url({@cesta-k-obrazkum}pm.gif);
+			content:url(/{@cesta-k-obrazkum}pm.gif);
 			background:@barva-pozadi;
 			@mixins > .odraz(-4px; 0.2; 0.4);
 			@mixins > .debug(dotted);
@@ -237,7 +237,7 @@ nav
 	float:left;
 	width:655px;
 	height:700px;
-	background-image:url({@cesta-k-obrazkum}bg.gif);
+	background-image:url(/{@cesta-k-obrazkum}bg.gif);
 	z-index:1; // 1 je tu minimum, jinak půjde obtékaný text přes menu
 	background-position:left center;
 	background-repeat:no-repeat;
@@ -256,7 +256,7 @@ nav
 		list-style-position:inside;
 		text-align:left;
 		height:26px;
-		list-style-image:url({@cesta-k-obrazkum}bull.gif);
+		list-style-image:url(/{@cesta-k-obrazkum}bull.gif);
 		@mixins > .debug(dotted; black);
 
 		:nth-child(1) {
@@ -345,7 +345,7 @@ section
 
 		li {
 			margin-top:8px;
-			list-style-image:url({@cesta-k-obrazkum}at.bmp);
+			list-style-image:url(/{@cesta-k-obrazkum}at.bmp);
 
 			a {
 				color:@barva-textu;
@@ -355,7 +355,7 @@ section
 		}
 
 		li.phone {
-			list-style-image:url({@cesta-k-obrazkum}phone.bmp);
+			list-style-image:url(/{@cesta-k-obrazkum}phone.bmp);
 		}
 
 	}
@@ -569,7 +569,7 @@ form
 
 	fieldset:not(#foo) input + label {
 		height:@velikost-radio-checkbox;
-		background:url({@cesta-k-obrazkum}inputs.png) 0 @posun-radio-checkbox no-repeat;
+		background:url(/{@cesta-k-obrazkum}inputs.png) 0 @posun-radio-checkbox no-repeat;
 	}
 
 	fieldset:not(#foo) input[type=radio] + label {

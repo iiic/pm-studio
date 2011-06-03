@@ -1,7 +1,37 @@
 <!DOCTYPE HTML>
 <html lang="cs" dir="ltr">{* lang cs, někdy také cs-cz je definice jazyka a dir ltr značí, že texe se čte zleva doprava *}
 	<head>
+		<script>{* scripty pracující s uri adresou stránky... jsou umístěny co nejdříve to jde *}
+			if(history.replaceState) { {* odstranění flash id a backlink parametru z adresy stránky *}
+				l = location.toString();
+				r = [['_fid',4],['backlink',5]];
+				for(i in r) {
+					uri = l.indexOf(r[i][0]+'=');
+					if(uri != -1) {
+						uri = l.substr(0, uri)+l.substr(uri+r[i][0].length+r[i][1]+2);
+						if( (uri.substr(uri.length-1) == '?') || (uri.substr(uri.length-1) == '&') ) {
+							uri = uri.substr(0, uri.length-1);
+						}
+						history.replaceState('', '', uri);{* první parametr je objekt do kterého si můžu ukládat stavy... například {"page": page} ... dané page pak jde načíst a inkrementovat; Druhý parametr je <title> stránky, ale FF i Chrome na to aktuálně kašlou... nechávám teda tento údaj prázdný. *}
+					}
+				}
+			}
+			{if $presenter->getName() == 'Default'}{* Jinde než na indexu k tomu stejně nemůže dojít *}
+				function removeHash() {
+					if( (location.hash) && (history.replaceState) ) {
+						h = ["novinky","reklama","grafika-loga","samolepky-auta","registrace","zajimavost","kontakt"];
+						for(i in h) {
+							if('#'+h[i] == location.hash.toString()) {
+								history.replaceState('', '', location.toString().replace('#', ''));
+							}
+						}
+					}
+				}
+				removeHash();
+			{/if}
+		</script>
 		<meta charset="utf-8">
+		<title>{block #title|striptags|trim}{/block} | {$settings->title}</title>
 		<meta name="author" content="ic - ic.czech@gmail.com">
 		<meta name="viewport" content="width=device-width">{* říká smartphonům (Android, iPhone, ...) že mají použít svou skutečnou šířku monitoru a nesnažit se simulovat skutečný počítač *}
 		<meta n:ifset="$robots" name="robots" content="{$robots}">
@@ -10,7 +40,7 @@
 		<link rel="profile" href="http://purl.org/uF/2008/03/">{* profile="http://purl.org/uF/2008/03/" značí specifikaci hodně druhů mikroformátů (včetně hCard), které nejsou ve stádiu návrhu, což je třeba hAtom: http://purl.org/uF/hAtom/0.1/ *}
 		<link rel="profile" href="http://purl.org/uF/hAtom/0.1/">
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">{* ikonka webu *}
-		<link rel="home" href="{$basePath}" title="úvodní stránka">{* odkaz na homepage *}
+		<link n:if="$presenter->getName() == 'Default'" rel="home" href="{$basePath}" title="úvodní stránka">{* odkaz na homepage *}
 		<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->{* javascriptová oprava vad v IE8 a menších *}
 		<link n:if="$presenter->getParam(Nette\Application\Presenter::FLASH_KEY)" rel="canonical" href="{link this, Nette\Application\Presenter::FLASH_KEY => NULL}">{* v případě existence flash identifikátoru v uri (_fid=XXXX) přidá odkaz na kanonickou adresu *}
 		{if $settings->style != '0'}
@@ -22,7 +52,6 @@
 			{control cssSmall $css[$settings->style].'/smartphone.less'}{* defaultní vzhled je pro smartphony, aby nemusely (na často mobilním) připojení stahovat veškerou luxusní grafiku s obrázky pro normální počítače.  *}
 			{control cssBig $css[$settings->style].'/netbook.less'}
 		{/if}
-		<title>{block #title|striptags|trim}{/block} | {$settings->title}</title>
 		{* @todo: vložit google analytics sem *}
 	</head>
 	<body>
@@ -38,13 +67,47 @@
 			{cache 'menu', expire => '+'.$settings->cache.' minutes', if => $settings->cache > 0}
 				<nav id="menu"><strong class="hide">menu:</strong>{control menu}</nav>
 				<ul n:if="$settings->global_email != '' || $settings->global_phone != ''" class="contact">
-					<li n:if="$settings->global_email != ''"><a href="mailto:{$settings->global_email|replace:'@':'[at]'}">{!$settings->global_email|replace:'@':'<img src="/images/at-char.bmp" alt="@">'}</a></li>
+					<li n:if="$settings->global_email != ''"><a href="mailto:{$settings->global_email|replace:'@':'(at)'}">{!$settings->global_email|replace:'@':'<img src="/images/at-char.bmp" alt="@">'}</a></li>
 					<li n:if="$settings->global_phone != ''" class="phone">{$settings->global_phone}</li>
 				</ul>
 			{/cache}
+				<script n:if="$presenter->getName() == 'Default'">{* script pro vylepšení skrývání položek seznamu s obsahem stránek *}
+					a = document.getElementsByTagName('nav')[0].children[1].children;
+					for(i=0;i<a.length;i++) {
+						a[i].lastChild.href = a[i].lastChild.href.replace('#', '');
+						a[i].lastChild.onclick = function() { return !jsTarget(this) };
+					}
+					function jsTarget(v) {
+						o = v.parentNode.parentNode.children;{* Tato část se stará o přidělení třídy active, právě aktivovanému odkazu a zároveň nastavení třídy pasive všem ostatním odkazům menu *}
+						for(i=0;i<o.length;i++) {
+							o[i].lastChild.className='pasive';
+						}
+						v.className='active';
+						v = v.href;{* No a odtud už je to důležité *}
+						id = v.substr(v.lastIndexOf('/')+1);
+						a = document.getElementById(id).parentNode.children;
+						for(i=0;i<a.length;i++) {
+							a[i].style.display='none';
+						}
+						document.getElementById(id).style.display='block';
+						if(history.replaceState) {
+							history.replaceState('', '', {$basePath}+'/'+id);
+						} else { {* prohlížeče, které neumí replaceState() umí alespoň změnit hash (bez reloadu stránky) a tím se kliknutí uloží do historie a je možné ji pak pohodlně procházet *}
+							location.replace('#'+id);
+						}
+						return true;
+					}
+				</script>
 			<hr>
 			{include #content}
 		</section>
+
+		<script n:if="$settings->default_presenter != '0' && $presenter->getName() == 'Default'">{* musí být nutně až po! načtení samotného obsahu do ul-li *}
+			if( (!location.hash) && (location.pathname == {$basePath}+'/') ) {
+				location.replace('#{!$settings->default_presenter}');
+				removeHash();
+			}
+		</script>
 
 		<hr class="show">
 
@@ -77,42 +140,29 @@
 
 		{control packedJs 'jquery.js', 'jquery.ajaxform.js', 'jquery.nette.js', 'netteForms.js', 'my.scripts.js'}
 
-		<script>
-			{if $settings->default_presenter != '0' && $presenter->getName() == 'Default'}
-				if(!location.hash) {
-					window.location.replace("#{!$settings->default_presenter}");
+		<script n:ifset="$_GET['lol']">
+			// pěkná animace posunu pozadí objektu, ale náročná jak sviňa,
+			//lepší by to teoreticky mělo být na Win7 s některým prohlížečem,
+			//který podporuje hardwarovou akceleraci webu, ale tohle nemohu vyzkoušet.
+			var scrollSpeed = 1; 		// Speed in milliseconds
+			var step = 1; 				// How many pixels to move per step
+			var current = 0;			// The current pixel row
+			var imageHeight = 2247;		// Background image width
+			var headerHeight = 1280;	// How wide the header is.
+			//The pixel row where to start a new loop
+			var restartPosition = -(imageHeight - headerHeight);
+			function scrollBg(){
+				//Go to next pixel row.
+				current -= step;
+				//If at the end of the image, then go to the top.
+				if (current == restartPosition){
+					current = 0;
 				}
-			{/if}
-			{ifset $_GET['lol']}
-				// pěkná animace posunu pozadí objektu, ale náročná jak sviňa,
-				//lepší by to teoreticky mělo být na Win7 s některým prohlížečem,
-				//který podporuje hardwarovou akceleraci webu, ale tohle nemohu vyzkoušet.
-				var scrollSpeed = 1; 		// Speed in milliseconds
-				var step = 1; 				// How many pixels to move per step
-				var current = 0;			// The current pixel row
-				var imageHeight = 2247;		// Background image width
-				var headerHeight = 1280;	// How wide the header is.
-				//The pixel row where to start a new loop
-				var restartPosition = -(imageHeight - headerHeight);
-				function scrollBg(){
-					//Go to next pixel row.
-					current -= step;
-					//If at the end of the image, then go to the top.
-					if (current == restartPosition){
-						current = 0;
-					}
-					//Set the CSS of the header.
-					$('#bg').css("background-position","58% "+current+"px");
-				}
-				//Calls the scrolling function repeatedly
-				var init = setInterval("scrollBg()", scrollSpeed);
-			{/ifset}
-			if( ($.browser.msie) && (parseInt($.browser.version, 10) > 7) ) {
-				el = document.getElementsByTagName('ul')[0].children;
-				for(var i = 0; i < el.length; i++) {
-					el[i].lastChild.href = el[i].lastChild.getAttribute('data-rel-bookmark');
-				}
+				//Set the CSS of the header.
+				$('#bg').css("background-position","58% "+current+"px");
 			}
+			//Calls the scrolling function repeatedly
+			var init = setInterval("scrollBg()", scrollSpeed);
 		</script>
 	</body>
 </html>

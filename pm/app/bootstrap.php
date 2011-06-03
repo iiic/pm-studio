@@ -24,7 +24,7 @@ require LIBS_DIR . '/Nette/loader.php';
 // Step 2: Configure environment
 // 2a) enable Nette\Debug for better exception and error visualisation
 Debug::$strictMode = TRUE;
-Debug::enable(Nette\Debug::PRODUCTION);// Nette\Debug::PRODUCTION / Nette\Debug::DEVELOPMENT
+Debug::enable(Nette\Debug::DEVELOPMENT);// Nette\Debug::PRODUCTION / Nette\Debug::DEVELOPMENT
 
 // 2b) load configuration from config.ini file
 Environment::loadConfig();
@@ -68,10 +68,12 @@ Route::setStyleProperty('action', Route::FILTER_TABLE, array(
 	'vypsat' => 'view',
 ));
 
-$router[] = new Route('sekce[/<id>]', array(
+Route::addStyle('#seo');
+Route::setStyleProperty('#seo', Route::FILTER_IN, callback('RouterModel::getTopic'));
+
+$router[] = new Route('<id #seo>', array(
 	'presenter' => 'Content',
 	'action' => 'view',
-	'id' => NULL,
 ));
 
 $router[] = new Route('<presenter>[/<action>[/<id>]]', array(

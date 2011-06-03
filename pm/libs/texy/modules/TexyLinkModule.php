@@ -1,11 +1,13 @@
 <?php
 
 /**
- * Texy! - human-readable text to HTML converter.
+ * Texy! is human-readable text to HTML converter (http://texy.info)
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @license    GNU GENERAL PUBLIC LICENSE version 2 or 3
- * @link       http://texy.info
+ * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ *
+ * For the full copyright and license information, please view
+ * the file license.txt that was distributed with this source code.
+ *
  * @package    Texy
  */
 
@@ -14,19 +16,15 @@
 /**
  * Links module.
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @package    Texy
+ * @author     David Grudl
  */
 final class TexyLinkModule extends TexyModule
 {
 	/** @var string  root of relative links */
 	public $root = '';
 
-	/** @var string image popup event */
-	public $imageOnClick = 'return !popupImage(this.href)';  //
-
-	/** @var string class 'popup' event */
-	public $popupOnClick = 'return !popup(this.href)';
+	/** @var string  CSS class for linked images */
+	public $imageClass;
 
 	/** @var bool  always use rel="nofollow" for absolute links? */
 	public $forceNoFollow = FALSE;
@@ -56,21 +54,21 @@ final class TexyLinkModule extends TexyModule
 		// [reference]
 		$texy->registerLinePattern(
 			array($this, 'patternReference'),
-			'#(\[[^\[\]\*\n'.TEXY_MARK.']+\])#U',
+			'#(\[[^\[\]\*\n'.TEXY_MARK.']++\])#U',
 			'link/reference'
 		);
 
 		// direct url and email
 		$texy->registerLinePattern(
 			array($this, 'patternUrlEmail'),
-			'#(?<=^|[\s([<:\x17])(?:https?://|www\.|ftp://)[0-9.'.TEXY_CHAR.'-][/\d'.TEXY_CHAR.'+\.~%&?@=_:;\#,\x{ad}-]+[/\d'.TEXY_CHAR.'+~%?@=_\#]#u',
+			'#(?<=^|[\s([<:\x17])(?:https?://|www\.|ftp://)[0-9.'.TEXY_CHAR.'-][/\d'.TEXY_CHAR.'+\.~%&?@=_:;\#,\x{ad}-]{1,1000}[/\d'.TEXY_CHAR.'+~%?@=_\#]#u',
 			'link/url',
 			'#(?:https?://|www\.|ftp://)#u'
 		);
 
 		$texy->registerLinePattern(
 			array($this, 'patternUrlEmail'),
-			'#(?<=^|[\s([<:\x17])'.TEXY_EMAIL.'#u',
+			'#(?<=^|[\s([<\x17])'.TEXY_EMAIL.'#u',
 			'link/email',
 			'#'.TEXY_EMAIL.'#u'
 		);
@@ -91,10 +89,11 @@ final class TexyLinkModule extends TexyModule
 		// [la trine]: http://www.latrine.cz/ text odkazu .(title)[class]{style}
 		if (!empty($texy->allowed['link/definition'])) {
 			$text = preg_replace_callback(
-				'#^\[([^\[\]\#\?\*\n]+)\]: +(\S+)(\ .+)?'.TEXY_MODIFIER.'?\s*()$#mUu',
+				'#^\[([^\[\]\#\?\*\n]{1,100})\]: ++(\S{1,1000})(\ .{1,1000})?'.TEXY_MODIFIER.'?\s*()$#mUu',
 				array($this, 'patternReferenceDef'),
 				$text
 			);
+			if (TEXY_CHECK_PCRE && preg_last_error()) throw new TexyPcreException;
 		}
 	}
 
@@ -298,12 +297,10 @@ final class TexyLinkModule extends TexyModule
 
 		$el = TexyHtml::el('a');
 
-		if (empty($link->modifier)) {
-			$nofollow = $popup = FALSE;
-		} else {
+		$nofollow = FALSE;
+		if ($link->modifier) {
 			$nofollow = isset($link->modifier->classes['nofollow']);
-			$popup = isset($link->modifier->classes['popup']);
-			unset($link->modifier->classes['nofollow'], $link->modifier->classes['popup']);
+			unset($link->modifier->classes['nofollow']);
 			$el->attrs['href'] = NULL; // trick - move to front
 			$link->modifier->decorate($tx, $el);
 		}
@@ -311,7 +308,7 @@ final class TexyLinkModule extends TexyModule
 		if ($link->type === TexyLink::IMAGE) {
 			// image
 			$el->attrs['href'] = Texy::prependRoot($link->URL, $tx->imageModule->linkedRoot);
-			$el->attrs['onclick'] = $this->imageOnClick;
+			$el->attrs['class'][] = $this->imageClass;
 
 		} else {
 			$el->attrs['href'] = Texy::prependRoot($link->URL, $this->root);
@@ -320,9 +317,6 @@ final class TexyLinkModule extends TexyModule
 			if ($nofollow || ($this->forceNoFollow && strpos($el->attrs['href'], '//') !== FALSE))
 				$el->attrs['rel'] = 'nofollow';
 		}
-
-		// popup on click
-		if ($popup) $el->attrs['onclick'] = $this->popupOnClick;
 
 		if ($content !== NULL) $el->add($content);
 

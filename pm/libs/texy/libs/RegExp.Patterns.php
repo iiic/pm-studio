@@ -1,11 +1,13 @@
 <?php
 
 /**
- * Texy! - human-readable text to HTML converter.
+ * Texy! is human-readable text to HTML converter (http://texy.info)
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @license    GNU GENERAL PUBLIC LICENSE version 2 or 3
- * @link       http://texy.info
+ * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ *
+ * For the full copyright and license information, please view
+ * the file license.txt that was distributed with this source code.
+ *
  * @package    Texy
  */
 
@@ -28,24 +30,24 @@ define('TEXY_MARK',        "\x14-\x1F");
 
 
 // modifier .(title)[class]{style}
-define('TEXY_MODIFIER',    '(?: *(?<= |^)\\.((?:\\([^)\\n]+\\)|\\[[^\\]\\n]+\\]|\\{[^}\\n]+\\}){1,3}?))');
+define('TEXY_MODIFIER',    '(?: *+(?<= |^)\\.((?:\\([^)\\n]++\\)|\\[[^\\]\\n]++\\]|\\{[^}\\n]++\\}){1,3}?))');
 
 // modifier .(title)[class]{style}<>
-define('TEXY_MODIFIER_H',  '(?: *(?<= |^)\\.((?:\\([^)\\n]+\\)|\\[[^\\]\\n]+\\]|\\{[^}\\n]+\\}|<>|>|=|<){1,4}?))');
+define('TEXY_MODIFIER_H',  '(?: *+(?<= |^)\\.((?:\\([^)\\n]++\\)|\\[[^\\]\\n]++\\]|\\{[^}\\n]++\\}|<>|>|=|<){1,4}?))');
 
 // modifier .(title)[class]{style}<>^
-define('TEXY_MODIFIER_HV', '(?: *(?<= |^)\\.((?:\\([^)\\n]+\\)|\\[[^\\]\\n]+\\]|\\{[^}\\n]+\\}|<>|>|=|<|\\^|\\-|\\_){1,5}?))');
+define('TEXY_MODIFIER_HV', '(?: *+(?<= |^)\\.((?:\\([^)\\n]++\\)|\\[[^\\]\\n]++\\]|\\{[^}\\n]++\\}|<>|>|=|<|\\^|\\-|\\_){1,5}?))');
 
 
 
 // images   [* urls .(title)[class]{style} >]
-define('TEXY_IMAGE',       '\[\* *+([^\n'.TEXY_MARK.']+)'.TEXY_MODIFIER.'? *(\*|(?<!<)>|<)\]');
+define('TEXY_IMAGE',       '\[\* *+([^\n'.TEXY_MARK.']{1,1000})'.TEXY_MODIFIER.'? *+(\*|(?<!<)>|<)\]');
 
 
 // links
-define('TEXY_LINK_URL',    '(?:\[[^\]\n]+\]|(?!\[)[^\s'.TEXY_MARK.']*?[^:);,.!?\s'.TEXY_MARK.'])'); // any url - doesn't end by :).,!?
+define('TEXY_LINK_URL',    '(?:\[[^\]\n]++\]|(?!\[)[^\s'.TEXY_MARK.']{0,1000}?[^:);,.!?\s'.TEXY_MARK.'])'); // any url - doesn't end by :).,!?
 define('TEXY_LINK',        '(?::('.TEXY_LINK_URL.'))');       // any link
 define('TEXY_LINK_N',      '(?::('.TEXY_LINK_URL.'|:))');     // any link (also unstated)
 define('TEXY_EMAIL',       '['.TEXY_CHAR.'][0-9.+_'.TEXY_CHAR.'-]{0,63}@[0-9.+_'.TEXY_CHAR.'\x{ad}-]{1,252}\.['.TEXY_CHAR.'\x{ad}]{2,19}'); // name@exaple.com
-define('TEXY_URLSCHEME',   '[a-z][a-z0-9+.-]*:');    // http:  |  mailto:
+define('TEXY_URLSCHEME',   '[a-z][a-z0-9+.-]{0,20}:');    // http:  |  mailto:
 /**#@-*/
