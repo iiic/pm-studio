@@ -148,7 +148,7 @@ a
 	color:#c00;
 
 	:visited {
-		color:#901
+		color:#901;
 	}
 
 	:hover, :focus, :active {
@@ -192,6 +192,7 @@ header
 		}
 
 		:after {
+			visibility:visible;
 			z-index:1;
 			position:absolute;
 			margin-top:-32px;
@@ -203,6 +204,17 @@ header
 			@mixins > .debug(dotted);
 		}
 
+	}
+
+	a, a:hover, a:focus, a:active, a:visited {
+		position:relative;
+		z-index:2;
+		color:transparent;
+		float:left;
+		margin-top:-70px;
+		margin-left:-80px;
+		width:240px;
+		height:110px;
 	}
 
 	strong {
@@ -320,6 +332,10 @@ nav
 			@mixins > .debug(dotted; green);
 		}
 
+		a.active { // aktivní odkaz menu (neaktivní dostávají třídu pasive)... dosadit tuto třídu k aktivním odkazům se dá jak pomocí javascriptu, tak na konkrétních stránkách se o toto stará php
+			color:#901 !important;
+		}
+
 	}
 
 }
@@ -374,10 +390,16 @@ section
 		margin-bottom:@vyska-radku;
 	}
 
-	.shift-left { // tento prvek posunuju směrem k menu do prostoru nad obrázek
-		position:relative;
-		left:-240px;
-		z-index:3;
+	.shift-left { // pokud levá strana bude přesahovat do menu, půjde přes něj
+		position:absolute;
+		right:0;
+		z-index:1;
+	}
+
+	img.left {
+		position:absolute;
+		left:400px;
+		z-index:1;
 	}
 
 	ul {
@@ -694,6 +716,12 @@ form
 	}
 }
 
+// nová registrace
+#frm-register-registerForm, #frm-registerForm
+{
+	margin-top:80px;
+}
+
 // formulář pro přihlášení uživatele do aplikace
 #frm-authForm
 {
@@ -730,13 +758,6 @@ form
 		}
 	}
 
-}
-
-// nová registrace
-#frm-register-registerForm, #frm-registerForm
-{
-	margin-top:80px;
-	left:-200px;
 }
 
 // výběr sekce pro editaci
@@ -896,7 +917,7 @@ footer
 // hr předělané na podúrovňové pozadí meníčka
 #bg
 {
-	background: url({@cesta-k-obrazkum}hr.gif) 0 0 repeat-y;
+	background: url(/{@cesta-k-obrazkum}hr.gif) 0 0 repeat-y;
 	height:560px;
 	width:450px;
 	display:block;

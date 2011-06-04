@@ -60,6 +60,14 @@
 			<h1><em>pm</em> studio</h1>
 			<strong>výroba reklamy</strong>
 		</header>
+		<script>
+			document.getElementsByTagName('h1')[0].style.visibility = 'hidden';
+			a = document.createElement('a');
+			a.href = '/';
+			a.title = 'přejít na hlávní stránku';
+			a.appendChild(document.createTextNode('domů'));
+			document.getElementsByTagName('header')[0].appendChild(a);
+		</script>
 
 		<hr id="bg">
 
@@ -71,37 +79,45 @@
 					<li n:if="$settings->global_phone != ''" class="phone">{$settings->global_phone}</li>
 				</ul>
 			{/cache}
-				<script n:if="$presenter->getName() == 'Default'">{* script pro vylepšení skrývání položek seznamu s obsahem stránek *}
+				<script>{* script pro vylepšení skrývání položek seznamu s obsahem stránek *}
 					a = document.getElementsByTagName('nav')[0].children[1].children;
 					for(i=0;i<a.length;i++) {
-						a[i].lastChild.href = a[i].lastChild.href.replace('#', '');
-						a[i].lastChild.onclick = function() { return !jsTarget(this) };
+						if( ('/'+a[i].lastChild.href.replace(/.+#/i, '') == location.pathname) || ( (location.pathname == '/') && (a[i].lastChild.href.replace(/.+#/i, '') == {$settings->default_presenter}) ) ) {
+							a[i].lastChild.className = 'active';
+						} else {
+							a[i].lastChild.className = 'pasive';
+						}
+						{if $presenter->getName() == 'Default'}
+							a[i].lastChild.href = a[i].lastChild.href.replace('#', '')
+							a[i].lastChild.onclick = function() { return !jsTarget(this) };
+						{/if}
 					}
-					function jsTarget(v) {
-						o = v.parentNode.parentNode.children;{* Tato část se stará o přidělení třídy active, právě aktivovanému odkazu a zároveň nastavení třídy pasive všem ostatním odkazům menu *}
-						for(i=0;i<o.length;i++) {
-							o[i].lastChild.className='pasive';
+					{if $presenter->getName() == 'Default'}
+						function jsTarget(v) {
+							o = v.parentNode.parentNode.children;{* Tato část se stará o přidělení třídy active, právě aktivovanému odkazu a zároveň nastavení třídy pasive všem ostatním odkazům menu *}
+							for(i=0;i<o.length;i++) {
+								o[i].lastChild.className='pasive';
+							}
+							v.className='active';
+							v = v.href;{* No a odtud už je to důležité *}
+							id = v.substr(v.lastIndexOf('/')+1);
+							a = document.getElementById(id).parentNode.children;
+							for(i=0;i<a.length;i++) {
+								a[i].style.display='none';
+							}
+							document.getElementById(id).style.display='block';
+							if(history.replaceState) {
+								history.replaceState('', '', {$basePath}+'/'+id);
+							} else { {* prohlížeče, které neumí replaceState() umí alespoň změnit hash (bez reloadu stránky) a tím se kliknutí uloží do historie a je možné ji pak pohodlně procházet *}
+								location.replace('#'+id);
+							}
+							return true;
 						}
-						v.className='active';
-						v = v.href;{* No a odtud už je to důležité *}
-						id = v.substr(v.lastIndexOf('/')+1);
-						a = document.getElementById(id).parentNode.children;
-						for(i=0;i<a.length;i++) {
-							a[i].style.display='none';
-						}
-						document.getElementById(id).style.display='block';
-						if(history.replaceState) {
-							history.replaceState('', '', {$basePath}+'/'+id);
-						} else { {* prohlížeče, které neumí replaceState() umí alespoň změnit hash (bez reloadu stránky) a tím se kliknutí uloží do historie a je možné ji pak pohodlně procházet *}
-							location.replace('#'+id);
-						}
-						return true;
-					}
+					{/if}
 				</script>
 			<hr>
 			{include #content}
 		</section>
-
 		<script n:if="$settings->default_presenter != '0' && $presenter->getName() == 'Default'">{* musí být nutně až po! načtení samotného obsahu do ul-li *}
 			if( (!location.hash) && (location.pathname == {$basePath}+'/') ) {
 				location.replace('#{!$settings->default_presenter}');
