@@ -10,7 +10,8 @@
 
 use Nette\Debug,
 	Nette\Environment,
-	Nette\Application\Route;
+	Nette\Application\Route,
+	Nette\Web\Html;
 
 
 
@@ -24,7 +25,7 @@ require LIBS_DIR . '/Nette/loader.php';
 // Step 2: Configure environment
 // 2a) enable Nette\Debug for better exception and error visualisation
 Debug::$strictMode = TRUE;
-Debug::enable(Nette\Debug::DEVELOPMENT);// Nette\Debug::PRODUCTION / Nette\Debug::DEVELOPMENT
+Debug::enable(Nette\Debug::PRODUCTION);// Nette\Debug::PRODUCTION / Nette\Debug::DEVELOPMENT
 
 // 2b) load configuration from config.ini file
 Environment::loadConfig();
@@ -43,6 +44,10 @@ Nella\VersionPanel::register();
 $application = Environment::getApplication();
 $application->errorPresenter = 'Error';
 $application->catchExceptions = FALSE;
+
+
+
+Html::$xhtml = FALSE;
 
 
 

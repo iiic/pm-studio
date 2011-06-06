@@ -10,6 +10,7 @@ class RegisterPresenter extends BasePresenter
 {
 	/** @persistent */
 	public $backlink = '';
+	public $component = false;
 
 
 
@@ -80,8 +81,11 @@ class RegisterPresenter extends BasePresenter
 			return $form->addError("Uživatel s tímto nickem již existuje, prosím zvolte si jiný.");
 		}
 		$this->flashMessage('Vaše registrace byla úspěšně dokončena. Nyní se můžete přihlásit.');
-		// @todo : přesměrovat uživatele na stránku s přihlášením, kde bude předvyplněné uživatelské jméno (možná bude potřeba ho předvyplnit javascriptem) a hláška o tom, že na jeho email byla zaslána zpráva s ověřovacím kódem
-		$this->redirect('default:');
+		if($this->component) {
+			header('Location: /');
+		} else {
+			$this->redirect('Default:');
+		}
 	}
 
 

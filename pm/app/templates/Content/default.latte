@@ -2,8 +2,18 @@
 
 <h2 n:block="title">Naše sekce</h2>
 
-<ul n:inner-foreach="$siteContent as $item">
-	<li n:if="$item->p_type == 1">
-		<a n:href="content:view, $item->hash">{$item->title}</a>
-	</li>
-</ul>
+{if $siteContent}
+
+	<p>Tady je seznam vlastních obsahových sekcí, které můžete jako samostatnou sekci zobrazit kliknutím na vybraný název z následujícího seznamu.</p>
+
+	<ul n:inner-foreach="$siteContent as $item">
+		<li n:if="$item->p_type == 1">
+			<a n:href="content:view, $item->hash">{$item->title}</a>
+		</li>
+	</ul>
+
+{else}
+
+	<p>Zatím nejsou vytvořeny žádné obsahové sekce. Napřed je vytvořte v sekci <a n:href="menu:">úprava položek menu</a>.</p>
+
+{/if}

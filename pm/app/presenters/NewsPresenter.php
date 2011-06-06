@@ -132,7 +132,13 @@ class NewsPresenter extends BasePresenter
 			->setValue($username)
 			->addRule(AppForm::FILLED, 'Zapoměl jste vyplnit jméno!');
 		$form->addTextArea('content', 'Komentář')
-			->addRule(AppForm::FILLED, 'Samotný komentář je nutné vyplnit');
+			->addRule(AppForm::FILLED, 'Samotný komentář je nutné vyplnit')
+			->setOption('description', Html::el('a')
+				->setText('texy! syntax')
+				->href('http://www.texy.info/cs/syntax')
+				->title('kliknutím otevřete novou stránku s informacemi o syntaxi')
+				->onclick('return !window.open(this.href)')
+			);
 		$form->addSubmit('send', 'Odeslat');
 		$form->onSubmit[] = callback($this, 'commentFormSubmitted');
 		return $form;

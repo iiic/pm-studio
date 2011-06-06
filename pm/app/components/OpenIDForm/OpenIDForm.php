@@ -140,7 +140,7 @@ class OpenIDForm extends Nette\Application\Control
 	 */
 	public function render() {
 		$template = $this->template;
-		$template->setFile(__DIR__ . '/default.phtml');
+		$template->setFile(__DIR__ . '/default.latte');
 		$template->render();
 	}
 

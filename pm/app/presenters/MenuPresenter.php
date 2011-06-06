@@ -47,77 +47,77 @@ class MenuPresenter extends BasePresenter
 		$form->addSelect('p_type_1', '1. položka', $this->menu_items);
 		$form->addText('title_1', 'vlastní nadpis')
 			->setOption('id', 'title_1');
-		$form->addCheckbox('custom_title_1', 'použí vlastní nadpis')
+		$form->addCheckbox('custom_title_1', 'použít vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE)// conditional rule: if is checkbox checked...
 				->toggle('title_1');
 
 		$form->addSelect('p_type_2', '2. položka', $this->menu_items);
 		$form->addText('title_2', 'vlastní nadpis')
 			->setOption('id', 'title_2');
-		$form->addCheckbox('custom_title_2', 'použí vlastní nadpis')
+		$form->addCheckbox('custom_title_2', 'použít vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
 				->toggle('title_2');
 
 		$form->addSelect('p_type_3', '3. položka', $this->menu_items);
 		$form->addText('title_3', 'vlastní nadpis')
 			->setOption('id', 'title_3');
-		$form->addCheckbox('custom_title_3', 'použí vlastní nadpis')
+		$form->addCheckbox('custom_title_3', 'použít vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
 				->toggle('title_3');
 
 		$form->addSelect('p_type_4', '4. položka', $this->menu_items);
 		$form->addText('title_4', 'vlastní nadpis')
 			->setOption('id', 'title_4');
-		$form->addCheckbox('custom_title_4', 'použí vlastní nadpis')
+		$form->addCheckbox('custom_title_4', 'použít vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
 				->toggle('title_4');
 
 		$form->addSelect('p_type_5', '5. položka', $this->menu_items);
 		$form->addText('title_5', 'vlastní nadpis')
 			->setOption('id', 'title_5');
-		$form->addCheckbox('custom_title_5', 'použí vlastní nadpis')
+		$form->addCheckbox('custom_title_5', 'použít vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
 				->toggle('title_5');
 
 		$form->addSelect('p_type_6', '6. položka', $this->menu_items);
 		$form->addText('title_6', 'vlastní nadpis')
 			->setOption('id', 'title_6');
-		$form->addCheckbox('custom_title_6', 'použí vlastní nadpis')
+		$form->addCheckbox('custom_title_6', 'použít vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
 				->toggle('title_6');
 
 		$form->addSelect('p_type_7', '7. položka', $this->menu_items);
 		$form->addText('title_7', 'vlastní nadpis')
 			->setOption('id', 'title_7');
-		$form->addCheckbox('custom_title_7', 'použí vlastní nadpis')
+		$form->addCheckbox('custom_title_7', 'použít vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
 				->toggle('title_7');
 
 		$form->addSelect('p_type_8', '8. položka', $this->menu_items);
 		$form->addText('title_8', 'vlastní nadpis')
 			->setOption('id', 'title_8');
-		$form->addCheckbox('custom_title_8', 'použí vlastní nadpis')
+		$form->addCheckbox('custom_title_8', 'použít vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
 				->toggle('title_8');
 
 		$form->addSelect('p_type_9', '9. položka', $this->menu_items);
 		$form->addText('title_9', 'vlastní nadpis')
 			->setOption('id', 'title_9');
-		$form->addCheckbox('custom_title_9', 'použí vlastní nadpis')
+		$form->addCheckbox('custom_title_9', 'použít vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
 				->toggle('title_9');
 
 		$form->addSelect('p_type_10', '10. položka', $this->menu_items);
 		$form->addText('title_10', 'vlastní nadpis')
 			->setOption('id', 'title_10');
-		$form->addCheckbox('custom_title_10', 'použí vlastní nadpis')
+		$form->addCheckbox('custom_title_10', 'použít vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
 				->toggle('title_10');
 
 		$form->addSelect('p_type_11', '11. položka', $this->menu_items);
 		$form->addText('title_11', 'vlastní nadpis')
 			->setOption('id', 'title_11');
-		$form->addCheckbox('custom_title_11', 'použí vlastní nadpis')
+		$form->addCheckbox('custom_title_11', 'použít vlastní nadpis')
 			->addCondition(Form::EQUAL, TRUE) // conditional rule: if is checkbox checked...
 				->toggle('title_11');
 

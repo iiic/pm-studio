@@ -12,6 +12,7 @@ class RegisterControl extends BaseControl
 	public function createComponentRegisterForm()
 	{
 		$data = new RegisterPresenter();
+		$data->component = true;
 		return $data->createComponentRegisterForm();
 	}
 

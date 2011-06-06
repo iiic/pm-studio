@@ -38,7 +38,7 @@ class AuthPresenter extends BasePresenter// bylo by lepší (z bezpečnostíníc
 		if ($this->user->isLoggedIn()) {
 			$this->flashMessage('Už jste přihlášen');
 			$backlink = $this->application->storeRequest();
-			$this->redirect('default:', array('backlink' => $backlink));
+			$this->redirect('Default:', array('backlink' => $backlink));
 		}
 	}
 
@@ -49,7 +49,7 @@ class AuthPresenter extends BasePresenter// bylo by lepší (z bezpečnostíníc
 		if ($this->user->isLoggedIn()) {
 			$this->flashMessage('Už jste přihlášen');
 			$backlink = $this->application->storeRequest();
-			$this->redirect('default:', array('backlink' => $backlink));
+			$this->redirect('Default:', array('backlink' => $backlink));
 		}
 	}
 
@@ -110,7 +110,7 @@ class AuthPresenter extends BasePresenter// bylo by lepší (z bezpečnostíníc
 			}
 
 			$this->application->restoreRequest($this->backlink);
-			$this->redirect('default:');
+			$this->redirect('Default:');
 
 		} catch (AuthenticationException $e) {
 			$form->addError($e->getMessage());
@@ -142,7 +142,7 @@ class AuthPresenter extends BasePresenter// bylo by lepší (z bezpečnostíníc
 	public function openIDSigned($identity, $attributes) {
 		try {
 			$this->user->login(array($identity, $this->template->settings->admins));
-			$this->redirect('default:');
+			$this->redirect('Default:');
 		} catch(Nette\Security\AuthenticationException $e) {
 			if( (!empty($identity)) && ($attributes[self::NICKNAME] != '') ) {// @todo : dodělat další pravidla pro tento server, jako třeba nepovolené znaky, nebo délka menší než 2 písmena
 				$users = new UsersModel;
@@ -150,13 +150,13 @@ class AuthPresenter extends BasePresenter// bylo by lepší (z bezpečnostíníc
 				try {
 					$this->user->login(array($identity, $this->template->settings->admins));
 					$this->flashMessage('Jste přihlášen pomocí OpenID jako uživatel '.$attributes[self::NICKNAME].'.');
-					$this->redirect('default:');
+					$this->redirect('Default:');
 				} catch(Nette\Security\AuthenticationException $e) {}// nevyhazovat vyjímky... zatím není nic ztraceno
 			}
 			$oidsession = Environment::getSession('openid');
 			$oidsession->identity = $identity;
 			$oidsession->attributes = $attributes;
-			$this->redirect('auth:register');
+			$this->redirect('Auth:register');
 		}
 	}
 
@@ -224,7 +224,7 @@ class AuthPresenter extends BasePresenter// bylo by lepší (z bezpečnostíníc
 		$users = new UsersModel;
 		$users->registerOpenId(array('identity' => $values['openid'], 'username' => $values['username'], 'email' => $values['email'], 'validate_email' => $values['validate_email']));
 		$this->user->login(array($values['openid'], $this->template->settings->admins));
-		$this->redirect('default:');
+		$this->redirect('Default:');
 	}
 
 
@@ -234,7 +234,7 @@ class AuthPresenter extends BasePresenter// bylo by lepší (z bezpečnostíníc
 		$this->user->logout(true);// bez true zůstávají stopy (id, role, ...) nevím na co by se to mohlo hodit
 		//$this->getUser()->logout();
 		$this->flashMessage('Byl jste právě odhlášen.');
-		$this->redirect('default:');
+		$this->redirect('Default:');
 	}
 
 }

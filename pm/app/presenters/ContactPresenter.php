@@ -36,7 +36,13 @@ class ContactPresenter extends BasePresenter
 		$form->addText('title', 'Nadpis')
 			->addRule(Form::FILLED, 'Prosím zadejte nadpis.');
 		$form->addTextArea('content', 'Obsah')
-			->addRule(Form::FILLED, 'Prosím vložte obsah.');
+			->addRule(Form::FILLED, 'Prosím vložte obsah.')
+			->setOption('description', Html::el('a')
+				->setText('texy! syntax')
+				->href('http://www.texy.info/cs/syntax')
+				->title('kliknutím otevřete novou stránku s informacemi o syntaxi')
+				->onclick('return !window.open(this.href)')
+			);
 		$form->addText('email', 'Email příjemce vzkazů')
 			->addRule(Form::FILLED, 'Zapoměl jste vyplnit váš email.')
 			->addRule(Form::EMAIL, 'Zadejte platnou emailovou adresu na kterou budou uživatelé psát.');

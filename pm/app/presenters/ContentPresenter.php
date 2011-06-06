@@ -87,7 +87,13 @@ class ContentPresenter extends BasePresenter
 		$form->addText('hash', 'Adresa')
 			->addRule(Form::FILLED, 'Musíte zadat určenovací část URI adresy.');
 		$form->addTextArea('content', 'Obsah')
-			->addRule(Form::FILLED, 'Musíte zadat nějaký obsah.');
+			->addRule(Form::FILLED, 'Musíte zadat nějaký obsah.')
+			->setOption('description', Html::el('a')
+				->setText('texy! syntax')
+				->href('http://www.texy.info/cs/syntax')
+				->title('kliknutím otevřete novou stránku s informacemi o syntaxi')
+				->onclick('return !window.open(this.href)')
+			);
 		$form->addSubmit('preview', 'náhled');
 		$form->addSubmit('save', 'uložit');
 		$form->addSubmit('cancel', 'zrušit')->setValidationScope(NULL);

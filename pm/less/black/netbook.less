@@ -38,6 +38,7 @@
 	}
 
 	.prechod-vertikalni (@barva-od : #222; @barva-do : #666) {
+		background-color:@barva-do;// pro prohlížeče, které ještě barevné přechody neumí... se zobrazí jednobarevné pozadí
 		background-image: -webkit-gradient(
 			linear,
 			left bottom,
@@ -361,7 +362,7 @@ section
 
 		li {
 			margin-top:8px;
-			list-style-image:url(/{@cesta-k-obrazkum}at.bmp);
+			list-style-image:url(/{@cesta-k-obrazkum}at.gif);
 
 			a {
 				color:@barva-textu;
@@ -371,7 +372,7 @@ section
 		}
 
 		li.phone {
-			list-style-image:url(/{@cesta-k-obrazkum}phone.bmp);
+			list-style-image:url(/{@cesta-k-obrazkum}phone.gif);
 		}
 
 	}
@@ -396,7 +397,7 @@ section
 		z-index:1;
 	}
 
-	img.left {
+	.decorate {
 		position:absolute;
 		left:400px;
 		z-index:1;
@@ -461,6 +462,13 @@ section
 
 		}
 
+	}
+
+	>hr {
+		display:none;
+		border:none;
+		height:0;
+		margin:0;
 	}
 
 }
@@ -726,20 +734,12 @@ form
 #frm-authForm
 {
 	margin-top:50px;
-	position:relative;
-	left:-160px;
 
 	input {
 		[type="text"], [type="password"] {
 			width:260px;
 		}
 	}
-}
-
-// formulář pro výběr obsahové sekce k editaci
-#frm-selectSectionForm
-{
-	margin-bottom:80px;
 }
 
 // kontakt - odeslání mailu
@@ -758,12 +758,6 @@ form
 		}
 	}
 
-}
-
-// výběr sekce pro editaci
-#frm-selectSectionForm
-{
-	margin-top:190px; 
 }
 
 // formulář pro editaci položek menu
@@ -874,6 +868,8 @@ aside
 			background:@barva-pozadi;
 			opacity:1;
 			-moz-transition:all 1s ease-in-out;
+			-webkit-transition:all 1s ease-in-out;
+			transition:all 1s ease-in-out;
 		}
 
 		p.hide {
@@ -927,11 +923,3 @@ footer
 	z-index:-1;
 	@mixins > .vnitrni-stin-celkovy;
 }
-
-/* zajímavé skutečnosti:
- * ---------------------
- * less filter vytvoří z '>h2' vnořeného do section zápis 'section>h2', kdežto 
- * z '.trida' vloženého taktéž do section zápis 'section .trida', mezera zajistí
- * že se jedná o potomka section a ne o jeho třídu, to je dost divné chování.
- * Pravděpodobně souvisí s tím že '.něco' je chápáno jako mixinis.
- */

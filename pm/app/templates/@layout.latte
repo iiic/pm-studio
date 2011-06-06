@@ -17,11 +17,13 @@
 				}
 			}
 			{if $presenter->getName() == 'Default'}{* Jinde než na indexu k tomu stejně nemůže dojít *}
+				toBlock = false;
 				function removeHash() {
 					if( (location.hash) && (history.replaceState) ) {
-						h = ["novinky","reklama","grafika-loga","samolepky-auta","registrace","zajimavost","kontakt"];
+						h = {$hashes};
 						for(i in h) {
 							if('#'+h[i] == location.hash.toString()) {
+								toBlock = h[i];
 								history.replaceState('', '', location.toString().replace('#', ''));
 							}
 						}
@@ -36,11 +38,10 @@
 		<meta name="viewport" content="width=device-width">{* říká smartphonům (Android, iPhone, ...) že mají použít svou skutečnou šířku monitoru a nesnažit se simulovat skutečný počítač *}
 		<meta n:ifset="$robots" name="robots" content="{$robots}">
 		<meta n:ifset="$settings->description" name="description" content="{$settings->description}">
-		<link rel="made" href="ic.czech@gmail.com">
 		<link rel="profile" href="http://purl.org/uF/2008/03/">{* profile="http://purl.org/uF/2008/03/" značí specifikaci hodně druhů mikroformátů (včetně hCard), které nejsou ve stádiu návrhu, což je třeba hAtom: http://purl.org/uF/hAtom/0.1/ *}
 		<link rel="profile" href="http://purl.org/uF/hAtom/0.1/">
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">{* ikonka webu *}
-		<link n:if="$presenter->getName() == 'Default'" rel="home" href="{$basePath}" title="úvodní stránka">{* odkaz na homepage *}
+		<link n:if="$presenter->getName() != 'Default'" rel="home" href="{$baseUri}" title="úvodní stránka">{* odkaz na homepage *}
 		<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->{* javascriptová oprava vad v IE8 a menších *}
 		<link n:if="$presenter->getParam(Nette\Application\Presenter::FLASH_KEY)" rel="canonical" href="{link this, Nette\Application\Presenter::FLASH_KEY => NULL}">{* v případě existence flash identifikátoru v uri (_fid=XXXX) přidá odkaz na kanonickou adresu *}
 		{if $settings->style != '0'}
@@ -67,6 +68,7 @@
 			a.title = 'přejít na hlávní stránku';
 			a.appendChild(document.createTextNode('domů'));
 			document.getElementsByTagName('header')[0].appendChild(a);
+			document.getElementsByTagName('script')[1].parentNode.removeChild(document.getElementsByTagName('script')[1]);{* sebedestrukce *}
 		</script>
 
 		<hr id="bg">
@@ -75,7 +77,7 @@
 			{cache 'menu', expire => '+'.$settings->cache.' minutes', if => $settings->cache > 0}
 				<nav id="menu"><strong class="hide">menu:</strong>{control menu}</nav>
 				<ul n:if="$settings->global_email != '' || $settings->global_phone != ''" class="contact">
-					<li n:if="$settings->global_email != ''"><a href="mailto:{$settings->global_email|replace:'@':'(at)'}">{!$settings->global_email|replace:'@':'<img src="/images/at-char.bmp" alt="@">'}</a></li>
+					<li n:if="$settings->global_email != ''"><a href="mailto:{$settings->global_email|replace:'@':'(at)'}">{!$settings->global_email|replace:'@':'<img src="/images/at-char.gif" alt="@">'}</a></li>
 					<li n:if="$settings->global_phone != ''" class="phone">{$settings->global_phone}</li>
 				</ul>
 			{/cache}
@@ -114,6 +116,7 @@
 							return true;
 						}
 					{/if}
+					document.getElementsByTagName('script')[1].parentNode.removeChild(document.getElementsByTagName('script')[1]);{* sebedestrukce *}
 				</script>
 			<hr>
 			{include #content}
@@ -122,7 +125,11 @@
 			if( (!location.hash) && (location.pathname == {$basePath}+'/') ) {
 				location.replace('#{!$settings->default_presenter}');
 				removeHash();
+				if(toBlock) {
+					document.getElementById(toBlock).style.display = 'block';
+				}
 			}
+			document.getElementsByTagName('script')[1].parentNode.removeChild(document.getElementsByTagName('script')[1]);{* sebedestrukce *}
 		</script>
 
 		<hr class="show">
@@ -138,12 +145,14 @@
 				<br>
 			</p>
 			<p n:if="$user->loggedIn">
-				<strong>možnosti úprav</strong><br>
-				<a n:href="menu:">upravit menu</a><br>
-				<a n:href="news:add">napsat novinku</a><br>
-				<a n:href="content:edit">upravit obsah obsahových sekcí</a><br>
-				<a n:href="contact:edit">upravit kontakt</a><br>
-				<a n:href="settings:">upravit nastavení webu</a><br>
+				{if $user->isInRole('administrator')}
+					<strong>možnosti úprav</strong><br>
+					<a n:href="menu:">upravit menu</a><br>
+					<a n:href="news:add">napsat novinku</a><br>
+					<a n:href="content:edit">upravit obsah obsahových sekcí</a><br>
+					<a n:href="contact:edit">upravit kontakt</a><br>
+					<a n:href="settings:">upravit nastavení webu</a><br>
+				{/if}
 				<a n:href="auth:logout">odhlásit se</a><br>
 			</p>
 		</aside>

@@ -174,11 +174,11 @@ abstract class BasePresenter extends Presenter
 		TemplateFilters::$texy = new Texy();
 		TemplateFilters::$texy->encoding = 'utf-8';
 		TemplateFilters::$texy->imageModule->root = '/images/';
-		TemplateFilters::$texy->alignClasses['left'] = 'left';
+		//TemplateFilters::$texy->alignClasses['left'] = 'left';
 		TemplateFilters::$texy->headingModule->top = 3;// h1 a h2 jsou už v šabloně, takže startujeme s trojkou
-		TemplateFilters::$texy->allowedTags = Texy::NONE;
-		TemplateFilters::$texy->allowedStyles = Texy::NONE;
-		TemplateFilters::$texy->allowedClasses = Texy::NONE;
+		TemplateFilters::$texy->allowedTags = Texy::ALL;
+		TemplateFilters::$texy->allowedStyles = Texy::ALL;
+		TemplateFilters::$texy->allowedClasses = Texy::ALL;
 		TemplateFilters::$texy->setOutputMode(Texy::HTML5);
 
 		// registrace filtru texyElements
@@ -192,11 +192,11 @@ abstract class BasePresenter extends Presenter
 
 		$texy->encoding = 'utf-8';
 		$texy->imageModule->root = '/images/';
-		$texy->alignClasses['left'] = 'left';
+		//$texy->alignClasses['left'] = 'left';
 		$texy->headingModule->top = 3;// h1 a h2 jsou už v šabloně, takže startujeme s trojkou
-		$texy->allowedTags = Texy::NONE;
-		$texy->allowedStyles = Texy::NONE;
-		$texy->allowedClasses = Texy::NONE;
+		$texy->allowedTags = Texy::ALL;
+		$texy->allowedStyles = Texy::ALL;
+		$texy->allowedClasses = Texy::ALL;
 		$texy->setOutputMode(Texy::HTML5);
 
 		$texy->allowed['emoticon'] = FALSE;

@@ -165,6 +165,7 @@ header
 		}
 
 		:after {
+			visibility:visible;
 			z-index:1;
 			position:absolute;
 			margin-top:-32px;
@@ -175,6 +176,16 @@ header
 			@mixins > .debug(dotted);
 		}
 
+	}
+
+	a, a:hover, a:focus, a:active, a:visited {
+		position:relative;
+		z-index:2;
+		color:transparent;
+		float:left;
+		margin-top:-180px;
+		width:240px;
+		height:110px;
 	}
 
 	strong {
@@ -259,6 +270,29 @@ section
 		margin-bottom:@vyska-radku;
 	}
 
+	ul.contact {
+		font-weight:bold;
+		margin-bottom:20px;
+		width:200px;
+		margin-left:40px;
+
+		li {
+			margin-top:8px;
+			list-style-image:url(/{@cesta-k-obrazkum}at.gif);
+
+			a {
+				color:@barva-textu;
+				@mixins > .menu-odkaz;
+			}
+
+		}
+
+		li.phone {
+			list-style-image:url(/{@cesta-k-obrazkum}phone.gif);
+		}
+
+	}
+
 	ul {
 		li {
 			text-align:left;
@@ -317,6 +351,14 @@ section
 
 		}
 
+	}
+
+	>hr {
+		display:block;
+		border:1px solid @nenapadny-text;
+		color:@nenapadny-text;
+		height:1px;
+		margin-bottom:30px;
 	}
 
 }

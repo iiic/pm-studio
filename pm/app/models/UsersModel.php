@@ -39,7 +39,7 @@ class UsersModel extends Object implements Nette\Security\IAuthenticator
 				->on('pm_users.id = users_openid.user_id')
 				->where('openid=%s', $username[0])
 				->fetch();
-			//$username = $row->username;// asi
+			$row['id'] = $row['user_id'];// ! důležité ! : nahradím id z tabulky open_id id-čkem z tabulky uživatelů, aby seděly oprávnění
 		}
 
 		$admins = explode('|', $admins);// rozdělení do pole podle oddělovače

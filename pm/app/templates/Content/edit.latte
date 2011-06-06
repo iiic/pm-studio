@@ -2,18 +2,20 @@
 
 <h2 n:block="title">Úprava obsahu</h2>
 
+<p>V následujícím výběrovém seznamu vyberete (podle názvu) obsahovou sekci, kterou si přejete upravit. Poté ve zobrazeném formuláři vyplňte její obsah. Velmi důležité je vstupní textové pole 'Adresa' sem zadejte vlastní URI adresu, na které bude poté obsah dostupný. Je doporučeno používat adresy bez diakritiky a speciálních znaků a místo mezer použít pomlčku '-' .</p>
+
 {control selectSectionForm}
 
 {ifset $id}
 
-{control contentForm}
+	{control contentForm}
 
-{snippet content section}
-	{ifset $content}
-		{!$content|texy}
-	{else}
-		<p>Zde se zobrazí náhled právě editované obsahové sekce.</p>
-	{/ifset}
-{/snippet}
+	{snippet content section}
+		{ifset $content}
+			{!$content|texy}
+		{else}
+			<p>Zde se zobrazí náhled právě editované obsahové sekce.</p>
+		{/ifset}
+	{/snippet}
 
 {/ifset}

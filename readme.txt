@@ -8,14 +8,13 @@ XAMPP 1.7.3
 Apache 2.2
 PHP 5.3.1
 MySQL 5.1.41
-Nette Framework 2 (@todo : hash a datum sem)
+Nette Framework 2 (2.0-dev (9f535f9 released on 2011-01-10))
 dibi 1.5rc
 Texy 2.1
 GIT 1.7.0.2 msgit
 HTML5
 CSS3
 Less CSS 0.2.0 lessphp
-//Poedit 1.4.6
 NetBeans IDE 7.0 (PHP Nette Framework plugin - http://plugins.netbeans.org/PluginPortal/faces/PluginDetailPage.jsp?pluginid=32720, Git plugin)
 mspaint 5.1
 Firefox 4.0 (Firebug 1.7.0, FireQuery 0.9, FireLogger 0.9, HTML validator 0.9.0.4)
@@ -60,15 +59,7 @@ Globální nastavení webu je k nalezení v sekci 'upravit nastavení webu' (/se
 
 
 
-* testování: *
-
-Ručně testováno zobrazení a funkce na prohlížečích @todo: otestovat
-
-unit testy: bez šance
-
-
-
 ukázka na http://sl.edov.at
 zdrojové kódy https://github.com/iiic/pm-studio
 
-poslední změna 30. 04. 2011
+poslední změna 06. 06. 2011

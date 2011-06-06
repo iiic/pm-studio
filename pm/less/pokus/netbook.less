@@ -19,6 +19,7 @@
 	}
 
 	.prechod-vertikalni (@barva-od : #222; @barva-do : #666) {
+		background-color:@barva-do;// pro prohlížeče, které ještě barevné přechody neumí... se zobrazí jednobarevné pozadí
 		background-image: -webkit-gradient(
 			linear,
 			left bottom,
@@ -120,6 +121,7 @@ header
 	@mixins > .debug;
 
 	h1 { // hlavní nadpis stránky
+		visibility:visible !important;
 		background:none;
 		font-size:80px;
 		padding-top:44px;
