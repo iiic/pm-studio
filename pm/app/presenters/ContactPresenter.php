@@ -2,7 +2,8 @@
 
 use Nette\Application\AppForm,
 	Nette\Forms\Form,
-	Nette\Mail;
+	Nette\Mail,
+	Nette\Web\Html;
 
 class ContactPresenter extends BasePresenter
 {

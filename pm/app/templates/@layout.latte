@@ -40,7 +40,7 @@
 		<meta n:ifset="$settings->description" name="description" content="{$settings->description}">
 		<link rel="profile" href="http://purl.org/uF/2008/03/">{* profile="http://purl.org/uF/2008/03/" značí specifikaci hodně druhů mikroformátů (včetně hCard), které nejsou ve stádiu návrhu, což je třeba hAtom: http://purl.org/uF/hAtom/0.1/ *}
 		<link rel="profile" href="http://purl.org/uF/hAtom/0.1/">
-		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">{* ikonka webu *}
+		<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">{* ikonka webu *}
 		<link n:if="$presenter->getName() != 'Default'" rel="home" href="{$baseUri}" title="úvodní stránka">{* odkaz na homepage *}
 		<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->{* javascriptová oprava vad v IE8 a menších *}
 		<link n:if="$presenter->getParam(Nette\Application\Presenter::FLASH_KEY)" rel="canonical" href="{link this, Nette\Application\Presenter::FLASH_KEY => NULL}">{* v případě existence flash identifikátoru v uri (_fid=XXXX) přidá odkaz na kanonickou adresu *}
@@ -150,6 +150,7 @@
 					<a n:href="menu:">upravit menu</a><br>
 					<a n:href="news:add">napsat novinku</a><br>
 					<a n:href="content:edit">upravit obsah obsahových sekcí</a><br>
+					<a n:href="ad:edit">upravit kalkulaci reklam</a><br>
 					<a n:href="contact:edit">upravit kontakt</a><br>
 					<a n:href="settings:">upravit nastavení webu</a><br>
 				{/if}

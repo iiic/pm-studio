@@ -16,7 +16,7 @@
 		{/if}
 		adresa obrázku: <code>{$baseUri}/images/{$picture->name}</code><br>
 		velikost souboru: {$picture->size|bytes}<br>
-		datum a čas vytvoření: {$picture->time|date}<br>
+		datum a čas vytvoření: {$picture->time|date:'%d.%m.%Y'}<br>
 		<a n:href="delete $picture->name">smazat</a>{* @todo : provést js dotaz 'opravdu...' *}
 	</li>
 </ul>
