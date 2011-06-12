@@ -1,16 +1,18 @@
 <?php
 
 /**
- * Texy! - human-readable text to HTML converter.
+ * Texy! is human-readable text to HTML converter (http://texy.info)
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @license    GNU GENERAL PUBLIC LICENSE version 2 or 3
- * @link       http://texy.info
+ * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ *
+ * For the full copyright and license information, please view
+ * the file license.txt that was distributed with this source code.
+ *
  * @package    Texy
  */
 
 
-define('TEXY_VERSION',  '2.1');
+define('TEXY_VERSION',  '3.0-dev');
 
 
 /**
@@ -81,31 +83,25 @@ if (!class_exists('UnexpectedValueException', FALSE)) {
 
 
 /**
- * Compatibility with Nette
+ * Checking preg_last_error()
  */
-if (!class_exists('NotSupportedException', FALSE)) {
-	class NotSupportedException extends LogicException {}
+define('TEXY_CHECK_PCRE', function_exists('preg_last_error'));
+
+class TexyPcreException extends Exception {
+
+	public function __construct($message = '%msg.')
+	{
+		static $messages = array(
+			PREG_INTERNAL_ERROR => 'Internal error',
+			PREG_BACKTRACK_LIMIT_ERROR => 'Backtrack limit was exhausted',
+			PREG_RECURSION_LIMIT_ERROR => 'Recursion limit was exhausted',
+			PREG_BAD_UTF8_ERROR => 'Malformed UTF-8 data',
+			5 => 'Offset didn\'t correspond to the begin of a valid UTF-8 code point', // PREG_BAD_UTF8_OFFSET_ERROR
+		);
+		$code = preg_last_error();
+		parent::__construct(str_replace('%msg', isset($messages[$code]) ? $messages[$code] : 'Unknown error', $message), $code);
+	}
 }
-
-if (!class_exists('MemberAccessException', FALSE)) {
-	class MemberAccessException extends LogicException {}
-}
-
-if (!class_exists('InvalidStateException', FALSE)) {
-	class InvalidStateException extends RuntimeException {}
-}
-
-
-
-/**
- * For Texy 1 backward compatibility.
- */
-define('TEXY_ALL',  TRUE);
-define('TEXY_NONE',  FALSE);
-define('TEXY_CONTENT_MARKUP',  "\x17");
-define('TEXY_CONTENT_REPLACED',  "\x16");
-define('TEXY_CONTENT_TEXTUAL',  "\x15");
-define('TEXY_CONTENT_BLOCK',  "\x14");
 
 
 
@@ -118,8 +114,7 @@ define('TEXY_CONTENT_BLOCK',  "\x14");
  *     $html = $texy->process($text);
  * </code>
  *
- * @copyright  Copyright (c) 2004, 2010 David Grudl
- * @package    Texy
+ * @author     David Grudl
  */
 class Texy extends TexyObject
 {
@@ -129,7 +124,7 @@ class Texy extends TexyObject
 
 	// Texy version
 	const VERSION = TEXY_VERSION;
-	const REVISION = '9338a11 released on 2010-05-20';
+	const REVISION = 'f3be183 released on 2011-02-02';
 
 	// types of protection marks
 	const CONTENT_MARKUP = "\x17";
@@ -183,7 +178,6 @@ class Texy extends TexyObject
 	public $summary = array(
 		'images' => array(),
 		'links' => array(),
-		'preload' => array(),
 	);
 
 	/** @var string  Generated stylesheet */
@@ -199,9 +193,6 @@ class Texy extends TexyObject
 		'middle' => NULL,
 		'bottom' => NULL,
 	);
-
-	/** @var bool  remove soft hyphens (SHY)? */
-	public $removeSoftHyphens = TRUE;
 
 	/** @var mixed */
 	public static $advertisingNotice = 'once';
@@ -313,27 +304,13 @@ class Texy extends TexyObject
 	private $mode;
 
 
-	/** DEPRECATED */
-	public static $strictDTD;
-	public $cleaner;
-	public $xhtml;
-
-
 
 	public function __construct()
 	{
 		// load all modules
 		$this->loadModules();
 
-		// DEPRECATED
-		if (self::$strictDTD !== NULL) {
-			$this->setOutputMode(self::$strictDTD ? self::XHTML1_STRICT : self::XHTML1_TRANSITIONAL);
-		} else {
-			$this->setOutputMode(self::XHTML1_TRANSITIONAL);
-		}
-
-		// DEPRECATED
-		$this->cleaner = & $this->htmlOutputModule;
+		$this->setOutputMode(self::HTML4_TRANSITIONAL);
 
 		// examples of link references ;-)
 		$link = new TexyLink('http://texy.info/');
@@ -483,7 +460,7 @@ class Texy extends TexyObject
 	public function process($text, $singleLine = FALSE)
 	{
 		if ($this->processing) {
-			throw new InvalidStateException('Processing is in progress yet.');
+			throw new RuntimeException('Processing is in progress yet.');
 		}
 
 		// initialization
@@ -500,9 +477,8 @@ class Texy extends TexyObject
 		// convert to UTF-8 (and check source encoding)
 		$text = TexyUtf::toUtf($text, $this->encoding);
 
-		if ($this->removeSoftHyphens) {
-			$text = str_replace("\xC2\xAD", '', $text);
-		}
+		// remove soft hyphens
+		$text = str_replace("\xC2\xAD", '', $text);
 
 		// standardize line endings and spaces
 		$text = self::normalize($text);
@@ -510,7 +486,8 @@ class Texy extends TexyObject
 		// replace tabs with spaces
 		$this->tabWidth = max(1, (int) $this->tabWidth);
 		while (strpos($text, "\t") !== FALSE) {
-			$text = preg_replace_callback('#^(.*)\t#mU', array($this, 'tabCb'), $text);
+			$text = preg_replace_callback('#^([^\t\n]*+)\t#mU', array($this, 'tabCb'), $text);
+			if (TEXY_CHECK_PCRE && preg_last_error()) throw new TexyPcreException;
 		}
 
 		// user before handler
@@ -600,7 +577,7 @@ class Texy extends TexyObject
 	public function toText()
 	{
 		if (!$this->DOM) {
-			throw new InvalidStateException('Call $texy->process() first.');
+			throw new RuntimeException('Call $texy->process() first.');
 		}
 
 		return TexyUtf::utfTo($this->DOM->toText($this), $this->encoding);
@@ -659,6 +636,7 @@ class Texy extends TexyObject
 
 		// remove tags
 		$s = preg_replace('#<(script|style)(.*)</\\1>#Uis', '', $s);
+		if (TEXY_CHECK_PCRE && preg_last_error()) throw new TexyPcreException;
 		$s = strip_tags($s);
 		$s = preg_replace('#\n\s*\n\s*\n[\n\s]*\n#', "\n\n", $s);
 
@@ -959,7 +937,7 @@ class Texy extends TexyObject
 
 	final public function __clone()
 	{
-		throw new NotSupportedException('Clone is not supported.');
+		throw new Exception('Clone is not supported.');
 	}
 
 }
